@@ -1,7 +1,7 @@
 {
-  "name": "iso-lib-starter",
-  "version": "0.1.1",
-  "description": "Starter for creating reusable, modern, isomorphic javascript libraries using rollup",
+  "name": "@anzalab/majifix-analytics",
+  "version": "0.1.0",
+  "description": "Majifix module for analytics and reports",
   "main": "lib/index.js",
   "module": "es/index.js",
   "scripts": {
@@ -21,18 +21,14 @@
     "lint:config": "eslint --print-config rollup.config.js"
   },
   "keywords": [
-    "lykmapipo",
-    "iso-lib-starter",
+    "anzalab",
+    "majifix",
+    "analytics",
     "isomophic"
   ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lykmapipo/iso-lib-starter.git"
-  },
-  "author": {
-    "name": "lykmapipo",
-    "email": "lallyelias87@gmail.com",
-    "url": "https://github.com/lykmapipo"
   },
   "contributors": [
     {
@@ -78,6 +74,7 @@
     "lint-staged": "^9.2.1",
     "lodash.template": "^4.5.0",
     "mocha": "^6.2.0",
+    "mongoose": "^5.6.9",
     "npm-check-updates": "^3.1.20",
     "nyc": "^14.1.1",
     "prettier": "^1.18.2",
@@ -87,6 +84,7 @@
   },
   "peerDependencies": {},
   "dependencies": {
+    "@lykmapipo/mongoose-common": "^0.25.9",
     "lodash": ">=4.17.15"
   },
   "engines": {
