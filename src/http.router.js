@@ -1,7 +1,5 @@
 /**
- * @apiDefine Priority Priority
- *
- * @apiDescription A representation an entity which provides a way
+ * @description A representation an entity which provides a way
  * to prioritize service and service request(issues)
  * in order of their importance.
  *
@@ -15,8 +13,8 @@
 
 /* dependencies */
 import _ from 'lodash';
-import { getString } from '@lykmapipo/env';
 import { Router } from '@lykmapipo/express-common';
+import { getString } from '@lykmapipo/env';
 import getOverviewReport from './reports/overview';
 
 /* local constants */
@@ -29,9 +27,11 @@ const router = new Router({
 });
 
 router.get(PATH_OVERVIEW, function getOverview(request, response, next) {
-  const options = _.merge({}, request.mquery.options);
+  const options = _.merge({}, request.mquery);
 
-  getOverviewReport(options, (error, results) => {
+  const filter = options.filter || {};
+
+  getOverviewReport(filter, (error, results) => {
     if (error) {
       next(error);
     } else {
