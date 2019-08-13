@@ -33,9 +33,14 @@ const OVERALL_FACET = {
         unattended: {
           $sum: '$unattended',
         },
-        count: { sum: 1 },
+        count: { $sum: 1 },
         averageResolveTime: { $avg: '$ttr.milliseconds' },
         averageAttendTime: { $avg: '$call.duration.milliseconds' },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
       },
     },
   ],
@@ -276,6 +281,8 @@ const REPORTING_METHOD_FACET = {
   ],
 };
 
+// TODO add zone facet
+
 const FACET = {
   ...OVERALL_FACET,
   ...JURISDICTION_FACET,
@@ -288,20 +295,36 @@ const FACET = {
   ...REPORTING_METHOD_FACET,
 };
 
+/**
+ * @function
+ * @name getOverviewReport
+ * @description Generate overview report based on provided criteria
+ *
+ * @param {object} criteria Criteria condition to be applied in $match
+ * @param {object} onResults Callback when aggeration operation finishes
+ * @returns {object} executed aggregation
+ *
+ * @version 0.1.0
+ * @since 0.1.0
+ *
+ * @example
+ *  getOverviewReport(criteria, function(error, data){
+ *    ...
+ *  });
+ */
 const getOverviewReport = (criteria, onResults) => {
-  const baseAggregation = getBaseAggregation();
+  const baseAggregation = getBaseAggregation(criteria);
 
   return baseAggregation
-    .match(criteria)
     .addFields({
       pending: {
-        $cond: { if: { $eq: ['$resolvedAt', null] }, then: 1, else: 0 },
+        $cond: { if: { $not: '$resolvedAt' }, then: 1, else: 0 },
       },
       unattended: {
-        $cond: { if: { $eq: ['$operator', null] }, then: 1, else: 0 },
+        $cond: { if: { $not: '$operator' }, then: 1, else: 0 },
       },
       resolved: {
-        $cond: { if: { $eq: ['$resolvedAt', null] }, then: 0, else: 1 },
+        $cond: { if: { $not: '$resolvedAt' }, then: 0, else: 1 },
       },
     })
     .facet(FACET)
