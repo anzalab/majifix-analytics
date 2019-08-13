@@ -1,6 +1,5 @@
 /**
  * @name majifix-analytics
- * @version 0.1.0
  * @description A module for analytics and visualizations of majifix data
  *
  * @author Benson Maruchu <benmaruchu@gmail.com>
