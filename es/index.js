@@ -1,7 +1,7 @@
 import { pkg } from '@lykmapipo/common';
 import _ from 'lodash';
-import { getString } from '@lykmapipo/env';
 import { Router } from '@lykmapipo/express-common';
+import { getString } from '@lykmapipo/env';
 import { model } from '@lykmapipo/mongoose-common';
 
 /**
@@ -15,10 +15,32 @@ import { model } from '@lykmapipo/mongoose-common';
 
 /* declarations */
 
-const getBaseAggregation = () => {
+/**
+ * @function
+ * @name getBaseAggregation
+ * @description Create base aggregation for Service Requests with all fields
+ * looked up and unwinded for aggregation operations
+ *
+ * @param {object} criteria Criteria conditions which will be applied in $match
+ * @returns {object} aggregagtion instance
+ *
+ * @version 0.1.0
+ * @since 0.1.0
+ */
+const getBaseAggregation = criteria => {
   const ServiceRequest = model('ServiceRequest');
 
-  return ServiceRequest.lookup();
+  return ServiceRequest.lookup(criteria).addFields({
+    pending: {
+      $cond: { if: { $not: '$resolvedAt' }, then: 1, else: 0 },
+    },
+    unattended: {
+      $cond: { if: { $not: '$operator' }, then: 1, else: 0 },
+    },
+    resolved: {
+      $cond: { if: { $not: '$resolvedAt' }, then: 0, else: 1 },
+    },
+  });
 };
 
 /**
@@ -54,9 +76,14 @@ const OVERALL_FACET = {
         unattended: {
           $sum: '$unattended',
         },
-        count: { sum: 1 },
+        count: { $sum: 1 },
         averageResolveTime: { $avg: '$ttr.milliseconds' },
         averageAttendTime: { $avg: '$call.duration.milliseconds' },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
       },
     },
   ],
@@ -297,6 +324,8 @@ const REPORTING_METHOD_FACET = {
   ],
 };
 
+// TODO add zone facet
+
 const FACET = {
   ...OVERALL_FACET,
   ...JURISDICTION_FACET,
@@ -309,30 +338,31 @@ const FACET = {
   ...REPORTING_METHOD_FACET,
 };
 
+/**
+ * @function
+ * @name getOverviewReport
+ * @description Generate overview report based on provided criteria
+ *
+ * @param {object} criteria Criteria condition to be applied in $match
+ * @param {object} onResults Callback when aggregation operation finishes
+ * @returns {object} executed aggregation
+ *
+ * @version 0.1.0
+ * @since 0.1.0
+ *
+ * @example
+ *  getOverviewReport(criteria, function(error, data){
+ *    ...
+ *  });
+ */
 const getOverviewReport = (criteria, onResults) => {
-  const baseAggregation = getBaseAggregation();
+  const baseAggregation = getBaseAggregation(criteria);
 
-  return baseAggregation
-    .match(criteria)
-    .addFields({
-      pending: {
-        $cond: { if: { $eq: ['$resolvedAt', null] }, then: 1, else: 0 },
-      },
-      unattended: {
-        $cond: { if: { $eq: ['$operator', null] }, then: 1, else: 0 },
-      },
-      resolved: {
-        $cond: { if: { $eq: ['$resolvedAt', null] }, then: 0, else: 1 },
-      },
-    })
-    .facet(FACET)
-    .exec(onResults);
+  return baseAggregation.facet(FACET).exec(onResults);
 };
 
 /**
- * @apiDefine Priority Priority
- *
- * @apiDescription A representation an entity which provides a way
+ * @description A representation an entity which provides a way
  * to prioritize service and service request(issues)
  * in order of their importance.
  *
@@ -354,9 +384,11 @@ const router = new Router({
 });
 
 router.get(PATH_OVERVIEW, function getOverview(request, response, next) {
-  const options = _.merge({}, request.mquery.options);
+  const options = _.merge({}, request.mquery);
 
-  getOverviewReport(options, (error, results) => {
+  const filter = options.filter || {};
+
+  getOverviewReport(filter, (error, results) => {
     if (error) {
       next(error);
     } else {
@@ -368,7 +400,6 @@ router.get(PATH_OVERVIEW, function getOverview(request, response, next) {
 
 /**
  * @name majifix-analytics
- * @version 0.1.0
  * @description A module for analytics and visualizations of majifix data
  *
  * @author Benson Maruchu <benmaruchu@gmail.com>
