@@ -301,7 +301,7 @@ const FACET = {
  * @description Generate overview report based on provided criteria
  *
  * @param {object} criteria Criteria condition to be applied in $match
- * @param {object} onResults Callback when aggeration operation finishes
+ * @param {object} onResults Callback when aggregation operation finishes
  * @returns {object} executed aggregation
  *
  * @version 0.1.0
@@ -315,20 +315,7 @@ const FACET = {
 const getOverviewReport = (criteria, onResults) => {
   const baseAggregation = getBaseAggregation(criteria);
 
-  return baseAggregation
-    .addFields({
-      pending: {
-        $cond: { if: { $not: '$resolvedAt' }, then: 1, else: 0 },
-      },
-      unattended: {
-        $cond: { if: { $not: '$operator' }, then: 1, else: 0 },
-      },
-      resolved: {
-        $cond: { if: { $not: '$resolvedAt' }, then: 0, else: 1 },
-      },
-    })
-    .facet(FACET)
-    .exec(onResults);
+  return baseAggregation.facet(FACET).exec(onResults);
 };
 
 export default getOverviewReport;

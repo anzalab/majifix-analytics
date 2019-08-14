@@ -27,7 +27,17 @@ import { model } from '@lykmapipo/mongoose-common';
 const getBaseAggregation = criteria => {
   const ServiceRequest = model('ServiceRequest');
 
-  return ServiceRequest.lookup(criteria);
+  return ServiceRequest.lookup(criteria).addFields({
+    pending: {
+      $cond: { if: { $not: '$resolvedAt' }, then: 1, else: 0 },
+    },
+    unattended: {
+      $cond: { if: { $not: '$operator' }, then: 1, else: 0 },
+    },
+    resolved: {
+      $cond: { if: { $not: '$resolvedAt' }, then: 0, else: 1 },
+    },
+  });
 };
 
 export default getBaseAggregation;
