@@ -161,7 +161,7 @@ const SERVICE_FACET = {
         resolved: { $sum: '$resolved' },
         late: { $sum: '$late' },
         unattended: { $sum: '$unattended' },
-        name: { $first: '$service.name.en' },
+        name: { $first: '$service.name' },
         color: { $first: '$service.color' },
         count: { $sum: 1 },
         averageResolveTime: { $avg: '$ttr.milliseconds' },
