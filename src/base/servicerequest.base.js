@@ -16,10 +16,10 @@ import { model } from '@lykmapipo/mongoose-common';
  * @function
  * @name getBaseAggregation
  * @description Create base aggregation for Service Requests with all fields
- * looked up and unwinded for aggregation operations
+ * looked up and un-winded for aggregation operations
  *
  * @param {object} criteria Criteria conditions which will be applied in $match
- * @returns {object} aggregagtion instance
+ * @returns {object} aggregation instance
  *
  * @version 0.1.0
  * @since 0.1.0
