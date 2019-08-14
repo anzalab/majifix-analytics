@@ -22,7 +22,7 @@ import getOperatorPerformanceReport from './reports/operator';
 /* local constants */
 const API_VERSION = getString('API_VERSION', '1.0.0');
 const PATH_OVERVIEW = '/reports/overview';
-const PATH_PERFORMANCE = '/reports/performance';
+const PATH_PERFORMANCE = '/reports/performance/:id';
 const PATH_OPERATOR_PERFORMANCE = '/reports/operator/:id';
 
 const router = new Router({
@@ -47,7 +47,11 @@ router.get(PATH_OVERVIEW, (request, response, next) => {
 router.get(PATH_PERFORMANCE, (request, response, next) => {
   const options = _.merge({}, request.mquery);
 
-  const filter = options.filter || {};
+  let filter = options.filter || {};
+
+  if (request.params.id) {
+    filter = _.merge({}, filter, { jurisdiction: request.params.id });
+  }
 
   getPerformanceReport(filter, (error, results) => {
     if (error) {
