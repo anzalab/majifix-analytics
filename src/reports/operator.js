@@ -15,18 +15,12 @@
 
 /* dependencies */
 import getBaseAggregation from '../base/servicerequest.base';
-import {
-  OVERALL_FACET,
-  STATUS_FACET,
-  SERVICE_FACET,
-  LEADERSBOARD_FACET,
-} from '../base/facets';
+import { OVERALL_FACET, STATUS_FACET, SERVICE_FACET } from '../base/facets';
 
 const OPERATOR_PERFORMANCE_FACET = {
   ...OVERALL_FACET,
   ...STATUS_FACET,
   ...SERVICE_FACET,
-  ...LEADERSBOARD_FACET,
 };
 
 /**
