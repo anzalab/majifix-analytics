@@ -255,3 +255,19 @@ export const REPORTING_METHOD_FACET = {
     },
   ],
 };
+
+export const LEADERSBOARD_FACET = {
+  leadersboard: [
+    {
+      $group: {
+        _id: '$operator._id',
+        pending: { $sum: '$pending' },
+        resolved: { $sum: '$resolved' },
+        count: { $sum: 1 },
+        name: { $first: '$operator.name' },
+        email: { $first: '$operator.email' },
+        phone: { $first: '$operator.phone' },
+      },
+    },
+  ],
+};
