@@ -1,6 +1,6 @@
 {
   "name": "@codetanzania/majifix-analytics",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Majifix module for analytics and reports",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -20,15 +20,10 @@
     "chore:deps": "ncu -u && npm install --save",
     "lint:config": "eslint --print-config rollup.config.js"
   },
-  "keywords": [
-    "anzalab",
-    "majifix",
-    "analytics",
-    "isomophic"
-  ],
+  "keywords": ["anzalab", "majifix", "analytics", "isomophic"],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lykmapipo/iso-lib-starter.git"
+    "url": "git+https://github.com/anzalab/majifix-analytics.git"
   },
   "contributors": [
     {
@@ -44,9 +39,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/lykmapipo/iso-lib-starter/issues"
+    "url": "https://github.com/anzalab/majifix-analytics/issues"
   },
-  "homepage": "https://github.com/lykmapipo/iso-lib-starter#readme",
+  "homepage": "https://github.com/anzalab/majifix-analytics#readme",
   "devDependencies": {
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
@@ -100,15 +95,10 @@
     }
   },
   "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
+    "extends": ["@commitlint/config-conventional"]
   },
   "lint-staged": {
-    "src/**/*.js": [
-      "npm run lint",
-      "git add -A"
-    ]
+    "src/**/*.js": ["npm run lint", "git add -A"]
   },
   "husky": {
     "hooks": {
