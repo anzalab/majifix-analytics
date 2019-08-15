@@ -1,3 +1,4 @@
+/* eslint-disable jsdoc/check-tag-names */
 /**
  * @apiDefine Analytics Analytics
  *
@@ -399,6 +400,7 @@ import { getString } from '@lykmapipo/env';
 import getOverviewReport from './reports/overview';
 import getPerformanceReport from './reports/performance';
 import getOperatorPerformanceReport from './reports/operator';
+import { normalizeResultsForReports } from './util';
 
 /* local constants */
 const API_VERSION = getString('API_VERSION', '1.0.0');
@@ -432,11 +434,13 @@ router.get(PATH_OVERVIEW, (request, response, next) => {
   const filter = options.filter || {};
 
   getOverviewReport(filter, (error, results) => {
+    const data = normalizeResultsForReports(results);
+
     if (error) {
       next(error);
     } else {
       response.status(200);
-      response.json(results);
+      response.json(data);
     }
   });
 });
@@ -467,11 +471,13 @@ router.get(PATH_PERFORMANCE, (request, response, next) => {
   }
 
   getPerformanceReport(filter, (error, results) => {
+    const data = normalizeResultsForReports(results);
+
     if (error) {
       next(error);
     } else {
       response.status(200);
-      response.json(results);
+      response.json(data);
     }
   });
 });
@@ -504,13 +510,16 @@ router.get(PATH_OPERATOR_PERFORMANCE, (request, response, next) => {
   }
 
   getOperatorPerformanceReport(filter, (error, results) => {
+    const data = normalizeResultsForReports(results);
+
     if (error) {
       next(error);
     } else {
       response.status(200);
-      response.json(results);
+      response.json(data);
     }
   });
 });
 
+/* eslint-enable jsdoc/check-tag-names */
 export default router;
