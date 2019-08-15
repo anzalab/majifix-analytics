@@ -269,5 +269,10 @@ export const LEADERSBOARD_FACET = {
         phone: { $first: '$operator.phone' },
       },
     },
+    {
+      $sort: {
+        count: -1,
+      },
+    },
   ],
 };
