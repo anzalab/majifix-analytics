@@ -2,9 +2,24 @@
 
 Majifix module for analytics and reports
 
+## Reports
+
+- Overview Report
+- Performance Report
+- Operator Report
+- Operations Report
+
+## Report Structure(WIP)
+
+- Overview Report
+- Performance Report
+- Operator Report
+- Operation Report
+
 ## Usage
+
 ```sh
-npm install --save @anzalab/majifix-analytics
+npm install --save @codetanzania/majifix-analytics
 ```
 
 ## Testing
