@@ -3,6 +3,8 @@ import _ from 'lodash';
 import { Router } from '@lykmapipo/express-common';
 import { getString } from '@lykmapipo/env';
 import { model } from '@lykmapipo/mongoose-common';
+import head from 'lodash/head';
+import merge from 'lodash/merge';
 
 /**
  * Base aggregation for service requests
@@ -476,17 +478,29 @@ const getOperatorPerformanceReport = (criteria, onResults) => {
 };
 
 /**
- * @description A representation an entity which provides a way
- * to prioritize service and service request(issues)
- * in order of their importance.
+ * @function
+ * @name normalizeResultsForReports
+ * @description Shape results data to a response format for reports
  *
- * @author Benson Maruchu <benmaruchu@gmail.com>
- * @author lally elias <lallyelias87@gmail.com>
- * @license MIT
- * @since  0.1.0
+ * @param {object[]} results Aggregation results
+ * @returns {object} Response format to be returned
+ *
  * @version 0.1.0
- * @public
+ * @since 0.1.0
  */
+const normalizeResultsForReports = results => {
+  const defaultResults = {
+    data: {},
+  };
+
+  const data = head(results);
+
+  data.overall = head(data.overall);
+
+  return merge({}, defaultResults, { data });
+};
+
+/* eslint-disable jsdoc/check-tag-names */
 
 /* local constants */
 const API_VERSION = getString('API_VERSION', '1.0.0');
@@ -498,21 +512,55 @@ const router = new Router({
   version: API_VERSION,
 });
 
+/**
+ * @api {get} /reports/overview Overview Report
+ * @apiGroup Analytics
+ * @apiName GetOverviewReport
+ * @apiVersion 1.0.0
+ * @apiDescription Return overview report
+ * @apiUse RequestHeaders
+ * @apiUse Overview
+ *
+ * @apiUse RequestHeaderExample
+ * @apiUse OverviewSuccessResponse
+ * @apiUse JWTError
+ * @apiUse JWTErrorExample
+ * @apiUse AuthorizationHeaderError
+ * @apiUse AuthorizationHeaderErrorExample
+ */
 router.get(PATH_OVERVIEW, (request, response, next) => {
   const options = _.merge({}, request.mquery);
 
   const filter = options.filter || {};
 
   getOverviewReport(filter, (error, results) => {
+    const data = normalizeResultsForReports(results);
+
     if (error) {
       next(error);
     } else {
       response.status(200);
-      response.json(results);
+      response.json(data);
     }
   });
 });
 
+/**
+ * @api {get} /reports/performance/:id Area/Jurisdiction performance report
+ * @apiGroup Analytics
+ * @apiName GetPerformanceReport
+ * @apiVersion 1.0.0
+ * @apiDescription Return area/jurisdiction performance report
+ * @apiUse RequestHeaders
+ * @apiUse Performance
+ *
+ * @apiUse RequestHeaderExample
+ * @apiUse OverviewSuccessResponse
+ * @apiUse JWTError
+ * @apiUse JWTErrorExample
+ * @apiUse AuthorizationHeaderError
+ * @apiUse AuthorizationHeaderErrorExample
+ */
 router.get(PATH_PERFORMANCE, (request, response, next) => {
   const options = _.merge({}, request.mquery);
 
@@ -523,15 +571,35 @@ router.get(PATH_PERFORMANCE, (request, response, next) => {
   }
 
   getPerformanceReport(filter, (error, results) => {
+    const data = normalizeResultsForReports(results);
+
     if (error) {
       next(error);
     } else {
       response.status(200);
-      response.json(results);
+      response.json(data);
     }
   });
 });
 
+// TODO update api doc here
+
+/**
+ * @api {get} /reports/overview Overview Report
+ * @apiGroup Analytics
+ * @apiName GetOverviewReport
+ * @apiVersion 1.0.0
+ * @apiDescription Return overview report
+ * @apiUse RequestHeaders
+ * @apiUse Operator
+ *
+ * @apiUse RequestHeaderExample
+ * @apiUse OverviewSuccessResponse
+ * @apiUse JWTError
+ * @apiUse JWTErrorExample
+ * @apiUse AuthorizationHeaderError
+ * @apiUse AuthorizationHeaderErrorExample
+ */
 router.get(PATH_OPERATOR_PERFORMANCE, (request, response, next) => {
   const options = _.merge({}, request.mquery);
 
@@ -542,11 +610,13 @@ router.get(PATH_OPERATOR_PERFORMANCE, (request, response, next) => {
   }
 
   getOperatorPerformanceReport(filter, (error, results) => {
+    const data = normalizeResultsForReports(results);
+
     if (error) {
       next(error);
     } else {
       response.status(200);
-      response.json(results);
+      response.json(data);
     }
   });
 });
