@@ -1,22 +1,26 @@
-# iso-lib-starter
+# majifix-analytics (WIP)
 
-[![Build Status](https://travis-ci.org/lykmapipo/iso-lib-starter.svg?branch=master)](https://travis-ci.org/lykmapipo/iso-lib-starter)
-[![Dependencies Status](https://david-dm.org/lykmapipo/iso-lib-starter.svg?style=flat-square)](https://david-dm.org/lykmapipo/iso-lib-starter)
-[![Coverage Status](https://coveralls.io/repos/github/lykmapipo/iso-lib-starter/badge.svg?branch=master)](https://coveralls.io/github/lykmapipo/iso-lib-starter?branch=master)
+Majifix module for analytics and reports
 
-Starter for creating reusable, modern, isomorphic javascript libraries using rollup.
+## Reports
+
+- Overview Report
+- Performance Report
+- Operator Report
+- Operations Report
+
+## Report Structure(WIP)
+
+- Overview Report
+- Performance Report
+- Operator Report
+- Operation Report
 
 ## Usage
-- To get started, simply clone this repo:
+
 ```sh
-$ git clone https://github.com/lykmapipo/iso-lib-starter.git
+npm install --save @codetanzania/majifix-analytics
 ```
-- Remove `.git` directory
-```sh
-$ rm -rf .git
-```
-- Rename the new repo to the name of your library, and go through the `package.json` to fill out your own details as well.
-- Add usage and installation documentation
 
 ## Testing
 
@@ -42,7 +46,7 @@ It will be nice, if you open an issue first so that we can know what is going on
 
 MIT License
 
-Copyright (c) lykmapipo & Contributors
+Copyright (c) anzalab & Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

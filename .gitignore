@@ -18,3 +18,8 @@ node_modules
 libcov
 coverage
 .nyc_output
+
+
+# Editor configs
+.vscode
+.nvimrc
