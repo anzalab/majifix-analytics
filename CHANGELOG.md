@@ -1,3 +1,14 @@
+#### 0.1.1 (2019-08-15)
+
+##### Chores
+
+* **package:**  update package version to v0.1.1 ([45249ae6](https://github.com/anzalab/majifix-analytics/commit/45249ae656ed4c70d53fa7181124664e742e71f8))
+* **package.json:**  point urls to the right repository ([d7f76b90](https://github.com/anzalab/majifix-analytics/commit/d7f76b9064b2de4da75cc883c22a1d22ac90cfdf))
+
+##### Documentation Changes
+
+* **changelog:**  remove previous changelogs for iso-lib ([a88beaac](https://github.com/anzalab/majifix-analytics/commit/a88beaacd675708cf60507ba51c111474018e20c))
+
 #### 0.1.0 (2019-08-15)
 
 ##### Chores
