@@ -301,6 +301,22 @@ const REPORTING_METHOD_FACET = {
   ],
 };
 
+const LEADERSBOARD_FACET = {
+  leadersboard: [
+    {
+      $group: {
+        _id: '$operator._id',
+        pending: { $sum: '$pending' },
+        resolved: { $sum: '$resolved' },
+        count: { $sum: 1 },
+        name: { $first: '$operator.name' },
+        email: { $first: '$operator.email' },
+        phone: { $first: '$operator.phone' },
+      },
+    },
+  ],
+};
+
 /**
  * This is overview report based on service request
  * It consist of
@@ -428,6 +444,7 @@ const OPERATOR_PERFORMANCE_FACET = {
   ...OVERALL_FACET,
   ...STATUS_FACET,
   ...SERVICE_FACET,
+  ...LEADERSBOARD_FACET,
 };
 
 /**
@@ -469,7 +486,7 @@ const getOperatorPerformanceReport = (criteria, onResults) => {
 /* local constants */
 const API_VERSION = getString('API_VERSION', '1.0.0');
 const PATH_OVERVIEW = '/reports/overview';
-const PATH_PERFORMANCE = '/reports/performance';
+const PATH_PERFORMANCE = '/reports/performance/:id';
 const PATH_OPERATOR_PERFORMANCE = '/reports/operator/:id';
 
 const router = new Router({
@@ -494,7 +511,11 @@ router.get(PATH_OVERVIEW, (request, response, next) => {
 router.get(PATH_PERFORMANCE, (request, response, next) => {
   const options = _.merge({}, request.mquery);
 
-  const filter = options.filter || {};
+  let filter = options.filter || {};
+
+  if (request.params.id) {
+    filter = _.merge({}, filter, { jurisdiction: request.params.id });
+  }
 
   getPerformanceReport(filter, (error, results) => {
     if (error) {
