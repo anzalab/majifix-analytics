@@ -1,5 +1,5 @@
 {
-  "name": "@anzalab/majifix-analytics",
+  "name": "@codetanzania/majifix-analytics",
   "version": "0.1.0",
   "description": "Majifix module for analytics and reports",
   "main": "lib/index.js",
