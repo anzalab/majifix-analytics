@@ -1,3 +1,14 @@
+#### 0.2.0 (2019-08-16)
+
+##### Chores
+
+* **build:**  bundle library for v0.2.0 release ([07297982](https://github.com/anzalab/majifix-analytics/commit/07297982f958d880cd38675f33212d64b26e2739))
+* **package:**  update package version to v0.2.0 ([731c698e](https://github.com/anzalab/majifix-analytics/commit/731c698e836b09156814c6bc1ea82cd9b0f8aa35))
+
+##### New Features
+
+*  add resolved and pending in workspace and method report ([733bb373](https://github.com/anzalab/majifix-analytics/commit/733bb373bddccce558844ad7b0f811d5a6e4ffce))
+
 #### 0.1.1 (2019-08-15)
 
 ##### Chores

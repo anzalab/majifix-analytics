@@ -234,25 +234,46 @@ export const SERVICE_TYPE_FACET = {
 
 export const WORKSPACE_FACET = {
   workspaces: [
-    { $sortByCount: '$method.workspace' },
     {
-      $project: {
-        name: '$_id',
-        count: 1,
+      $group: {
+        _id: '$method.workspace',
+        count: { $sum: 1 },
+        pending: { $sum: '$pending' },
+        resolved: { $sum: '$resolved' },
       },
     },
+    {
+      $project: {
+        _id: 0,
+        name: '$_id',
+        count: 1,
+        pending: 1,
+        resolved: 1,
+      },
+    },
+    { $sort: { count: -1 } },
   ],
 };
 
 export const REPORTING_METHOD_FACET = {
   methods: [
-    { $sortByCount: '$method.name' },
+    {
+      $group: {
+        _id: '$method.name',
+        count: { $sum: 1 },
+        pending: { $sum: '$pending' },
+        resolved: { $sum: '$resolved' },
+      },
+    },
     {
       $project: {
         name: '$_id',
         count: 1,
+        pending: 1,
+        resolved: 1,
       },
     },
+    { $sort: { count: -1 } },
   ],
 };
 
@@ -261,6 +282,27 @@ export const LEADERSBOARD_FACET = {
     {
       $group: {
         _id: '$operator._id',
+        pending: { $sum: '$pending' },
+        resolved: { $sum: '$resolved' },
+        count: { $sum: 1 },
+        name: { $first: '$operator.name' },
+        email: { $first: '$operator.email' },
+        phone: { $first: '$operator.phone' },
+      },
+    },
+    {
+      $sort: {
+        count: -1,
+      },
+    },
+  ],
+};
+
+export const ASSIGNEE_LEADERSBOARD_FACET = {
+  assignees: [
+    {
+      $group: {
+        _id: '$$assignee._id',
         pending: { $sum: '$pending' },
         resolved: { $sum: '$resolved' },
         count: { $sum: 1 },
