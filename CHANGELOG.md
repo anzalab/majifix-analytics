@@ -1,3 +1,19 @@
+#### 0.3.1 (2019-08-19)
+
+##### Chores
+
+* **build:**  bundle library for v0.3.1 release ([fa8d72a5](https://github.com/anzalab/majifix-analytics/commit/fa8d72a508f7d2b61bf188774adeb7d840747915))
+* **package:**  update package version to v0.3.1 ([9eb874a5](https://github.com/anzalab/majifix-analytics/commit/9eb874a5ac67f966db7b4b80b3035fc07c8192fb))
+
+##### Bug Fixes
+
+*  a bug on checking normalizeTime method input ([045e9a85](https://github.com/anzalab/majifix-analytics/commit/045e9a85fb1e3d45d9548f77194d326479385770))
+*  prevent app crash when averageTime is not a number ([263d13ea](https://github.com/anzalab/majifix-analytics/commit/263d13eaf7b5eee5a20b2a066ab349cfb42c8bef))
+
+##### Code Style Changes
+
+*  use object destructuring for lodash dependency import ([68c15ee2](https://github.com/anzalab/majifix-analytics/commit/68c15ee2a069f021618851a1b415a5037118d9f9))
+
 #### 0.3.0 (2019-08-19)
 
 ##### Chores
