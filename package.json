@@ -1,6 +1,6 @@
 {
   "name": "@codetanzania/majifix-analytics",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Majifix module for analytics and reports",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -83,7 +83,8 @@
     "@lykmapipo/env": "^0.12.1",
     "@lykmapipo/express-common": "^0.17.9",
     "@lykmapipo/mongoose-common": "^0.25.9",
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.15",
+    "parse-ms": "^2.1.0"
   },
   "engines": {
     "node": ">=12.4.0",

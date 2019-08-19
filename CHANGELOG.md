@@ -1,3 +1,19 @@
+#### 0.3.0 (2019-08-19)
+
+##### Chores
+
+* **build:**  bundle library for v0.3.0 release ([a0498a58](https://github.com/anzalab/majifix-analytics/commit/a0498a580f989ea8e988ca0815e4b96602d86074))
+* **package:**  update package version to v0.3.0 ([0f095bf0](https://github.com/anzalab/majifix-analytics/commit/0f095bf009f1f564c9a60fdd637a64c60225b509))
+
+##### New Features
+
+*  add late count in overall facet ([cf90e745](https://github.com/anzalab/majifix-analytics/commit/cf90e745d241c9816ec07d4487bee1f735c30c2a))
+*  parse average times to human readable format ([e200149b](https://github.com/anzalab/majifix-analytics/commit/e200149bab999267f6a40807ec8962fff69a10a8))
+
+##### Refactors
+
+*  remove unnessesary util functions ([b066a3c2](https://github.com/anzalab/majifix-analytics/commit/b066a3c2545f6a6656795720ac8e250904d56d9f))
+
 #### 0.2.0 (2019-08-16)
 
 ##### Chores

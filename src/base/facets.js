@@ -8,6 +8,7 @@ export const OVERALL_FACET = {
         unattended: {
           $sum: '$unattended',
         },
+        late: { $sum: '$late' },
         count: { $sum: 1 },
         averageResolveTime: { $avg: '$ttr.milliseconds' },
         averageAttendTime: { $avg: '$call.duration.milliseconds' },
@@ -213,6 +214,8 @@ export const SERVICE_TYPE_FACET = {
         pending: { $sum: '$pending' },
         resolved: { $sum: '$resolved' },
         unattended: { $sum: '$unattended' },
+        averageResolveTime: { $avg: '$ttr.milliseconds' },
+        averageAttendTime: { $avg: '$call.duration.milliseconds' },
       },
     },
     {
@@ -227,6 +230,8 @@ export const SERVICE_TYPE_FACET = {
         pending: 1,
         resolved: 1,
         unattended: 1,
+        averageAttendTime: 1,
+        averageResolveTime: 1,
       },
     },
   ],
@@ -263,6 +268,8 @@ export const REPORTING_METHOD_FACET = {
         count: { $sum: 1 },
         pending: { $sum: '$pending' },
         resolved: { $sum: '$resolved' },
+        averageResolveTime: { $avg: '$ttr.milliseconds' },
+        averageAttendTime: { $avg: '$call.duration.milliseconds' },
       },
     },
     {
@@ -271,6 +278,8 @@ export const REPORTING_METHOD_FACET = {
         count: 1,
         pending: 1,
         resolved: 1,
+        averageResolveTime: 1,
+        averageAttendTime: 1,
       },
     },
     { $sort: { count: -1 } },
