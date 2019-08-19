@@ -1,3 +1,14 @@
+#### 0.4.0 (2019-08-19)
+
+##### Chores
+
+* **build:**  bundle library for v0.4.0 release ([611be599](https://github.com/anzalab/majifix-analytics/commit/611be599e47b1745ddf4d0f79ee673ca8c130aaa))
+* **package:**  update package version to v0.4.0 ([17ef74b1](https://github.com/anzalab/majifix-analytics/commit/17ef74b14d84778403d6254e6827458b14cbdcc2))
+
+##### New Features
+
+*  add late count in service type facet ([a6af40fb](https://github.com/anzalab/majifix-analytics/commit/a6af40fb62ef0c0c48434cf414139fca02133ab7))
+
 #### 0.3.1 (2019-08-19)
 
 ##### Chores
