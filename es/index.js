@@ -1,10 +1,8 @@
 import { pkg } from '@lykmapipo/common';
-import merge from 'lodash/merge';
+import { head, map, isNumber, merge } from 'lodash';
 import { Router } from '@lykmapipo/express-common';
 import { getString } from '@lykmapipo/env';
 import { model } from '@lykmapipo/mongoose-common';
-import head from 'lodash/head';
-import map from 'lodash/map';
 import parseMs from 'parse-ms';
 
 /**
@@ -521,6 +519,10 @@ const getOperatorPerformanceReport = (criteria, onResults) => {
  * @since 0.2.0
  */
 const normalizeTime = time => {
+  if (!isNumber(time)) {
+    return parseMs(0);
+  }
+
   const averageTime = time >= 0 ? time : -time;
 
   return parseMs(averageTime);

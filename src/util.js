@@ -1,5 +1,4 @@
-import head from 'lodash/head';
-import map from 'lodash/map';
+import { head, map, isNumber } from 'lodash';
 import parseMs from 'parse-ms';
 
 /**
@@ -15,6 +14,10 @@ import parseMs from 'parse-ms';
  * @since 0.2.0
  */
 export const normalizeTime = time => {
+  if (!isNumber(time)) {
+    return parseMs(0);
+  }
+
   const averageTime = time >= 0 ? time : -time;
 
   return parseMs(averageTime);
