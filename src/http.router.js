@@ -463,11 +463,7 @@ router.get(PATH_OVERVIEW, (request, response, next) => {
 router.get(PATH_PERFORMANCE, (request, response, next) => {
   const options = merge({}, request.mquery);
 
-  let filter = options.filter || {};
-
-  if (request.params.id) {
-    filter = merge({}, filter, { jurisdiction: request.params.id });
-  }
+  const filter = options.filter || {};
 
   getPerformanceReport(filter, (error, results) => {
     if (error) {
@@ -501,11 +497,7 @@ router.get(PATH_PERFORMANCE, (request, response, next) => {
 router.get(PATH_OPERATOR_PERFORMANCE, (request, response, next) => {
   const options = merge({}, request.mquery);
 
-  let filter = options.filter || {};
-
-  if (request.params.id) {
-    filter = merge({}, filter, { operator: request.params.id });
-  }
+  const filter = options.filter || {};
 
   getOperatorPerformanceReport(filter, (error, results) => {
     if (error) {
