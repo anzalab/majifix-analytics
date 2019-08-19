@@ -1,3 +1,14 @@
+#### 0.4.2 (2019-08-19)
+
+##### Chores
+
+* **build:**  bundle library for v0.4.2 release ([04925990](https://github.com/anzalab/majifix-analytics/commit/0492599076a7c2d8e57924db0bd2679a4c7a420b))
+* **package:**  update package version to v0.4.2 ([3a209407](https://github.com/anzalab/majifix-analytics/commit/3a209407eda319c03d955aff71d8bda013a6f480))
+
+##### Refactors
+
+*  change status to statuses for status facet ([5e6cdb53](https://github.com/anzalab/majifix-analytics/commit/5e6cdb535ff896fd9924e018b5e4e1f8a969a2cf))
+
 #### 0.4.1 (2019-08-19)
 
 ##### Chores
