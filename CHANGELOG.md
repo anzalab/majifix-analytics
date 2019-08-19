@@ -1,3 +1,15 @@
+#### 0.4.1 (2019-08-19)
+
+##### Chores
+
+* **build:**  bundle library for v0.4.1 release ([b50c2265](https://github.com/anzalab/majifix-analytics/commit/b50c2265a6fb75cd3b15775339c88df58dbffee5))
+* **package:**  update package version to v0.4.1 ([bc63e083](https://github.com/anzalab/majifix-analytics/commit/bc63e083225716e80d0c60fae53b315f4206c869))
+
+##### Refactors
+
+*  use mquery params only for filtering ([c3996e5c](https://github.com/anzalab/majifix-analytics/commit/c3996e5c349a151d8760192dbcec98003ab1bf8f))
+*  change endpoints to use plural names ([66ec6b0b](https://github.com/anzalab/majifix-analytics/commit/66ec6b0b35ad015cd4dd609f15eed6fab5034260))
+
 #### 0.4.0 (2019-08-19)
 
 ##### Chores
