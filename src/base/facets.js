@@ -65,7 +65,7 @@ export const JURISDICTION_FACET = {
 };
 
 export const STATUS_FACET = {
-  status: [
+  statuses: [
     {
       $group: {
         _id: '$status._id',
