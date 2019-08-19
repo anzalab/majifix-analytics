@@ -404,18 +404,18 @@ import { prepareReportResponse } from './util';
 
 /* local constants */
 const API_VERSION = getString('API_VERSION', '1.0.0');
-const PATH_OVERVIEW = '/reports/overview';
-const PATH_PERFORMANCE = '/reports/performance/:id';
-const PATH_OPERATOR_PERFORMANCE = '/reports/operator/:id';
+const PATH_OVERVIEW = '/reports/overviews';
+const PATH_PERFORMANCE = '/reports/performances';
+const PATH_OPERATOR_PERFORMANCE = '/reports/operators';
 
 const router = new Router({
   version: API_VERSION,
 });
 
 /**
- * @api {get} /reports/overview Overview Report
+ * @api {get} /reports/overviews Overview Report
  * @apiGroup Analytics
- * @apiName GetOverviewReport
+ * @apiName GetOverviews
  * @apiVersion 1.0.0
  * @apiDescription Return overview report
  * @apiUse RequestHeaders
@@ -445,9 +445,9 @@ router.get(PATH_OVERVIEW, (request, response, next) => {
 });
 
 /**
- * @api {get} /reports/performance/:id Area/Jurisdiction performance report
+ * @api {get} /reports/performances Area/Jurisdiction performance report
  * @apiGroup Analytics
- * @apiName GetPerformanceReport
+ * @apiName GetPerformances
  * @apiVersion 1.0.0
  * @apiDescription Return area/jurisdiction performance report
  * @apiUse RequestHeaders
@@ -463,11 +463,7 @@ router.get(PATH_OVERVIEW, (request, response, next) => {
 router.get(PATH_PERFORMANCE, (request, response, next) => {
   const options = merge({}, request.mquery);
 
-  let filter = options.filter || {};
-
-  if (request.params.id) {
-    filter = merge({}, filter, { jurisdiction: request.params.id });
-  }
+  const filter = options.filter || {};
 
   getPerformanceReport(filter, (error, results) => {
     if (error) {
@@ -483,9 +479,9 @@ router.get(PATH_PERFORMANCE, (request, response, next) => {
 // TODO update api doc here
 
 /**
- * @api {get} /reports/overview Overview Report
+ * @api {get} /reports/operators Overview Report
  * @apiGroup Analytics
- * @apiName GetOverviewReport
+ * @apiName GetOperators
  * @apiVersion 1.0.0
  * @apiDescription Return overview report
  * @apiUse RequestHeaders
@@ -501,11 +497,7 @@ router.get(PATH_PERFORMANCE, (request, response, next) => {
 router.get(PATH_OPERATOR_PERFORMANCE, (request, response, next) => {
   const options = merge({}, request.mquery);
 
-  let filter = options.filter || {};
-
-  if (request.params.id) {
-    filter = merge({}, filter, { operator: request.params.id });
-  }
+  const filter = options.filter || {};
 
   getOperatorPerformanceReport(filter, (error, results) => {
     if (error) {
