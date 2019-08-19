@@ -8,6 +8,7 @@ export const OVERALL_FACET = {
         unattended: {
           $sum: '$unattended',
         },
+        late: { $sum: '$late' },
         count: { $sum: 1 },
         averageResolveTime: { $avg: '$ttr.milliseconds' },
         averageAttendTime: { $avg: '$call.duration.milliseconds' },
