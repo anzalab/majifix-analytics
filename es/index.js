@@ -1,10 +1,11 @@
 import { pkg } from '@lykmapipo/common';
-import _ from 'lodash';
+import merge from 'lodash/merge';
 import { Router } from '@lykmapipo/express-common';
 import { getString } from '@lykmapipo/env';
 import { model } from '@lykmapipo/mongoose-common';
 import head from 'lodash/head';
-import merge from 'lodash/merge';
+import map from 'lodash/map';
+import parseMs from 'parse-ms';
 
 /**
  * Base aggregation for service requests
@@ -55,6 +56,7 @@ const OVERALL_FACET = {
         unattended: {
           $sum: '$unattended',
         },
+        late: { $sum: '$late' },
         count: { $sum: 1 },
         averageResolveTime: { $avg: '$ttr.milliseconds' },
         averageAttendTime: { $avg: '$call.duration.milliseconds' },
@@ -260,6 +262,8 @@ const SERVICE_TYPE_FACET = {
         pending: { $sum: '$pending' },
         resolved: { $sum: '$resolved' },
         unattended: { $sum: '$unattended' },
+        averageResolveTime: { $avg: '$ttr.milliseconds' },
+        averageAttendTime: { $avg: '$call.duration.milliseconds' },
       },
     },
     {
@@ -274,6 +278,8 @@ const SERVICE_TYPE_FACET = {
         pending: 1,
         resolved: 1,
         unattended: 1,
+        averageAttendTime: 1,
+        averageResolveTime: 1,
       },
     },
   ],
@@ -310,6 +316,8 @@ const REPORTING_METHOD_FACET = {
         count: { $sum: 1 },
         pending: { $sum: '$pending' },
         resolved: { $sum: '$resolved' },
+        averageResolveTime: { $avg: '$ttr.milliseconds' },
+        averageAttendTime: { $avg: '$call.duration.milliseconds' },
       },
     },
     {
@@ -318,6 +326,8 @@ const REPORTING_METHOD_FACET = {
         count: 1,
         pending: 1,
         resolved: 1,
+        averageResolveTime: 1,
+        averageAttendTime: 1,
       },
     },
     { $sort: { count: -1 } },
@@ -500,16 +510,55 @@ const getOperatorPerformanceReport = (criteria, onResults) => {
 
 /**
  * @function
- * @name normalizeResultsForReports
- * @description Shape results data to a response format for reports
+ * @name normalizeTime
+ * @description Normalize average times which are in milliseconds to a human
+ * readable object
  *
- * @param {object[]} results Aggregation results
- * @returns {object} Response format to be returned
+ * @param {number} time Time in milliseconds
+ * @returns {object} time object that have days,hours,minutes, seconds and e.t.c
  *
  * @version 0.1.0
- * @since 0.1.0
+ * @since 0.2.0
  */
-const normalizeResultsForReports = results => {
+const normalizeTime = time => {
+  const averageTime = time >= 0 ? time : -time;
+
+  return parseMs(averageTime);
+};
+
+/**
+ * @function
+ * @name normalizeObjectTimes
+ * @description Normalize times in a provided object (item)
+ *
+ * @param {object} item Object with times to be normalized
+ * @returns {object} Object with averageResolve time and averageAttend Time parse
+ *
+ * @version 0.1.0
+ * @since 0.2.0
+ */
+const normalizeObjectTimes = item => {
+  const normalizeObject = {};
+
+  normalizeObject.averageResolveTime = normalizeTime(item.averageResolveTime);
+
+  normalizeObject.averageAttendTime = normalizeTime(item.averageAttendTime);
+
+  return { ...item, ...normalizeObject };
+};
+
+/**
+ * @function
+ * @name prepareReportResponse
+ * @description Prepare response for Reports by normalizing response shape and average times
+ *
+ * @param {object} results Aggregation results
+ * @returns {object} Normalized response object
+ *
+ * @version 0.1.0
+ * @since 0.2.0
+ */
+const prepareReportResponse = results => {
   const defaultResults = {
     data: {},
   };
@@ -518,7 +567,35 @@ const normalizeResultsForReports = results => {
 
   data.overall = head(data.overall);
 
-  return merge({}, defaultResults, { data });
+  if (data.overall) {
+    data.overall = normalizeObjectTimes(data.overall);
+  }
+
+  if (data.jurisdictions) {
+    data.jurisdictions = map(data.jurisdictions, normalizeObjectTimes);
+  }
+
+  if (data.priorities) {
+    data.priorities = map(data.priorities, normalizeObjectTimes);
+  }
+
+  if (data.services) {
+    data.services = map(data.services, normalizeObjectTimes);
+  }
+
+  if (data.groups) {
+    data.groups = map(data.groups, normalizeObjectTimes);
+  }
+
+  if (data.types) {
+    data.types = map(data.types, normalizeObjectTimes);
+  }
+
+  if (data.methods) {
+    data.methods = map(data.methods, normalizeObjectTimes);
+  }
+
+  return { ...defaultResults, data };
 };
 
 /* eslint-disable jsdoc/check-tag-names */
@@ -550,16 +627,15 @@ const router = new Router({
  * @apiUse AuthorizationHeaderErrorExample
  */
 router.get(PATH_OVERVIEW, (request, response, next) => {
-  const options = _.merge({}, request.mquery);
+  const options = merge({}, request.mquery);
 
   const filter = options.filter || {};
 
   getOverviewReport(filter, (error, results) => {
-    const data = normalizeResultsForReports(results);
-
     if (error) {
       next(error);
     } else {
+      const data = prepareReportResponse(results);
       response.status(200);
       response.json(data);
     }
@@ -583,20 +659,19 @@ router.get(PATH_OVERVIEW, (request, response, next) => {
  * @apiUse AuthorizationHeaderErrorExample
  */
 router.get(PATH_PERFORMANCE, (request, response, next) => {
-  const options = _.merge({}, request.mquery);
+  const options = merge({}, request.mquery);
 
   let filter = options.filter || {};
 
   if (request.params.id) {
-    filter = _.merge({}, filter, { jurisdiction: request.params.id });
+    filter = merge({}, filter, { jurisdiction: request.params.id });
   }
 
   getPerformanceReport(filter, (error, results) => {
-    const data = normalizeResultsForReports(results);
-
     if (error) {
       next(error);
     } else {
+      const data = prepareReportResponse(results);
       response.status(200);
       response.json(data);
     }
@@ -622,20 +697,19 @@ router.get(PATH_PERFORMANCE, (request, response, next) => {
  * @apiUse AuthorizationHeaderErrorExample
  */
 router.get(PATH_OPERATOR_PERFORMANCE, (request, response, next) => {
-  const options = _.merge({}, request.mquery);
+  const options = merge({}, request.mquery);
 
   let filter = options.filter || {};
 
   if (request.params.id) {
-    filter = _.merge({}, filter, { operator: request.params.id });
+    filter = merge({}, filter, { operator: request.params.id });
   }
 
   getOperatorPerformanceReport(filter, (error, results) => {
-    const data = normalizeResultsForReports(results);
-
     if (error) {
       next(error);
     } else {
+      const data = prepareReportResponse(results);
       response.status(200);
       response.json(data);
     }
