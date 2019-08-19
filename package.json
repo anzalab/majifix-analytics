@@ -20,7 +20,12 @@
     "chore:deps": "ncu -u && npm install --save",
     "lint:config": "eslint --print-config rollup.config.js"
   },
-  "keywords": ["anzalab", "majifix", "analytics", "isomophic"],
+  "keywords": [
+    "anzalab",
+    "majifix",
+    "analytics",
+    "isomophic"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/anzalab/majifix-analytics.git"
@@ -83,7 +88,8 @@
     "@lykmapipo/env": "^0.12.1",
     "@lykmapipo/express-common": "^0.17.9",
     "@lykmapipo/mongoose-common": "^0.25.9",
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.15",
+    "parse-ms": "^2.1.0"
   },
   "engines": {
     "node": ">=12.4.0",
@@ -95,10 +101,15 @@
     }
   },
   "commitlint": {
-    "extends": ["@commitlint/config-conventional"]
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   },
   "lint-staged": {
-    "src/**/*.js": ["npm run lint", "git add -A"]
+    "src/**/*.js": [
+      "npm run lint",
+      "git add -A"
+    ]
   },
   "husky": {
     "hooks": {

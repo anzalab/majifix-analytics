@@ -394,13 +394,13 @@
  */
 
 /* dependencies */
-import _ from 'lodash';
+import merge from 'lodash/merge';
 import { Router } from '@lykmapipo/express-common';
 import { getString } from '@lykmapipo/env';
 import getOverviewReport from './reports/overview';
 import getPerformanceReport from './reports/performance';
 import getOperatorPerformanceReport from './reports/operator';
-import { normalizeResultsForReports } from './util';
+import { prepareReportResponse } from './util';
 
 /* local constants */
 const API_VERSION = getString('API_VERSION', '1.0.0');
@@ -429,16 +429,15 @@ const router = new Router({
  * @apiUse AuthorizationHeaderErrorExample
  */
 router.get(PATH_OVERVIEW, (request, response, next) => {
-  const options = _.merge({}, request.mquery);
+  const options = merge({}, request.mquery);
 
   const filter = options.filter || {};
 
   getOverviewReport(filter, (error, results) => {
-    const data = normalizeResultsForReports(results);
-
     if (error) {
       next(error);
     } else {
+      const data = prepareReportResponse(results);
       response.status(200);
       response.json(data);
     }
@@ -462,20 +461,19 @@ router.get(PATH_OVERVIEW, (request, response, next) => {
  * @apiUse AuthorizationHeaderErrorExample
  */
 router.get(PATH_PERFORMANCE, (request, response, next) => {
-  const options = _.merge({}, request.mquery);
+  const options = merge({}, request.mquery);
 
   let filter = options.filter || {};
 
   if (request.params.id) {
-    filter = _.merge({}, filter, { jurisdiction: request.params.id });
+    filter = merge({}, filter, { jurisdiction: request.params.id });
   }
 
   getPerformanceReport(filter, (error, results) => {
-    const data = normalizeResultsForReports(results);
-
     if (error) {
       next(error);
     } else {
+      const data = prepareReportResponse(results);
       response.status(200);
       response.json(data);
     }
@@ -501,20 +499,19 @@ router.get(PATH_PERFORMANCE, (request, response, next) => {
  * @apiUse AuthorizationHeaderErrorExample
  */
 router.get(PATH_OPERATOR_PERFORMANCE, (request, response, next) => {
-  const options = _.merge({}, request.mquery);
+  const options = merge({}, request.mquery);
 
   let filter = options.filter || {};
 
   if (request.params.id) {
-    filter = _.merge({}, filter, { operator: request.params.id });
+    filter = merge({}, filter, { operator: request.params.id });
   }
 
   getOperatorPerformanceReport(filter, (error, results) => {
-    const data = normalizeResultsForReports(results);
-
     if (error) {
       next(error);
     } else {
+      const data = prepareReportResponse(results);
       response.status(200);
       response.json(data);
     }
