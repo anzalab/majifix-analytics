@@ -111,7 +111,7 @@ const JURISDICTION_FACET = {
 };
 
 const STATUS_FACET = {
-  status: [
+  statuses: [
     {
       $group: {
         _id: '$status._id',
