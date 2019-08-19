@@ -36,6 +36,20 @@ describe('Utils', () => {
     expect(normalizeTime(timeInMilliseconds)).to.be.eql(expectedOutput);
   });
 
+  it('should handle null value input', () => {
+    const expectedOutput = {
+      days: 0,
+      hours: 0,
+      microseconds: 0,
+      milliseconds: 0,
+      minutes: 0,
+      nanoseconds: 0,
+      seconds: 0,
+    };
+
+    expect(normalizeTime(null)).to.be.eql(expectedOutput);
+  });
+
   it('should parse object times to human readable times', () => {
     const input = {
       count: 100,
