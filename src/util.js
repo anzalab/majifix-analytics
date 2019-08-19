@@ -1,6 +1,4 @@
-import head from 'lodash/head';
-import map from 'lodash/map';
-import isNumber from 'lodash/isNumber';
+import { head, map, isNumber } from 'lodash';
 import parseMs from 'parse-ms';
 
 /**

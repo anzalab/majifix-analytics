@@ -394,7 +394,7 @@
  */
 
 /* dependencies */
-import merge from 'lodash/merge';
+import { merge } from 'lodash';
 import { Router } from '@lykmapipo/express-common';
 import { getString } from '@lykmapipo/env';
 import getOverviewReport from './reports/overview';
