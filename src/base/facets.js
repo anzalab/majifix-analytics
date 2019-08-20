@@ -1,3 +1,10 @@
+/**
+ * @namespace OVERALL_FACET
+ * @description Facet for service requests overall general breakdown
+ *
+ * @version 0.1.0
+ * @since 0.1.0
+ */
 export const OVERALL_FACET = {
   overall: [
     {
@@ -22,6 +29,13 @@ export const OVERALL_FACET = {
   ],
 };
 
+/**
+ * @namespace PRIORITY_FACET
+ * @description Facet for service requests breakdown based on their priorities
+ *
+ * @version 0.1.0
+ * @since 0.1.0
+ */
 export const JURISDICTION_FACET = {
   jurisdictions: [
     {
@@ -64,6 +78,13 @@ export const JURISDICTION_FACET = {
   ],
 };
 
+/**
+ * @namespace STATUS_FACET
+ * @description Facet for service requests breakdown based on their statuses
+ *
+ * @version 0.1.0
+ * @since 0.1.0
+ */
 export const STATUS_FACET = {
   statuses: [
     {
@@ -92,6 +113,13 @@ export const STATUS_FACET = {
   ],
 };
 
+/**
+ * @namespace PRIORITY_FACET
+ * @description Facet for service requests breakdown based on their priorities
+ *
+ * @version 0.1.0
+ * @since 0.1.0
+ */
 export const PRIORITY_FACET = {
   priorities: [
     {
@@ -128,6 +156,13 @@ export const PRIORITY_FACET = {
   ],
 };
 
+/**
+ * @namespace SERVICE_FACET
+ * @description Facet for service requests breakdown based on their services(nature)
+ *
+ * @version 0.1.0
+ * @since 0.1.0
+ */
 export const SERVICE_FACET = {
   services: [
     {
@@ -164,6 +199,13 @@ export const SERVICE_FACET = {
   ],
 };
 
+/**
+ * @namespace SERVICE_GROUP_FACET
+ * @description Facet for service requests breakdown based on their service groups
+ *
+ * @version 0.1.0
+ * @since 0.1.0
+ */
 export const SERVICE_GROUP_FACET = {
   groups: [
     {
@@ -200,6 +242,13 @@ export const SERVICE_GROUP_FACET = {
   ],
 };
 
+/**
+ * @namespace SERVICE_TYPE_FACET
+ * @description Facet for service requests breakdown based on their service types
+ *
+ * @version 0.1.0
+ * @since 0.1.0
+ */
 export const SERVICE_TYPE_FACET = {
   types: [
     {
@@ -239,6 +288,14 @@ export const SERVICE_TYPE_FACET = {
   ],
 };
 
+/**
+ * @namespace WORKSPACE_FACET
+ * @description Facet for service requests breakdown based on workspaces they
+ * belong
+ *
+ * @version 0.1.0
+ * @since 0.1.0
+ */
 export const WORKSPACE_FACET = {
   workspaces: [
     {
@@ -262,6 +319,14 @@ export const WORKSPACE_FACET = {
   ],
 };
 
+/**
+ * @namespace REPORTING_METHOD_FACET
+ * @description Facet for service requests breakdown based on their reporting
+ * methods
+ *
+ * @version 0.1.0
+ * @since 0.1.0
+ */
 export const REPORTING_METHOD_FACET = {
   methods: [
     {
@@ -288,7 +353,24 @@ export const REPORTING_METHOD_FACET = {
   ],
 };
 
-export const LEADERSBOARD_FACET = {
+/**
+ * @namespace SERVICE_STATUS_BREAKDOWN_FACET
+ * @description Facet for breakingdown service requests per their services and
+ * statuses
+ *
+ * @version 0.1.0
+ * @since 0.4.2
+ */
+export const SERVICE_STATUS_BREAKDOWN_FACET = {};
+
+/**
+ * @namespace LEADERSBOARD_FACET
+ * @description Facet for operator leader's board
+ *
+ * @version 0.1.0
+ * @since 0.1.0
+ */
+export const OPERATOR_LEADERSBOARD_FACET = {
   leadersboard: [
     {
       $group: {
@@ -309,6 +391,13 @@ export const LEADERSBOARD_FACET = {
   ],
 };
 
+/**
+ * @namespace ASSIGNEE_LEADERSBOARD_FACET
+ * @description Facet foe assignees leader's board
+ *
+ * @version 0.1.0
+ * @since 0.1.0
+ */
 export const ASSIGNEE_LEADERSBOARD_FACET = {
   assignees: [
     {
