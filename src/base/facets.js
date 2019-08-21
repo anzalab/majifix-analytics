@@ -361,7 +361,31 @@ export const REPORTING_METHOD_FACET = {
  * @version 0.1.0
  * @since 0.4.2
  */
-export const SERVICE_STATUS_BREAKDOWN_FACET = {};
+export const SERVICE_STATUS_BREAKDOWN_FACET = {
+  statusesPerService: [
+    {
+      $group: {
+        _id: { service: '$service._id', status: '$status._id' },
+        service: { $first: '$service' },
+        status: { $first: '$status' },
+        statusCount: { $sum: 1 },
+      },
+    },
+    {
+      $group: {
+        _id: '$_id.service',
+        service: { $first: '$service' },
+        statuses: {
+          $push: {
+            status: '$status',
+            count: '$statusCount',
+          },
+        },
+        count: { $sum: '$statusCount' },
+      },
+    },
+  ],
+};
 
 /**
  * @namespace LEADERSBOARD_FACET
