@@ -1,3 +1,27 @@
+#### 0.4.3 (2019-08-22)
+
+##### Chores
+
+* **build:**  bundle library for v0.4.3 release ([8c4274be](https://github.com/anzalab/majifix-analytics/commit/8c4274be4459d43eee08ec3055fc5358a9c606fe))
+* **package:**  update package version to v0.4.3 ([c9cd82a7](https://github.com/anzalab/majifix-analytics/commit/c9cd82a745e8c144acebe8f54dc858794f2e8b32))
+
+##### Documentation Changes
+
+* **jsdoc:**  improve facets documentation ([e9c0eb21](https://github.com/anzalab/majifix-analytics/commit/e9c0eb213d2ac1d21ddc669c4a7fa309279c7c5c))
+
+##### New Features
+
+*  add changelog base aggregation ([5770fb69](https://github.com/anzalab/majifix-analytics/commit/5770fb694514cd0c5767ac1a93041875e2c5b316))
+*  add statuses per service breakdown in operator report ([ff1e6ebe](https://github.com/anzalab/majifix-analytics/commit/ff1e6ebe68ddb4d3d9e30a8e1e0d58acdcdcc224))
+
+##### Bug Fixes
+
+*  use $assignee variable instead of $operator in assignee facet ([2705825a](https://github.com/anzalab/majifix-analytics/commit/2705825a32ba6842df9704ef4c8704d2518fcd97))
+
+##### Refactors
+
+*  restore service facet in operator report ([bca0db1f](https://github.com/anzalab/majifix-analytics/commit/bca0db1fd4ff5c73d28fcd6b2fbd60cf8c5b81a0))
+
 #### 0.4.2 (2019-08-19)
 
 ##### Chores
