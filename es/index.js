@@ -44,6 +44,13 @@ const getBaseAggregation = criteria => {
   });
 };
 
+/**
+ * @namespace OVERALL_FACET
+ * @description Facet for service requests overall general breakdown
+ *
+ * @version 0.1.0
+ * @since 0.1.0
+ */
 const OVERALL_FACET = {
   overall: [
     {
@@ -68,6 +75,13 @@ const OVERALL_FACET = {
   ],
 };
 
+/**
+ * @namespace PRIORITY_FACET
+ * @description Facet for service requests breakdown based on their priorities
+ *
+ * @version 0.1.0
+ * @since 0.1.0
+ */
 const JURISDICTION_FACET = {
   jurisdictions: [
     {
@@ -110,6 +124,13 @@ const JURISDICTION_FACET = {
   ],
 };
 
+/**
+ * @namespace STATUS_FACET
+ * @description Facet for service requests breakdown based on their statuses
+ *
+ * @version 0.1.0
+ * @since 0.1.0
+ */
 const STATUS_FACET = {
   statuses: [
     {
@@ -138,6 +159,13 @@ const STATUS_FACET = {
   ],
 };
 
+/**
+ * @namespace PRIORITY_FACET
+ * @description Facet for service requests breakdown based on their priorities
+ *
+ * @version 0.1.0
+ * @since 0.1.0
+ */
 const PRIORITY_FACET = {
   priorities: [
     {
@@ -174,6 +202,13 @@ const PRIORITY_FACET = {
   ],
 };
 
+/**
+ * @namespace SERVICE_FACET
+ * @description Facet for service requests breakdown based on their services(nature)
+ *
+ * @version 0.1.0
+ * @since 0.1.0
+ */
 const SERVICE_FACET = {
   services: [
     {
@@ -210,6 +245,13 @@ const SERVICE_FACET = {
   ],
 };
 
+/**
+ * @namespace SERVICE_GROUP_FACET
+ * @description Facet for service requests breakdown based on their service groups
+ *
+ * @version 0.1.0
+ * @since 0.1.0
+ */
 const SERVICE_GROUP_FACET = {
   groups: [
     {
@@ -246,6 +288,13 @@ const SERVICE_GROUP_FACET = {
   ],
 };
 
+/**
+ * @namespace SERVICE_TYPE_FACET
+ * @description Facet for service requests breakdown based on their service types
+ *
+ * @version 0.1.0
+ * @since 0.1.0
+ */
 const SERVICE_TYPE_FACET = {
   types: [
     {
@@ -285,6 +334,14 @@ const SERVICE_TYPE_FACET = {
   ],
 };
 
+/**
+ * @namespace WORKSPACE_FACET
+ * @description Facet for service requests breakdown based on workspaces they
+ * belong
+ *
+ * @version 0.1.0
+ * @since 0.1.0
+ */
 const WORKSPACE_FACET = {
   workspaces: [
     {
@@ -308,6 +365,14 @@ const WORKSPACE_FACET = {
   ],
 };
 
+/**
+ * @namespace REPORTING_METHOD_FACET
+ * @description Facet for service requests breakdown based on their reporting
+ * methods
+ *
+ * @version 0.1.0
+ * @since 0.1.0
+ */
 const REPORTING_METHOD_FACET = {
   methods: [
     {
@@ -334,8 +399,15 @@ const REPORTING_METHOD_FACET = {
   ],
 };
 
-const LEADERSBOARD_FACET = {
-  leadersboard: [
+/**
+ * @namespace LEADERSBOARD_FACET
+ * @description Facet for operator leader's board
+ *
+ * @version 0.1.0
+ * @since 0.1.0
+ */
+const OPERATOR_LEADERSBOARD_FACET = {
+  operators: [
     {
       $group: {
         _id: '$operator._id',
@@ -345,6 +417,7 @@ const LEADERSBOARD_FACET = {
         name: { $first: '$operator.name' },
         email: { $first: '$operator.email' },
         phone: { $first: '$operator.phone' },
+        relation: { $first: '$operator.relation' },
       },
     },
     {
@@ -386,7 +459,7 @@ const OVERVIEW_FACET = {
   ...SERVICE_TYPE_FACET,
   ...WORKSPACE_FACET,
   ...REPORTING_METHOD_FACET,
-  ...LEADERSBOARD_FACET,
+  ...OPERATOR_LEADERSBOARD_FACET,
 };
 
 /**
