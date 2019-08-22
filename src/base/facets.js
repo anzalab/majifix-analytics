@@ -395,7 +395,7 @@ export const SERVICE_STATUS_BREAKDOWN_FACET = {
  * @since 0.1.0
  */
 export const OPERATOR_LEADERSBOARD_FACET = {
-  leadersboard: [
+  operators: [
     {
       $group: {
         _id: '$operator._id',
@@ -405,6 +405,7 @@ export const OPERATOR_LEADERSBOARD_FACET = {
         name: { $first: '$operator.name' },
         email: { $first: '$operator.email' },
         phone: { $first: '$operator.phone' },
+        relation: { $first: '$operator.relation' },
       },
     },
     {
@@ -426,13 +427,14 @@ export const ASSIGNEE_LEADERSBOARD_FACET = {
   assignees: [
     {
       $group: {
-        _id: '$$assignee._id',
+        _id: '$assignee._id',
         pending: { $sum: '$pending' },
         resolved: { $sum: '$resolved' },
         count: { $sum: 1 },
-        name: { $first: '$operator.name' },
-        email: { $first: '$operator.email' },
-        phone: { $first: '$operator.phone' },
+        name: { $first: '$assignee.name' },
+        email: { $first: '$assignee.email' },
+        phone: { $first: '$assignee.phone' },
+        relation: { $first: '$assignee.relation' },
       },
     },
     {
