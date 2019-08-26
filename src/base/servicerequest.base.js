@@ -37,6 +37,26 @@ const getBaseAggregation = criteria => {
     resolved: {
       $cond: { if: { $not: '$resolvedAt' }, then: 0, else: 1 },
     },
+    reopened: {},
+    assigned: {
+      $cond: {
+        // missing checking assignedAt if it exists
+        if: {
+          $or: [
+            { $not: '$attendedAt' },
+            { $not: '$verifiedAt' },
+            { $not: '$completedAt' },
+            { $not: '$approvedAt' },
+          ],
+        },
+        then: 1,
+        else: 0,
+      },
+    },
+    attended: {},
+    verified: {},
+    completed: {},
+    approved: {},
   });
 };
 
