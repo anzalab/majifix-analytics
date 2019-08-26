@@ -418,7 +418,7 @@ export const OPERATOR_LEADERSBOARD_FACET = {
 
 /**
  * @namespace ASSIGNEE_LEADERSBOARD_FACET
- * @description Facet foe assignees leader's board
+ * @description Facet for assignees leader's board
  *
  * @version 0.1.0
  * @since 0.1.0
@@ -435,6 +435,34 @@ export const ASSIGNEE_LEADERSBOARD_FACET = {
         email: { $first: '$assignee.email' },
         phone: { $first: '$assignee.phone' },
         relation: { $first: '$assignee.relation' },
+      },
+    },
+    {
+      $sort: {
+        count: -1,
+      },
+    },
+  ],
+};
+
+/**
+ * @namespace ZONE_FACET
+ * @description Facet for service requests per zones
+ *
+ * @version 0.1.0
+ * @since 0.4.3
+ */
+export const ZONE_FACET = {
+  zones: [
+    {
+      $group: {
+        _id: '$zone._id',
+        pending: { $sum: '$pending' },
+        resolved: { $sum: '$resolved' },
+        count: { $sum: 1 },
+        name: { $first: '$zone.name' },
+        color: { $first: '$zone.color' },
+        description: { $first: '$zone.description' },
       },
     },
     {
