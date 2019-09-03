@@ -10,8 +10,6 @@
 /* dependencies */
 import { model } from '@lykmapipo/mongoose-common';
 
-/* declarations */
-
 /**
  * @function
  * @name getBaseAggregation
