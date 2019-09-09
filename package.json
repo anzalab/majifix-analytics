@@ -88,6 +88,7 @@
     "@lykmapipo/env": "^0.12.2",
     "@lykmapipo/express-common": "^0.17.10",
     "@lykmapipo/mongoose-common": "^0.25.11",
+    "async": "^3.1.0",
     "lodash": "^4.17.15",
     "parse-ms": "^2.1.0"
   },
