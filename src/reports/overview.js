@@ -20,19 +20,18 @@
  */
 
 /* dependencies */
-import parallel from 'async/parallel';
 import getBaseAggregation from '../base/servicerequest.base';
 import {
   OVERALL_FACET,
   JURISDICTION_FACET,
   STATUS_FACET,
   PRIORITY_FACET,
-  // SERVICE_FACET,
-  // SERVICE_GROUP_FACET,
-  // SERVICE_TYPE_FACET,
-  // WORKSPACE_FACET,
-  // REPORTING_METHOD_FACET,
-  // OPERATOR_LEADERSBOARD_FACET,
+  SERVICE_FACET,
+  SERVICE_GROUP_FACET,
+  SERVICE_TYPE_FACET,
+  WORKSPACE_FACET,
+  REPORTING_METHOD_FACET,
+  OPERATOR_LEADERSBOARD_FACET,
 } from '../base/facets';
 
 const OVERVIEW_FACET = {
@@ -40,12 +39,12 @@ const OVERVIEW_FACET = {
   ...JURISDICTION_FACET,
   ...STATUS_FACET,
   ...PRIORITY_FACET,
-  // ...SERVICE_FACET,
-  // ...SERVICE_GROUP_FACET,
-  // ...SERVICE_TYPE_FACET,
-  // ...WORKSPACE_FACET,
-  // ...REPORTING_METHOD_FACET,
-  // ...OPERATOR_LEADERSBOARD_FACET,
+  ...SERVICE_FACET,
+  ...SERVICE_GROUP_FACET,
+  ...SERVICE_TYPE_FACET,
+  ...WORKSPACE_FACET,
+  ...REPORTING_METHOD_FACET,
+  ...OPERATOR_LEADERSBOARD_FACET,
 };
 
 /**
@@ -69,50 +68,6 @@ const getOverviewReport = (criteria, onResults) => {
   const baseAggregation = getBaseAggregation(criteria);
 
   return baseAggregation.facet(OVERVIEW_FACET).exec(onResults);
-};
-
-export const getOverviewReportParallel = (criteria, onResults) => {
-  const baseAggregation = getBaseAggregation(criteria);
-
-  const getOverallSummary = callback =>
-    baseAggregation.facet(OVERALL_FACET).exec(callback);
-
-  const getJurisdictionSummary = callback =>
-    baseAggregation.facet(JURISDICTION_FACET).exec(callback);
-
-  const getStatusSummary = callback =>
-    baseAggregation.facet(STATUS_FACET).exec(callback);
-
-  const getPrioritySummary = callback =>
-    baseAggregation.facet(PRIORITY_FACET).exec(callback);
-
-  // const getServiceSummary = callback =>
-  //   baseAggregation.facet(SERVICE_FACET).exec(callback);
-
-  // const getServiceGroupSummary = callback =>
-  //   baseAggregation.facet(SERVICE_GROUP_FACET).exec(callback);
-
-  // const getServiceTypeSummary = callback =>
-  //   baseAggregation.facet(SERVICE_TYPE_FACET).exec(callback);
-
-  // const getWorkspaceSummary = callback =>
-  //   baseAggregation.facet(WORKSPACE_FACET).exec(callback);
-
-  // const getReportingMethodSummary = callback =>
-  //   baseAggregation.facet(REPORTING_METHOD_FACET).exec(callback);
-
-  // const getOperatorsSummary = callback =>
-  //   baseAggregation.facet(OPERATOR_LEADERSBOARD_FACET).exec(callback);
-
-  return parallel(
-    [
-      getOverallSummary,
-      getJurisdictionSummary,
-      getStatusSummary,
-      getPrioritySummary,
-    ],
-    onResults
-  );
 };
 
 export default getOverviewReport;

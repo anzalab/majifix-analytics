@@ -2,7 +2,6 @@ import { pkg } from '@lykmapipo/common';
 import { head, map, isNumber, merge } from 'lodash';
 import { Router } from '@lykmapipo/express-common';
 import { getString } from '@lykmapipo/env';
-import parallel from 'async/parallel';
 import { model } from '@lykmapipo/mongoose-common';
 import parseMs from 'parse-ms';
 
@@ -552,6 +551,100 @@ const SERVICE_TYPE_FACET = {
 };
 
 /**
+ * @namespace WORKSPACE_FACET
+ * @description Facet for service requests breakdown based on workspaces they
+ * belong
+ *
+ * @version 0.1.0
+ * @since 0.1.0
+ */
+const WORKSPACE_FACET = {
+  workspaces: [
+    {
+      $group: {
+        _id: '$method.workspace',
+        count: { $sum: 1 },
+        pending: { $sum: '$pending' },
+        resolved: { $sum: '$resolved' },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        name: '$_id',
+        count: 1,
+        pending: 1,
+        resolved: 1,
+      },
+    },
+    { $sort: { count: -1 } },
+  ],
+};
+
+/**
+ * @namespace REPORTING_METHOD_FACET
+ * @description Facet for service requests breakdown based on their reporting
+ * methods
+ *
+ * @version 0.1.0
+ * @since 0.1.0
+ */
+const REPORTING_METHOD_FACET = {
+  methods: [
+    {
+      $group: {
+        _id: '$method.name',
+        count: { $sum: 1 },
+        pending: { $sum: '$pending' },
+        resolved: { $sum: '$resolved' },
+        averageResolveTime: { $avg: '$ttr.milliseconds' },
+        averageAttendTime: { $avg: '$call.duration.milliseconds' },
+      },
+    },
+    {
+      $project: {
+        name: '$_id',
+        count: 1,
+        pending: 1,
+        resolved: 1,
+        averageResolveTime: 1,
+        averageAttendTime: 1,
+      },
+    },
+    { $sort: { count: -1 } },
+  ],
+};
+
+/**
+ * @namespace LEADERSBOARD_FACET
+ * @description Facet for operator leader's board
+ *
+ * @version 0.1.0
+ * @since 0.1.0
+ */
+const OPERATOR_LEADERSBOARD_FACET = {
+  operators: [
+    {
+      $group: {
+        _id: '$operator._id',
+        pending: { $sum: '$pending' },
+        resolved: { $sum: '$resolved' },
+        count: { $sum: 1 },
+        name: { $first: '$operator.name' },
+        email: { $first: '$operator.email' },
+        phone: { $first: '$operator.phone' },
+        relation: { $first: '$operator.relation' },
+      },
+    },
+    {
+      $sort: {
+        count: -1,
+      },
+    },
+  ],
+};
+
+/**
  * This is overview report based on service request
  * It consist of
  *  - Total service requests per a given period
@@ -577,12 +670,12 @@ const OVERVIEW_FACET = {
   ...JURISDICTION_FACET,
   ...STATUS_FACET,
   ...PRIORITY_FACET,
-  // ...SERVICE_FACET,
-  // ...SERVICE_GROUP_FACET,
-  // ...SERVICE_TYPE_FACET,
-  // ...WORKSPACE_FACET,
-  // ...REPORTING_METHOD_FACET,
-  // ...OPERATOR_LEADERSBOARD_FACET,
+  ...SERVICE_FACET,
+  ...SERVICE_GROUP_FACET,
+  ...SERVICE_TYPE_FACET,
+  ...WORKSPACE_FACET,
+  ...REPORTING_METHOD_FACET,
+  ...OPERATOR_LEADERSBOARD_FACET,
 };
 
 /**
@@ -606,50 +699,6 @@ const getOverviewReport = (criteria, onResults) => {
   const baseAggregation = getBaseAggregation(criteria);
 
   return baseAggregation.facet(OVERVIEW_FACET).exec(onResults);
-};
-
-const getOverviewReportParallel = (criteria, onResults) => {
-  const baseAggregation = getBaseAggregation(criteria);
-
-  const getOverallSummary = callback =>
-    baseAggregation.facet(OVERALL_FACET).exec(callback);
-
-  const getJurisdictionSummary = callback =>
-    baseAggregation.facet(JURISDICTION_FACET).exec(callback);
-
-  const getStatusSummary = callback =>
-    baseAggregation.facet(STATUS_FACET).exec(callback);
-
-  const getPrioritySummary = callback =>
-    baseAggregation.facet(PRIORITY_FACET).exec(callback);
-
-  // const getServiceSummary = callback =>
-  //   baseAggregation.facet(SERVICE_FACET).exec(callback);
-
-  // const getServiceGroupSummary = callback =>
-  //   baseAggregation.facet(SERVICE_GROUP_FACET).exec(callback);
-
-  // const getServiceTypeSummary = callback =>
-  //   baseAggregation.facet(SERVICE_TYPE_FACET).exec(callback);
-
-  // const getWorkspaceSummary = callback =>
-  //   baseAggregation.facet(WORKSPACE_FACET).exec(callback);
-
-  // const getReportingMethodSummary = callback =>
-  //   baseAggregation.facet(REPORTING_METHOD_FACET).exec(callback);
-
-  // const getOperatorsSummary = callback =>
-  //   baseAggregation.facet(OPERATOR_LEADERSBOARD_FACET).exec(callback);
-
-  return parallel(
-    [
-      getOverallSummary,
-      getJurisdictionSummary,
-      getStatusSummary,
-      getPrioritySummary,
-    ],
-    onResults
-  );
 };
 
 /**
@@ -881,21 +930,6 @@ router.get(PATH_OVERVIEW, (request, response, next) => {
       const data = prepareReportResponse(results);
       response.status(200);
       response.json(data);
-    }
-  });
-});
-
-router.get('/reports/testoverviews', (request, response, next) => {
-  const options = merge({}, request.mquery);
-
-  const filter = options.filter || {};
-
-  getOverviewReportParallel(filter, (error, results) => {
-    if (error) {
-      next(error);
-    } else {
-      response.status(200);
-      response.json(results);
     }
   });
 });

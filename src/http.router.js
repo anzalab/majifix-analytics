@@ -397,9 +397,7 @@
 import { merge } from 'lodash';
 import { Router } from '@lykmapipo/express-common';
 import { getString } from '@lykmapipo/env';
-import getOverviewReport, {
-  getOverviewReportParallel,
-} from './reports/overview';
+import getOverviewReport from './reports/overview';
 import getPerformanceReport from './reports/performance';
 import getOperatorPerformanceReport from './reports/operator';
 import { prepareReportResponse } from './util';
@@ -442,21 +440,6 @@ router.get(PATH_OVERVIEW, (request, response, next) => {
       const data = prepareReportResponse(results);
       response.status(200);
       response.json(data);
-    }
-  });
-});
-
-router.get('/reports/testoverviews', (request, response, next) => {
-  const options = merge({}, request.mquery);
-
-  const filter = options.filter || {};
-
-  getOverviewReportParallel(filter, (error, results) => {
-    if (error) {
-      next(error);
-    } else {
-      response.status(200);
-      response.json(results);
     }
   });
 });
