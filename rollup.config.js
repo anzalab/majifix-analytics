@@ -4,7 +4,11 @@ import pkg from './package.json';
 export default [
   {
     input: 'src/index.js',
-    external: [...keys(pkg.dependencies), ...keys(pkg.peerDependencies)],
+    external: [
+      ...keys(pkg.dependencies),
+      ...keys(pkg.peerDependencies),
+      'async/parallel',
+    ],
     output: [
       {
         file: pkg.main,
