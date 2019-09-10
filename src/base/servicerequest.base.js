@@ -253,6 +253,34 @@ const getBaseAggregation = criteria => {
           else: 0,
         },
       },
+
+      /**
+       * Flag for late service request i.e service request passed it's SLA without
+       * being resolved
+       *
+       * Service request is flagged as late service request when it has been either
+       * resolved pass it's SLA or not resolved and it's pass it's SLA
+       */
+      late: {
+        $cond: {
+          if: {
+            $or: [
+              {
+                $and: [
+                  { $not: '$resolvedAt' },
+                  '$expectedAt',
+                  { $gt: [new Date(), '$expectedAt'] },
+                ],
+              },
+              {
+                $and: ['$expectedAt', { $gt: ['$resolvedAt', '$expectedAt'] }],
+              },
+            ],
+          },
+          then: 1,
+          else: 0,
+        },
+      },
     });
 };
 
