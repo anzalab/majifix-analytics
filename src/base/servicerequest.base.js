@@ -189,7 +189,7 @@ const getBaseAggregation = criteria => {
       },
 
       /**
-       * Flag for resovled service request i.e service request which is resolved
+       * Flag for resolved service request i.e service request which is resolved
        *
        * A service request is flagged as resolved service request when it
        * has been resolved.
@@ -202,7 +202,7 @@ const getBaseAggregation = criteria => {
        * Flag for reopened service request i.e service request which have been
        * reopened after been resolved
        *
-       * A service request is flagged as reopend service request when it
+       * A service request is flagged as reopened service request when it
        * has been confirmed and reopened.
        */
       reopened: {
