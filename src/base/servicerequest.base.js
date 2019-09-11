@@ -30,47 +30,6 @@ const getBaseAggregation = criteria => {
   return ServiceRequest.lookup(criteria)
     .addFields({
       /**
-       * Time difference between expected time to resolve the service request
-       * and today.
-       *
-       * This time will indicate if the service request is late or not base on
-       * the SLA(Service Level Agreement) time set per service request nature
-       */
-      lateTime: { $subtract: ['$expectedAt', new Date()] },
-
-      /**
-       * This is the time for a confirmed service request to be assigned to
-       * a responsible party
-       */
-      assignTime: { $subtract: ['$assignedAt', '$confirmedAt'] },
-
-      /**
-       * This is the time for a assigned service request to be attended
-       */
-      attendTime: { $subtract: ['$attendedAt', '$assignedAt'] },
-
-      /**
-       * This is the time for a attended service request to be completed
-       */
-      completeTime: { $subtract: ['$completedAt', '$attendedAt'] },
-
-      /**
-       * This is the time for a completed service request to be verified
-       */
-      verifyTime: { $subtract: ['$verifiedAt', '$completedAt'] },
-
-      /**
-       * This is the time for a verified service request to be approved
-       */
-      approveTime: { $subtract: ['$approvedAt', '$verifiedAt'] },
-
-      /**
-       * This is the time for an approved service request to be marked as resolved
-       */
-      resolveTime: { $subtract: ['$resolvedAt', '$createdAt'] },
-    })
-    .addFields({
-      /**
        * Flag for unconfirmed service request. This shows all service requests
        * which have been reporting via mobileApp, website, USSD and still they
        * are not confirmed yet by an operator.
@@ -281,6 +240,59 @@ const getBaseAggregation = criteria => {
           else: 0,
         },
       },
+    })
+    .addFields({
+      /**
+       * Time difference between expected time to resolve the service request
+       * and today.
+       *
+       * This time will indicate if the service request is late or not base on
+       * the SLA(Service Level Agreement) time set per service request nature
+       */
+      lateTime: {
+        $cond: {
+          if: { $eq: ['$late', 1] },
+          then: {
+            $cond: {
+              if: '$resolvedAt',
+              then: { $subtract: ['$resolvedAt', '$expectedAt'] },
+              else: { $subtract: [new Date(), '$expectedAt'] },
+            },
+          },
+          else: null,
+        },
+      },
+
+      /**
+       * This is the time for a confirmed service request to be assigned to
+       * a responsible party
+       */
+      assignTime: { $subtract: ['$assignedAt', '$confirmedAt'] },
+
+      /**
+       * This is the time for a assigned service request to be attended
+       */
+      attendTime: { $subtract: ['$attendedAt', '$assignedAt'] },
+
+      /**
+       * This is the time for a attended service request to be completed
+       */
+      completeTime: { $subtract: ['$completedAt', '$attendedAt'] },
+
+      /**
+       * This is the time for a completed service request to be verified
+       */
+      verifyTime: { $subtract: ['$verifiedAt', '$completedAt'] },
+
+      /**
+       * This is the time for a verified service request to be approved
+       */
+      approveTime: { $subtract: ['$approvedAt', '$verifiedAt'] },
+
+      /**
+       * This is the time for an approved service request to be marked as resolved
+       */
+      resolveTime: { $subtract: ['$resolvedAt', '$createdAt'] },
     });
 };
 
