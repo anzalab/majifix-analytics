@@ -93,6 +93,8 @@ export const prepareReportResponse = results => {
     }));
 
     data.overall = merge({}, data.overall, ...times);
+
+    delete data.time;
   }
 
   if (data.jurisdictions) {
