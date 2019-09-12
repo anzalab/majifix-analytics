@@ -243,8 +243,19 @@ const getBaseAggregation = criteria => {
     })
     .addFields({
       /**
+       * Time difference between when service request was reported and when it was
+       * confirmed by an operator or responsible party.
+       *
+       * This metric calculate how much time does it take for an organization
+       * to confirm/respond to issues which have been reported via channels
+       * which doesn't involve operator intervention. i.e USSD, Mobile App, Bot
+       * and e.t.c
+       */
+      confirmTime: { $subtract: ['$confirmedAt', '$createdAt'] },
+
+      /**
        * Time difference between expected time to resolve the service request
-       * and today.
+       * and current date if not resolved or resolvedAt if resolved pass it SLA.
        *
        * This time will indicate if the service request is late or not base on
        * the SLA(Service Level Agreement) time set per service request nature
