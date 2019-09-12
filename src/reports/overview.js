@@ -23,7 +23,6 @@
 import getBaseAggregation from '../base/servicerequest.base';
 import {
   OVERALL_FACET,
-  TIME_FACET,
   JURISDICTION_FACET,
   STATUS_FACET,
   PRIORITY_FACET,
@@ -37,7 +36,6 @@ import {
 
 const OVERVIEW_FACET = {
   ...OVERALL_FACET,
-  ...TIME_FACET,
   ...JURISDICTION_FACET,
   ...STATUS_FACET,
   ...PRIORITY_FACET,

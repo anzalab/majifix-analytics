@@ -1,3 +1,31 @@
+/* constants */
+const times = {
+  maximumAssignTime: { $max: '$assignTime' },
+  minimumAssignTime: { $min: '$assignTime' },
+  averageAssignTime: { $avg: '$assignTime' },
+  maximumAttendTime: { $max: '$attendTime' },
+  minimumAttendTime: { $min: '$attendTime' },
+  averageAttendTime: { $avg: '$attendTime' },
+  maximumCompleteTime: { $max: '$completeTime' },
+  minimumCompleteTime: { $min: '$completeTime' },
+  averageCompleteTime: { $avg: '$completeTime' },
+  maximumVerifyTime: { $max: '$verifyTime' },
+  minimumVerifyTime: { $min: '$verifyTime' },
+  averageVerifyTime: { $avg: '$verifyTime' },
+  maximumApproveTime: { $max: '$approveTime' },
+  minimumApproveTime: { $min: '$approveTime' },
+  averageApproveTime: { $avg: '$approveTime' },
+  maximumResolveTime: { $max: '$resolveTime' },
+  minimumResolveTime: { $min: '$resolveTime' },
+  averageResolveTime: { $avg: '$resolveTime' },
+  maximumLateTime: { $max: '$lateTime' },
+  minimumLateTime: { $min: '$lateTime' },
+  averageLateTime: { $avg: '$lateTime' },
+  maximumConfirmTime: { $max: '$confirmTime' },
+  minimumConfirmTime: { $min: '$confirmTime' },
+  averageConfirmTime: { $avg: '$confirmTime' },
+};
+
 /**
  * @namespace OVERALL_FACET
  * @description Facet for service requests overall general breakdown
@@ -19,52 +47,12 @@ export const OVERALL_FACET = {
         count: { $sum: 1 },
         averageResolveTime: { $avg: '$ttr.milliseconds' },
         averageAttendTime: { $avg: '$call.duration.milliseconds' },
+        ...times,
       },
     },
     {
       $project: {
         _id: 0,
-      },
-    },
-  ],
-};
-
-/**
- * @namespace TIME_FACET
- * @description Facet for service request time calculation summary
- *
- * @version 0.1.0
- * @since 0.5.0
- */
-export const TIME_FACET = {
-  time: [
-    {
-      $group: {
-        _id: null,
-        maximumAssignTime: { $max: '$assignTime' },
-        minimumAssignTime: { $min: '$assignTime' },
-        averageAssignTime: { $avg: '$assignTime' },
-        maximumAttendTime: { $max: '$attendTime' },
-        minimumAttendTime: { $min: '$attendTime' },
-        averageAttendTime: { $avg: '$attendTime' },
-        maximumCompleteTime: { $max: '$completeTime' },
-        minimumCompleteTime: { $min: '$completeTime' },
-        averageCompleteTime: { $avg: '$completeTime' },
-        maximumVerifyTime: { $max: '$verifyTime' },
-        minimumVerifyTime: { $min: '$verifyTime' },
-        averageVerifyTime: { $avg: '$verifyTime' },
-        maximumApproveTime: { $max: '$approveTime' },
-        minimumApproveTime: { $min: '$approveTime' },
-        averageApproveTime: { $avg: '$approveTime' },
-        maximumResolveTime: { $max: '$resolveTime' },
-        minimumResolveTime: { $min: '$resolveTime' },
-        averageResolveTime: { $avg: '$resolveTime' },
-        maximumLateTime: { $max: '$lateTime' },
-        minimumLateTime: { $min: '$lateTime' },
-        averageLateTime: { $avg: '$lateTime' },
-        maximumConfirmTime: { $max: '$confirmTime' },
-        minimumConfirmTime: { $min: '$confirmTime' },
-        averageConfirmTime: { $avg: '$confirmTime' },
       },
     },
   ],

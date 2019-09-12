@@ -1,5 +1,5 @@
 import { pkg } from '@lykmapipo/common';
-import { head, map, upperFirst, merge, isNumber } from 'lodash';
+import { head, merge, map, upperFirst, omit, isNumber } from 'lodash';
 import { Router } from '@lykmapipo/express-common';
 import { getString } from '@lykmapipo/env';
 import { model } from '@lykmapipo/mongoose-common';
@@ -311,6 +311,34 @@ const getBaseAggregation = criteria => {
     });
 };
 
+/* constants */
+const times = {
+  maximumAssignTime: { $max: '$assignTime' },
+  minimumAssignTime: { $min: '$assignTime' },
+  averageAssignTime: { $avg: '$assignTime' },
+  maximumAttendTime: { $max: '$attendTime' },
+  minimumAttendTime: { $min: '$attendTime' },
+  averageAttendTime: { $avg: '$attendTime' },
+  maximumCompleteTime: { $max: '$completeTime' },
+  minimumCompleteTime: { $min: '$completeTime' },
+  averageCompleteTime: { $avg: '$completeTime' },
+  maximumVerifyTime: { $max: '$verifyTime' },
+  minimumVerifyTime: { $min: '$verifyTime' },
+  averageVerifyTime: { $avg: '$verifyTime' },
+  maximumApproveTime: { $max: '$approveTime' },
+  minimumApproveTime: { $min: '$approveTime' },
+  averageApproveTime: { $avg: '$approveTime' },
+  maximumResolveTime: { $max: '$resolveTime' },
+  minimumResolveTime: { $min: '$resolveTime' },
+  averageResolveTime: { $avg: '$resolveTime' },
+  maximumLateTime: { $max: '$lateTime' },
+  minimumLateTime: { $min: '$lateTime' },
+  averageLateTime: { $avg: '$lateTime' },
+  maximumConfirmTime: { $max: '$confirmTime' },
+  minimumConfirmTime: { $min: '$confirmTime' },
+  averageConfirmTime: { $avg: '$confirmTime' },
+};
+
 /**
  * @namespace OVERALL_FACET
  * @description Facet for service requests overall general breakdown
@@ -332,52 +360,12 @@ const OVERALL_FACET = {
         count: { $sum: 1 },
         averageResolveTime: { $avg: '$ttr.milliseconds' },
         averageAttendTime: { $avg: '$call.duration.milliseconds' },
+        ...times,
       },
     },
     {
       $project: {
         _id: 0,
-      },
-    },
-  ],
-};
-
-/**
- * @namespace TIME_FACET
- * @description Facet for service request time calculation summary
- *
- * @version 0.1.0
- * @since 0.5.0
- */
-const TIME_FACET = {
-  time: [
-    {
-      $group: {
-        _id: null,
-        maximumAssignTime: { $max: '$assignTime' },
-        minimumAssignTime: { $min: '$assignTime' },
-        averageAssignTime: { $avg: '$assignTime' },
-        maximumAttendTime: { $max: '$attendTime' },
-        minimumAttendTime: { $min: '$attendTime' },
-        averageAttendTime: { $avg: '$attendTime' },
-        maximumCompleteTime: { $max: '$completeTime' },
-        minimumCompleteTime: { $min: '$completeTime' },
-        averageCompleteTime: { $avg: '$completeTime' },
-        maximumVerifyTime: { $max: '$verifyTime' },
-        minimumVerifyTime: { $min: '$verifyTime' },
-        averageVerifyTime: { $avg: '$verifyTime' },
-        maximumApproveTime: { $max: '$approveTime' },
-        minimumApproveTime: { $min: '$approveTime' },
-        averageApproveTime: { $avg: '$approveTime' },
-        maximumResolveTime: { $max: '$resolveTime' },
-        minimumResolveTime: { $min: '$resolveTime' },
-        averageResolveTime: { $avg: '$resolveTime' },
-        maximumLateTime: { $max: '$lateTime' },
-        minimumLateTime: { $min: '$lateTime' },
-        averageLateTime: { $avg: '$lateTime' },
-        maximumConfirmTime: { $max: '$confirmTime' },
-        minimumConfirmTime: { $min: '$confirmTime' },
-        averageConfirmTime: { $avg: '$confirmTime' },
       },
     },
   ],
@@ -759,7 +747,6 @@ const OPERATOR_LEADERSBOARD_FACET = {
 
 const OVERVIEW_FACET = {
   ...OVERALL_FACET,
-  ...TIME_FACET,
   ...JURISDICTION_FACET,
   ...STATUS_FACET,
   ...PRIORITY_FACET,
@@ -934,6 +921,70 @@ const normalizeObjectTimes = item => {
 
 /**
  * @function
+ * @name normalizeMetricTimes
+ * @description Normalize aggregation object with metric times to a standard
+ * format. Also parse those times to human readable format
+ *
+ * @param {object} data Aggregation result object for a single facet or a single
+ * object in a facet which returns an array
+ * @returns {object} Object which is has merged data from the aggregration results
+ * and parsed metrics times to human readable format
+ *
+ * @version 0.1.0
+ * @since 0.5.0
+ */
+const normalizeMetricTimes = data => {
+  const keys = [
+    'confirmTime',
+    'assignTime',
+    'attendTime',
+    'completeTime',
+    'verifyTime',
+    'approveTime',
+    'resolveTime',
+    'lateTime',
+  ];
+
+  const times = map(keys, key => ({
+    [key]: {
+      minimum: normalizeTime(data[`minimum${upperFirst(key)}`]),
+      maximum: normalizeTime(data[`maximum${upperFirst(key)}`]),
+      average: normalizeTime(data[`average${upperFirst(key)}`]),
+    },
+  }));
+
+  const strippedObject = omit(data, [
+    'maximumAssignTime',
+    'minimumAssignTime',
+    'averageAssignTime',
+    'maximumAttendTime',
+    'minimumAttendTime',
+    'averageAttendTime',
+    'maximumCompleteTime',
+    'minimumCompleteTime',
+    'averageCompleteTime',
+    'maximumVerifyTime',
+    'minimumVerifyTime',
+    'averageVerifyTime',
+    'maximumApproveTime',
+    'minimumApproveTime',
+    'averageApproveTime',
+    'maximumResolveTime',
+    'minimumResolveTime',
+    'averageResolveTime',
+    'maximumLateTime',
+    'minimumLateTime',
+    'averageLateTime',
+    'maximumConfirmTime',
+    'minimumConfirmTime',
+    'averageConfirmTime',
+  ]);
+
+  return merge({}, strippedObject, ...times);
+};
+
+/**
+ * @function
  * @name prepareReportResponse
  * @description Prepare response for Reports by normalizing response shape and average times
  *
@@ -952,37 +1003,8 @@ const prepareReportResponse = results => {
 
   data.overall = head(data.overall);
 
-  data.time = head(data.time);
-
   if (data.overall) {
-    data.overall = normalizeObjectTimes(data.overall);
-  }
-
-  if (data.time) {
-    // const times = {};
-
-    const keys = [
-      'confirmTime',
-      'assignTime',
-      'attendTime',
-      'completeTime',
-      'verifyTime',
-      'approveTime',
-      'resolveTime',
-      'lateTime',
-    ];
-
-    const times = map(keys, key => ({
-      [key]: {
-        minimum: normalizeTime(data.time[`minimum${upperFirst(key)}`]),
-        maximum: normalizeTime(data.time[`maximum${upperFirst(key)}`]),
-        average: normalizeTime(data.time[`average${upperFirst(key)}`]),
-      },
-    }));
-
-    data.overall = merge({}, data.overall, ...times);
-
-    delete data.time;
+    data.overall = normalizeMetricTimes(data.overall);
   }
 
   if (data.jurisdictions) {

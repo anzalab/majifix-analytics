@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import {
   normalizeTime,
   normalizeObjectTimes,
+  normalizeMetricTimes,
   prepareReportResponse,
 } from '../../src/util';
 
@@ -81,6 +82,278 @@ describe('Utils', () => {
     expect(normalizeObjectTimes(input)).to.be.eql(expectedOutput);
   });
 
+  it('should normalize metrics times and restucture object results', () => {
+    const aggregationResult = {
+      count: 1,
+      pending: 20,
+      resolved: 2,
+      maximumAssignTime: null,
+      minimumAssignTime: null,
+      averageAssignTime: null,
+      maximumAttendTime: 7813,
+      minimumAttendTime: 7813,
+      averageAttendTime: 7813,
+      maximumCompleteTime: 0,
+      minimumCompleteTime: 0,
+      averageCompleteTime: 0,
+      maximumVerifyTime: 0,
+      minimumVerifyTime: 0,
+      averageVerifyTime: 0,
+      maximumApproveTime: 0,
+      minimumApproveTime: 0,
+      averageApproveTime: 0,
+      maximumResolveTime: 79624349,
+      minimumResolveTime: 18750,
+      averageResolveTime: 29821770.333333332,
+      maximumLateTime: 72424414,
+      minimumLateTime: 72424414,
+      averageLateTime: 72424414,
+      maximumConfirmTime: 7199946,
+      minimumConfirmTime: 7199946,
+      averageConfirmTime: 7199946,
+    };
+
+    const expectedOutput = {
+      approveTime: {
+        average: {
+          days: 0,
+          hours: 0,
+          microseconds: 0,
+          milliseconds: 0,
+          minutes: 0,
+          nanoseconds: 0,
+          seconds: 0,
+        },
+        maximum: {
+          days: 0,
+          hours: 0,
+          microseconds: 0,
+          milliseconds: 0,
+          minutes: 0,
+          nanoseconds: 0,
+          seconds: 0,
+        },
+        minimum: {
+          days: 0,
+          hours: 0,
+          microseconds: 0,
+          milliseconds: 0,
+          minutes: 0,
+          nanoseconds: 0,
+          seconds: 0,
+        },
+      },
+      assignTime: {
+        average: {
+          days: 0,
+          hours: 0,
+          microseconds: 0,
+          milliseconds: 0,
+          minutes: 0,
+          nanoseconds: 0,
+          seconds: 0,
+        },
+        maximum: {
+          days: 0,
+          hours: 0,
+          microseconds: 0,
+          milliseconds: 0,
+          minutes: 0,
+          nanoseconds: 0,
+          seconds: 0,
+        },
+        minimum: {
+          days: 0,
+          hours: 0,
+          microseconds: 0,
+          milliseconds: 0,
+          minutes: 0,
+          nanoseconds: 0,
+          seconds: 0,
+        },
+      },
+      attendTime: {
+        average: {
+          days: 0,
+          hours: 0,
+          microseconds: 0,
+          milliseconds: 813,
+          minutes: 0,
+          nanoseconds: 0,
+          seconds: 7,
+        },
+        maximum: {
+          days: 0,
+          hours: 0,
+          microseconds: 0,
+          milliseconds: 813,
+          minutes: 0,
+          nanoseconds: 0,
+          seconds: 7,
+        },
+        minimum: {
+          days: 0,
+          hours: 0,
+          microseconds: 0,
+          milliseconds: 813,
+          minutes: 0,
+          nanoseconds: 0,
+          seconds: 7,
+        },
+      },
+      completeTime: {
+        average: {
+          days: 0,
+          hours: 0,
+          microseconds: 0,
+          milliseconds: 0,
+          minutes: 0,
+          nanoseconds: 0,
+          seconds: 0,
+        },
+        maximum: {
+          days: 0,
+          hours: 0,
+          microseconds: 0,
+          milliseconds: 0,
+          minutes: 0,
+          nanoseconds: 0,
+          seconds: 0,
+        },
+        minimum: {
+          days: 0,
+          hours: 0,
+          microseconds: 0,
+          milliseconds: 0,
+          minutes: 0,
+          nanoseconds: 0,
+          seconds: 0,
+        },
+      },
+      confirmTime: {
+        average: {
+          days: 0,
+          hours: 1,
+          microseconds: 0,
+          milliseconds: 946,
+          minutes: 59,
+          nanoseconds: 0,
+          seconds: 59,
+        },
+        maximum: {
+          days: 0,
+          hours: 1,
+          microseconds: 0,
+          milliseconds: 946,
+          minutes: 59,
+          nanoseconds: 0,
+          seconds: 59,
+        },
+        minimum: {
+          days: 0,
+          hours: 1,
+          microseconds: 0,
+          milliseconds: 946,
+          minutes: 59,
+          nanoseconds: 0,
+          seconds: 59,
+        },
+      },
+      count: 1,
+      lateTime: {
+        average: {
+          days: 0,
+          hours: 20,
+          microseconds: 0,
+          milliseconds: 414,
+          minutes: 7,
+          nanoseconds: 0,
+          seconds: 4,
+        },
+        maximum: {
+          days: 0,
+          hours: 20,
+          microseconds: 0,
+          milliseconds: 414,
+          minutes: 7,
+          nanoseconds: 0,
+          seconds: 4,
+        },
+        minimum: {
+          days: 0,
+          hours: 20,
+          microseconds: 0,
+          milliseconds: 414,
+          minutes: 7,
+          nanoseconds: 0,
+          seconds: 4,
+        },
+      },
+      pending: 20,
+      resolveTime: {
+        average: {
+          days: 0,
+          hours: 8,
+          microseconds: 333,
+          milliseconds: 770,
+          minutes: 17,
+          nanoseconds: 333,
+          seconds: 1,
+        },
+        maximum: {
+          days: 0,
+          hours: 22,
+          microseconds: 0,
+          milliseconds: 349,
+          minutes: 7,
+          nanoseconds: 0,
+          seconds: 4,
+        },
+        minimum: {
+          days: 0,
+          hours: 0,
+          microseconds: 0,
+          milliseconds: 750,
+          minutes: 0,
+          nanoseconds: 0,
+          seconds: 18,
+        },
+      },
+      verifyTime: {
+        average: {
+          days: 0,
+          hours: 0,
+          microseconds: 0,
+          milliseconds: 0,
+          minutes: 0,
+          nanoseconds: 0,
+          seconds: 0,
+        },
+        maximum: {
+          days: 0,
+          hours: 0,
+          microseconds: 0,
+          milliseconds: 0,
+          minutes: 0,
+          nanoseconds: 0,
+          seconds: 0,
+        },
+        minimum: {
+          days: 0,
+          hours: 0,
+          microseconds: 0,
+          milliseconds: 0,
+          minutes: 0,
+          nanoseconds: 0,
+          seconds: 0,
+        },
+      },
+      resolved: 2,
+    };
+
+    expect(normalizeMetricTimes(aggregationResult)).to.be.eql(expectedOutput);
+  });
+
   it('should normalize aggregration results to response format', () => {
     const aggregrationResults = [
       {
@@ -88,12 +361,6 @@ describe('Utils', () => {
           {
             count: 1,
             pending: 20,
-            averageAttendTime: 1000,
-            averageResolveTime: 2000,
-          },
-        ],
-        time: [
-          {
             maximumAssignTime: null,
             minimumAssignTime: null,
             averageAssignTime: null,
@@ -139,6 +406,7 @@ describe('Utils', () => {
         workspaces: [{ name: 'Call', count: 1 }],
       },
     ];
+
     const expectedOutput = {
       data: {
         overall: {
@@ -228,24 +496,6 @@ describe('Utils', () => {
               nanoseconds: 0,
               seconds: 7,
             },
-          },
-          averageAttendTime: {
-            days: 0,
-            hours: 0,
-            microseconds: 0,
-            milliseconds: 0,
-            minutes: 0,
-            nanoseconds: 0,
-            seconds: 1,
-          },
-          averageResolveTime: {
-            days: 0,
-            hours: 0,
-            microseconds: 0,
-            milliseconds: 0,
-            minutes: 0,
-            nanoseconds: 0,
-            seconds: 2,
           },
           completeTime: {
             average: {

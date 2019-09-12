@@ -1,4 +1,4 @@
-import { head, map, merge, isNumber, upperFirst } from 'lodash';
+import { head, map, merge, isNumber, omit, upperFirst } from 'lodash';
 import parseMs from 'parse-ms';
 
 /**
@@ -46,6 +46,70 @@ export const normalizeObjectTimes = item => {
 
 /**
  * @function
+ * @name normalizeMetricTimes
+ * @description Normalize aggregation object with metric times to a standard
+ * format. Also parse those times to human readable format
+ *
+ * @param {object} data Aggregation result object for a single facet or a single
+ * object in a facet which returns an array
+ * @returns {object} Object which is has merged data from the aggregration results
+ * and parsed metrics times to human readable format
+ *
+ * @version 0.1.0
+ * @since 0.5.0
+ */
+export const normalizeMetricTimes = data => {
+  const keys = [
+    'confirmTime',
+    'assignTime',
+    'attendTime',
+    'completeTime',
+    'verifyTime',
+    'approveTime',
+    'resolveTime',
+    'lateTime',
+  ];
+
+  const times = map(keys, key => ({
+    [key]: {
+      minimum: normalizeTime(data[`minimum${upperFirst(key)}`]),
+      maximum: normalizeTime(data[`maximum${upperFirst(key)}`]),
+      average: normalizeTime(data[`average${upperFirst(key)}`]),
+    },
+  }));
+
+  const strippedObject = omit(data, [
+    'maximumAssignTime',
+    'minimumAssignTime',
+    'averageAssignTime',
+    'maximumAttendTime',
+    'minimumAttendTime',
+    'averageAttendTime',
+    'maximumCompleteTime',
+    'minimumCompleteTime',
+    'averageCompleteTime',
+    'maximumVerifyTime',
+    'minimumVerifyTime',
+    'averageVerifyTime',
+    'maximumApproveTime',
+    'minimumApproveTime',
+    'averageApproveTime',
+    'maximumResolveTime',
+    'minimumResolveTime',
+    'averageResolveTime',
+    'maximumLateTime',
+    'minimumLateTime',
+    'averageLateTime',
+    'maximumConfirmTime',
+    'minimumConfirmTime',
+    'averageConfirmTime',
+  ]);
+
+  return merge({}, strippedObject, ...times);
+};
+
+/**
+ * @function
  * @name prepareReportResponse
  * @description Prepare response for Reports by normalizing response shape and average times
  *
@@ -64,37 +128,8 @@ export const prepareReportResponse = results => {
 
   data.overall = head(data.overall);
 
-  data.time = head(data.time);
-
   if (data.overall) {
-    data.overall = normalizeObjectTimes(data.overall);
-  }
-
-  if (data.time) {
-    // const times = {};
-
-    const keys = [
-      'confirmTime',
-      'assignTime',
-      'attendTime',
-      'completeTime',
-      'verifyTime',
-      'approveTime',
-      'resolveTime',
-      'lateTime',
-    ];
-
-    const times = map(keys, key => ({
-      [key]: {
-        minimum: normalizeTime(data.time[`minimum${upperFirst(key)}`]),
-        maximum: normalizeTime(data.time[`maximum${upperFirst(key)}`]),
-        average: normalizeTime(data.time[`average${upperFirst(key)}`]),
-      },
-    }));
-
-    data.overall = merge({}, data.overall, ...times);
-
-    delete data.time;
+    data.overall = normalizeMetricTimes(data.overall);
   }
 
   if (data.jurisdictions) {
