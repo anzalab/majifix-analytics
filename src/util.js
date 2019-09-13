@@ -1,4 +1,4 @@
-import { head, map, isNumber } from 'lodash';
+import { head, map, merge, isNumber, omit, upperFirst } from 'lodash';
 import parseMs from 'parse-ms';
 
 /**
@@ -46,13 +46,81 @@ export const normalizeObjectTimes = item => {
 
 /**
  * @function
+ * @name normalizeMetricTimes
+ * @description Normalize aggregation object with metric times to a standard
+ * format. Also parse those times to human readable format
+ *
+ * @param {object} data Aggregation result object for a single facet or a single
+ * object in a facet which returns an array
+ * @returns {object} Object which is has merged data from the aggregration results
+ * and parsed metrics times to human readable format
+ *
+ * @version 0.1.0
+ * @since 0.5.0
+ */
+export const normalizeMetricTimes = data => {
+  const keys = [
+    'confirmTime',
+    'assignTime',
+    'attendTime',
+    'completeTime',
+    'verifyTime',
+    'approveTime',
+    'resolveTime',
+    'lateTime',
+    'callTime',
+  ];
+
+  const times = map(keys, key => ({
+    [key]: {
+      minimum: normalizeTime(data[`minimum${upperFirst(key)}`]),
+      maximum: normalizeTime(data[`maximum${upperFirst(key)}`]),
+      average: normalizeTime(data[`average${upperFirst(key)}`]),
+    },
+  }));
+
+  const strippedObject = omit(data, [
+    'maximumAssignTime',
+    'minimumAssignTime',
+    'averageAssignTime',
+    'maximumAttendTime',
+    'minimumAttendTime',
+    'averageAttendTime',
+    'maximumCompleteTime',
+    'minimumCompleteTime',
+    'averageCompleteTime',
+    'maximumVerifyTime',
+    'minimumVerifyTime',
+    'averageVerifyTime',
+    'maximumApproveTime',
+    'minimumApproveTime',
+    'averageApproveTime',
+    'maximumResolveTime',
+    'minimumResolveTime',
+    'averageResolveTime',
+    'maximumLateTime',
+    'minimumLateTime',
+    'averageLateTime',
+    'maximumConfirmTime',
+    'minimumConfirmTime',
+    'averageConfirmTime',
+    'maximumCallTime',
+    'minimumCallTime',
+    'averageCallTime',
+  ]);
+
+  return merge({}, strippedObject, ...times);
+};
+
+/**
+ * @function
  * @name prepareReportResponse
  * @description Prepare response for Reports by normalizing response shape and average times
  *
  * @param {object} results Aggregation results
  * @returns {object} Normalized response object
  *
- * @version 0.1.0
+ * @version 0.2.0
  * @since 0.2.0
  */
 export const prepareReportResponse = results => {
@@ -65,32 +133,32 @@ export const prepareReportResponse = results => {
   data.overall = head(data.overall);
 
   if (data.overall) {
-    data.overall = normalizeObjectTimes(data.overall);
+    data.overall = normalizeMetricTimes(data.overall);
   }
 
   if (data.jurisdictions) {
-    data.jurisdictions = map(data.jurisdictions, normalizeObjectTimes);
+    data.jurisdictions = map(data.jurisdictions, normalizeMetricTimes);
   }
 
   if (data.priorities) {
-    data.priorities = map(data.priorities, normalizeObjectTimes);
+    data.priorities = map(data.priorities, normalizeMetricTimes);
   }
 
   if (data.services) {
-    data.services = map(data.services, normalizeObjectTimes);
+    data.services = map(data.services, normalizeMetricTimes);
   }
 
   if (data.groups) {
-    data.groups = map(data.groups, normalizeObjectTimes);
+    data.groups = map(data.groups, normalizeMetricTimes);
   }
 
   if (data.types) {
-    data.types = map(data.types, normalizeObjectTimes);
+    data.types = map(data.types, normalizeMetricTimes);
   }
 
-  if (data.methods) {
-    data.methods = map(data.methods, normalizeObjectTimes);
-  }
+  // if (data.methods) {
+  //   data.methods = map(data.methods, normalizeObjectTimes);
+  // }
 
   return { ...defaultResults, data };
 };
