@@ -1,3 +1,53 @@
+#### 0.5.0 (2019-09-13)
+
+##### Chores
+
+* **deps:**
+  *  update dependencies to latest versions ([21dde86b](https://github.com/anzalab/majifix-analytics/commit/21dde86bf1980e4268148b7b2e4349d0a3b61666))
+  *  update dependencies to latest versions ([ddc8d069](https://github.com/anzalab/majifix-analytics/commit/ddc8d069c2c4bc33275c3c0072b284ce2b223019))
+  *  fix security vulnerability ([1e24d43a](https://github.com/anzalab/majifix-analytics/commit/1e24d43abfcb339feb639604ae787f7b45c3ebb9))
+* **package:**  update package version to 0.5.0 ([dd3bc727](https://github.com/anzalab/majifix-analytics/commit/dd3bc727c2d2f4f7d83f3b9d7532fbfe8586695a))
+* **build:**
+  *  bundle library for testing ([ea7374bb](https://github.com/anzalab/majifix-analytics/commit/ea7374bb3b819e8f67b477d957d147e5aa1509e7))
+  *  bundle library for testing ([c9fcafe7](https://github.com/anzalab/majifix-analytics/commit/c9fcafe75500b9b6ba22fc3251f72e98acf56cfd))
+  *  bundle library for testing ([1c32fbfd](https://github.com/anzalab/majifix-analytics/commit/1c32fbfd4cd131cfc3535cb28de144476b478e03))
+  *  bundle library for testing ([966553f5](https://github.com/anzalab/majifix-analytics/commit/966553f53f2aaa1f17394952c594dd845a21b1e2))
+
+##### New Features
+
+*  add metric times for overview facets ([4e33ac62](https://github.com/anzalab/majifix-analytics/commit/4e33ac629a34f2e025aa7c4301f12ea8687b7812))
+*  normalize times to have max, min and average on overall results ([8e7abbb9](https://github.com/anzalab/majifix-analytics/commit/8e7abbb9a34f3b001ac72a0ca5873b2086fdee8f))
+*  add times in overviews report ([29ba176a](https://github.com/anzalab/majifix-analytics/commit/29ba176a531830c64d234900fd5dc41156e6488e))
+*  add facet for time calculation ([6c69bef0](https://github.com/anzalab/majifix-analytics/commit/6c69bef03c42bc5fb466945764d5f1e787354815))
+*  add late time calculation logic ([f620d5de](https://github.com/anzalab/majifix-analytics/commit/f620d5de194bc84b08421c957f956ab3357718a9))
+*  add initial time calculations for base service request ([08692695](https://github.com/anzalab/majifix-analytics/commit/08692695afaa20dd4e8bef049a8a88cc8263175d))
+*  add more flags in service request base aggregation ([b1548cde](https://github.com/anzalab/majifix-analytics/commit/b1548cdeb961468f60d68641e4c78419dc103ff6))
+*  add zone facet ([161249a2](https://github.com/anzalab/majifix-analytics/commit/161249a27d5c7c55d09ab555ed97ab978ce77f6f))
+* **service request:**  add late flag ([9ce79d17](https://github.com/anzalab/majifix-analytics/commit/9ce79d17dd70a12491044b5ec3a941ae3e69545f))
+* **reports:**  add operational report(wip) ([a0fff9ff](https://github.com/anzalab/majifix-analytics/commit/a0fff9ff493f4b5746b3707e36e772327c26f2c0))
+
+##### Bug Fixes
+
+*  normalize service type metric times ([361f902d](https://github.com/anzalab/majifix-analytics/commit/361f902ddf90fa28ce951f9444e73a98750fa1c8))
+
+##### Performance Improvements
+
+*  conclude there is no performance gain on parallel facets ([4e98ed3f](https://github.com/anzalab/majifix-analytics/commit/4e98ed3ffbd2951d0b83347f96f62e81d232cb70))
+* **wip:**
+  *  fix a bug on overview report method ([306959f4](https://github.com/anzalab/majifix-analytics/commit/306959f4d40a130d5418033e8de67f91b2c95b09))
+  *  test facet based on number of cores ([6ac41fc2](https://github.com/anzalab/majifix-analytics/commit/6ac41fc26d77640bc8e64b77b2cd3b249bedfa21))
+  *  parallelize facets in overviews report ([57a0369c](https://github.com/anzalab/majifix-analytics/commit/57a0369c37621a4c5316c596e74c8aa21ba1cc9e))
+
+##### Refactors
+
+*  expose analyticRouter instead of router ([eecd42fd](https://github.com/anzalab/majifix-analytics/commit/eecd42fd2c7b5864f74796c876605524ebd1c07f))
+*  remove time facet and add metric times in overall facet ([ce1e7f87](https://github.com/anzalab/majifix-analytics/commit/ce1e7f8771fcf9fe3cc2bbafe6edec7b6e759434))
+*  remove status facet from operator report ([32ba4a95](https://github.com/anzalab/majifix-analytics/commit/32ba4a9573adaabbcdae050562f92b7739b32afc))
+
+##### Code Style Changes
+
+*  format files after install deps ([e5230cc0](https://github.com/anzalab/majifix-analytics/commit/e5230cc09250432f71ef46688a8ee1c5e595eb04))
+
 #### 0.4.3 (2019-08-22)
 
 ##### Chores
