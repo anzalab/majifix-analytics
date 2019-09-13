@@ -5,7 +5,7 @@
  * @author Benson Maruchu <benmaruchu@gmail.com>
  * @author lally elias <lallyelias87@gmail.com>
  * @since  0.1.0
- * @version 0.1.0
+ * @version 0.2.0
  * @license MIT
  * @example
  *
@@ -18,7 +18,7 @@
 
 /* dependencies */
 import { pkg } from '@lykmapipo/common';
-import router from './http.router';
+import analyticRouter from './http.router';
 
 const info = pkg(
   `${__dirname}/package.json`,
@@ -34,6 +34,6 @@ const info = pkg(
 );
 
 // extract api version
-const apiVersion = router.version;
+const apiVersion = analyticRouter.version;
 
-export { apiVersion, info, router };
+export { apiVersion, info, analyticRouter };
