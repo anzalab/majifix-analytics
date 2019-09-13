@@ -153,12 +153,12 @@ export const prepareReportResponse = results => {
   }
 
   if (data.types) {
-    data.types = map(data.types, normalizeObjectTimes);
+    data.types = map(data.types, normalizeMetricTimes);
   }
 
-  if (data.methods) {
-    data.methods = map(data.methods, normalizeObjectTimes);
-  }
+  // if (data.methods) {
+  //   data.methods = map(data.methods, normalizeObjectTimes);
+  // }
 
   return { ...defaultResults, data };
 };
