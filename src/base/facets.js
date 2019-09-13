@@ -1,5 +1,5 @@
 /* constants */
-const times = {
+const METRIC_TIMES = {
   maximumAssignTime: { $max: '$assignTime' },
   minimumAssignTime: { $min: '$assignTime' },
   averageAssignTime: { $avg: '$assignTime' },
@@ -24,13 +24,16 @@ const times = {
   maximumConfirmTime: { $max: '$confirmTime' },
   minimumConfirmTime: { $min: '$confirmTime' },
   averageConfirmTime: { $avg: '$confirmTime' },
+  maximumCallTime: { $max: '$call.duration.milliseconds' },
+  minimumCallTime: { $min: '$call.duration.milliseconds' },
+  averageCallTime: { $avg: '$call.duration.milliseconds' },
 };
 
 /**
  * @namespace OVERALL_FACET
  * @description Facet for service requests overall general breakdown
  *
- * @version 0.1.0
+ * @version 0.2.0
  * @since 0.1.0
  */
 export const OVERALL_FACET = {
@@ -45,9 +48,7 @@ export const OVERALL_FACET = {
         },
         late: { $sum: '$late' },
         count: { $sum: 1 },
-        averageResolveTime: { $avg: '$ttr.milliseconds' },
-        averageAttendTime: { $avg: '$call.duration.milliseconds' },
-        ...times,
+        ...METRIC_TIMES,
       },
     },
     {
@@ -62,7 +63,7 @@ export const OVERALL_FACET = {
  * @namespace PRIORITY_FACET
  * @description Facet for service requests breakdown based on their priorities
  *
- * @version 0.1.0
+ * @version 0.2.0
  * @since 0.1.0
  */
 export const JURISDICTION_FACET = {
@@ -79,24 +80,7 @@ export const JURISDICTION_FACET = {
         phone: { $first: '$jurisdiction.phone' },
         color: { $first: '$jurisdiction.color' },
         count: { $sum: 1 },
-        averageResolveTime: { $avg: '$ttr.milliseconds' },
-        averageAttendTime: { $avg: '$call.duration.milliseconds' },
-      },
-    },
-    {
-      $project: {
-        _id: 1,
-        pending: 1,
-        resolved: 1,
-        late: 1,
-        unattended: 1,
-        name: 1,
-        email: 1,
-        phone: 1,
-        color: 1,
-        count: 1,
-        averageResolveTime: 1,
-        averageAttendTime: 1,
+        ...METRIC_TIMES,
       },
     },
     {
@@ -127,17 +111,6 @@ export const STATUS_FACET = {
         resolved: { $sum: '$resolved' },
       },
     },
-    {
-      $project: {
-        _id: 1,
-        name: 1,
-        weight: 1,
-        color: 1,
-        count: 1,
-        pending: 1,
-        resolved: 1,
-      },
-    },
     { $sort: { weight: 1 } },
   ],
 };
@@ -146,7 +119,7 @@ export const STATUS_FACET = {
  * @namespace PRIORITY_FACET
  * @description Facet for service requests breakdown based on their priorities
  *
- * @version 0.1.0
+ * @version 0.2.0
  * @since 0.1.0
  */
 export const PRIORITY_FACET = {
@@ -161,22 +134,7 @@ export const PRIORITY_FACET = {
         pending: { $sum: '$pending' },
         resolved: { $sum: '$resolved' },
         unattended: { $sum: '$unattended' },
-        averageResolveTime: { $avg: '$ttr.milliseconds' },
-        averageAttendTime: { $avg: '$call.duration.milliseconds' },
-      },
-    },
-    {
-      $project: {
-        _id: 1,
-        name: 1,
-        color: 1,
-        weight: 1,
-        count: 1,
-        pending: 1,
-        resolved: 1,
-        unattended: 1,
-        averageResolveTime: 1,
-        averageAttendTime: 1,
+        ...METRIC_TIMES,
       },
     },
     {
@@ -189,7 +147,7 @@ export const PRIORITY_FACET = {
  * @namespace SERVICE_FACET
  * @description Facet for service requests breakdown based on their services(nature)
  *
- * @version 0.1.0
+ * @version 0.2.0
  * @since 0.1.0
  */
 export const SERVICE_FACET = {
@@ -204,22 +162,7 @@ export const SERVICE_FACET = {
         name: { $first: '$service.name' },
         color: { $first: '$service.color' },
         count: { $sum: 1 },
-        averageResolveTime: { $avg: '$ttr.milliseconds' },
-        averageAttendTime: { $avg: '$call.duration.milliseconds' },
-      },
-    },
-    {
-      $project: {
-        _id: 1,
-        pending: 1,
-        resolved: 1,
-        late: 1,
-        unattended: 1,
-        name: 1,
-        color: 1,
-        count: 1,
-        averageResolveTime: 1,
-        averageAttendTime: 1,
+        ...METRIC_TIMES,
       },
     },
     {
@@ -232,7 +175,7 @@ export const SERVICE_FACET = {
  * @namespace SERVICE_GROUP_FACET
  * @description Facet for service requests breakdown based on their service groups
  *
- * @version 0.1.0
+ * @version 0.2.0
  * @since 0.1.0
  */
 export const SERVICE_GROUP_FACET = {
@@ -247,22 +190,7 @@ export const SERVICE_GROUP_FACET = {
         name: { $first: '$group.name.en' },
         color: { $first: '$group.color' },
         count: { $sum: 1 },
-        averageResolveTime: { $avg: '$ttr.milliseconds' },
-        averageAttendTime: { $avg: '$call.duration.milliseconds' },
-      },
-    },
-    {
-      $project: {
-        _id: 1,
-        pending: 1,
-        resolved: 1,
-        late: 1,
-        unattended: 1,
-        name: 1,
-        color: 1,
-        count: 1,
-        averageResolveTime: 1,
-        averageAttendTime: 1,
+        ...METRIC_TIMES,
       },
     },
     {
@@ -275,7 +203,7 @@ export const SERVICE_GROUP_FACET = {
  * @namespace SERVICE_TYPE_FACET
  * @description Facet for service requests breakdown based on their service types
  *
- * @version 0.1.0
+ * @version 0.2.0
  * @since 0.1.0
  */
 export const SERVICE_TYPE_FACET = {
@@ -293,25 +221,12 @@ export const SERVICE_TYPE_FACET = {
         resolved: { $sum: '$resolved' },
         unattended: { $sum: '$unattended' },
         late: { $sum: '$late' },
-        averageResolveTime: { $avg: '$ttr.milliseconds' },
-        averageAttendTime: { $avg: '$call.duration.milliseconds' },
+        ...METRIC_TIMES,
       },
     },
     {
-      $project: {
-        _id: 1,
-        name: 1,
-        color: 1,
-        code: 1,
-        description: 1,
-        abbreviation: 1,
-        count: 1,
-        pending: 1,
-        resolved: 1,
-        unattended: 1,
-        late: 1,
-        averageAttendTime: 1,
-        averageResolveTime: 1,
+      $sort: {
+        count: -1,
       },
     },
   ],
@@ -353,7 +268,7 @@ export const WORKSPACE_FACET = {
  * @description Facet for service requests breakdown based on their reporting
  * methods
  *
- * @version 0.1.0
+ * @version 0.2.0
  * @since 0.1.0
  */
 export const REPORTING_METHOD_FACET = {
@@ -364,8 +279,6 @@ export const REPORTING_METHOD_FACET = {
         count: { $sum: 1 },
         pending: { $sum: '$pending' },
         resolved: { $sum: '$resolved' },
-        averageResolveTime: { $avg: '$ttr.milliseconds' },
-        averageAttendTime: { $avg: '$call.duration.milliseconds' },
       },
     },
     {
@@ -374,8 +287,6 @@ export const REPORTING_METHOD_FACET = {
         count: 1,
         pending: 1,
         resolved: 1,
-        averageResolveTime: 1,
-        averageAttendTime: 1,
       },
     },
     { $sort: { count: -1 } },

@@ -68,6 +68,7 @@ export const normalizeMetricTimes = data => {
     'approveTime',
     'resolveTime',
     'lateTime',
+    'callTime',
   ];
 
   const times = map(keys, key => ({
@@ -103,6 +104,9 @@ export const normalizeMetricTimes = data => {
     'maximumConfirmTime',
     'minimumConfirmTime',
     'averageConfirmTime',
+    'maximumCallTime',
+    'minimumCallTime',
+    'averageCallTime',
   ]);
 
   return merge({}, strippedObject, ...times);
@@ -133,19 +137,19 @@ export const prepareReportResponse = results => {
   }
 
   if (data.jurisdictions) {
-    data.jurisdictions = map(data.jurisdictions, normalizeObjectTimes);
+    data.jurisdictions = map(data.jurisdictions, normalizeMetricTimes);
   }
 
   if (data.priorities) {
-    data.priorities = map(data.priorities, normalizeObjectTimes);
+    data.priorities = map(data.priorities, normalizeMetricTimes);
   }
 
   if (data.services) {
-    data.services = map(data.services, normalizeObjectTimes);
+    data.services = map(data.services, normalizeMetricTimes);
   }
 
   if (data.groups) {
-    data.groups = map(data.groups, normalizeObjectTimes);
+    data.groups = map(data.groups, normalizeMetricTimes);
   }
 
   if (data.types) {
