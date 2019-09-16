@@ -264,15 +264,15 @@ export const WORKSPACE_FACET = {
 };
 
 /**
- * @namespace REPORTING_METHOD_FACET
+ * @namespace REPORTING_CHANNEL_FACET
  * @description Facet for service requests breakdown based on their reporting
- * methods
+ * channels i.e call, ussd , web, mobile app, visit e.t.c
  *
- * @version 0.2.0
+ * @version 0.2.1
  * @since 0.1.0
  */
-export const REPORTING_METHOD_FACET = {
-  methods: [
+export const REPORTING_CHANNEL_FACET = {
+  channels: [
     {
       $group: {
         _id: '$method.name',

@@ -1,3 +1,14 @@
+#### 0.5.1 (2019-09-16)
+
+##### Chores
+
+* **build:**  bundle library v0.5.1 ([eba4c5ad](https://github.com/anzalab/majifix-analytics/commit/eba4c5adaf6ed56307ffd18b6e4702e7c74b6177))
+* **package:**  update package version to 0.5.1 ([f4d47aed](https://github.com/anzalab/majifix-analytics/commit/f4d47aedec2a064be211ceb76932de7f7874bdbe))
+
+##### Refactors
+
+*  rename reporting methods to reporting channel facet ([f2582440](https://github.com/anzalab/majifix-analytics/commit/f25824409ff26175aa7d7eb9cf038c285efaeb3f))
+
 #### 0.5.0 (2019-09-13)
 
 ##### Chores
