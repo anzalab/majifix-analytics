@@ -1,3 +1,14 @@
+#### 0.5.2 (2019-09-16)
+
+##### Chores
+
+* **build:**  bundle library for v0.5.2 ([dd0232e3](https://github.com/anzalab/majifix-analytics/commit/dd0232e397601177bd439497e38dc1d487999157))
+* **package:**  update package version to 0.5.2 ([1dc9a346](https://github.com/anzalab/majifix-analytics/commit/1dc9a3461ab2f91c14d975824f503e1c013023d0))
+
+##### Refactors
+
+* **facets:**  change unattended to unconfirmed ([a5c8d23b](https://github.com/anzalab/majifix-analytics/commit/a5c8d23b727cc960dcd3f5bb6e2c435247f4fdf7))
+
 #### 0.5.1 (2019-09-16)
 
 ##### Chores
