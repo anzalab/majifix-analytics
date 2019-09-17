@@ -1,3 +1,20 @@
+#### 0.6.0 (2019-09-17)
+
+##### Chores
+
+* **package:**  update package version to 0.6.0 ([3d7ac903](https://github.com/anzalab/majifix-analytics/commit/3d7ac903e32dc8ac3b7cc620a885a542ffca9374))
+* **build:**
+  *  bundle library for testing ([58a7a6ce](https://github.com/anzalab/majifix-analytics/commit/58a7a6ce0a164d3eae6ecea1ff472f875a08459d))
+  *  bundle library for testing ([f39b5173](https://github.com/anzalab/majifix-analytics/commit/f39b5173f85e509c697616d0ca653a06a2e69b8e))
+
+##### New Features
+
+*  add operational report router ([0bb7bada](https://github.com/anzalab/majifix-analytics/commit/0bb7badadac9c3a7a0f41fda105a0f7f4e58b396))
+
+##### Refactors
+
+*  extract metric counts to a const variable ([93127f00](https://github.com/anzalab/majifix-analytics/commit/93127f00e87fb0d840eb7fa2f4cc14028cc86e1c))
+
 #### 0.5.2 (2019-09-16)
 
 ##### Chores
