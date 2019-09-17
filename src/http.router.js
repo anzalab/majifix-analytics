@@ -400,12 +400,14 @@ import { getString } from '@lykmapipo/env';
 import getOverviewReport from './reports/overview';
 import getPerformanceReport from './reports/performance';
 import getOperatorPerformanceReport from './reports/operator';
+import getOperationalReport from './reports/operational';
 import { prepareReportResponse } from './util';
 
 /* local constants */
 const API_VERSION = getString('API_VERSION', '1.0.0');
 const PATH_OVERVIEW = '/reports/overviews';
 const PATH_PERFORMANCE = '/reports/performances';
+const PATH_OPERATIONAL = '/reports/operations';
 const PATH_OPERATOR_PERFORMANCE = '/reports/operators';
 
 const router = new Router({
@@ -510,5 +512,36 @@ router.get(PATH_OPERATOR_PERFORMANCE, (request, response, next) => {
   });
 });
 
+/**
+ * @api {get} /reports/operations Operational Report
+ * @apiGroup Analytics
+ * @apiName GetOperations
+ * @apiVersion 1.0.0
+ * @apiDescription Return overview report
+ * @apiUse RequestHeaders
+ * @apiUse Operator
+ *
+ * @apiUse RequestHeaderExample
+ * @apiUse OverviewSuccessResponse
+ * @apiUse JWTError
+ * @apiUse JWTErrorExample
+ * @apiUse AuthorizationHeaderError
+ * @apiUse AuthorizationHeaderErrorExample
+ */
+router.get(PATH_OPERATIONAL, (request, response, next) => {
+  const options = merge({}, request.mquery);
+
+  const filter = options.filter || {};
+
+  getOperationalReport(filter, (error, results) => {
+    if (error) {
+      next(error);
+    } else {
+      const data = prepareReportResponse(results);
+      response.status(200);
+      response.json(data);
+    }
+  });
+});
 /* eslint-enable jsdoc/check-tag-names */
 export default router;

@@ -29,6 +29,21 @@ const METRIC_TIMES = {
   averageCallTime: { $avg: '$call.duration.milliseconds' },
 };
 
+const METRIC_COUNTS = {
+  approved: { $sum: '$approved' },
+  assigned: { $sum: 'assigned' },
+  attended: { $sum: '$attended' },
+  completed: { $sum: '$completed' },
+  count: { $sum: 1 },
+  late: { $sum: '$late' },
+  new: { $sum: '$new' },
+  pending: { $sum: '$pending' },
+  resolved: { $sum: '$resolved' },
+  reopened: { $sum: '$reopened' },
+  unconfirmed: { $sum: '$unconfirmed' },
+  verified: { $sum: '$verified' },
+};
+
 /**
  * @namespace OVERALL_FACET
  * @description Facet for service requests overall general breakdown
@@ -41,13 +56,7 @@ export const OVERALL_FACET = {
     {
       $group: {
         _id: null,
-        pending: { $sum: '$pending' },
-        resolved: { $sum: '$resolved' },
-        unconfirmed: {
-          $sum: '$unconfirmed',
-        },
-        late: { $sum: '$late' },
-        count: { $sum: 1 },
+        ...METRIC_COUNTS,
         ...METRIC_TIMES,
       },
     },
@@ -155,13 +164,9 @@ export const SERVICE_FACET = {
     {
       $group: {
         _id: '$service._id',
-        pending: { $sum: '$pending' },
-        resolved: { $sum: '$resolved' },
-        late: { $sum: '$late' },
-        unconfirmed: { $sum: '$unconfirmed' },
         name: { $first: '$service.name' },
         color: { $first: '$service.color' },
-        count: { $sum: 1 },
+        ...METRIC_COUNTS,
         ...METRIC_TIMES,
       },
     },
