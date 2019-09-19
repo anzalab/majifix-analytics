@@ -19,6 +19,7 @@
 
 /* dependencies */
 import getBaseAggregation from '../base/servicerequest.base';
+import { getFacet } from '../util';
 import { OVERALL_FACET, SERVICE_FACET } from '../base/facets';
 
 const OPERATIONAL_FACET = {
@@ -32,10 +33,11 @@ const OPERATIONAL_FACET = {
  * @description Generate operational report based on provided criteria
  *
  * @param {object} criteria Criteria condition to be applied in $match
+ * @param {string[]} facetKeys Contain list of facets key to be used to generate report
  * @param {object} onResults Callback when aggregation operation finishes
  * @returns {object} executed aggregation
  *
- * @version 0.1.0
+ * @version 0.2.0
  * @since 0.1.0
  *
  * @example
@@ -43,10 +45,12 @@ const OPERATIONAL_FACET = {
  *    ...
  *  });
  */
-const getOperationalReport = (criteria, onResults) => {
+const getOperationalReport = (criteria, facetKeys, onResults) => {
   const baseAggregation = getBaseAggregation(criteria);
 
-  return baseAggregation.facet(OPERATIONAL_FACET).exec(onResults);
+  const FACET = getFacet(OPERATIONAL_FACET, facetKeys);
+
+  return baseAggregation.facet(FACET).exec(onResults);
 };
 
 export default getOperationalReport;

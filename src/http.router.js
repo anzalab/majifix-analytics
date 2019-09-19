@@ -394,7 +394,7 @@
  */
 
 /* dependencies */
-import { merge } from 'lodash';
+import { compact, isEmpty, merge } from 'lodash';
 import { Router } from '@lykmapipo/express-common';
 import { getString } from '@lykmapipo/env';
 import getOverviewReport from './reports/overview';
@@ -435,9 +435,13 @@ router.get(PATH_OVERVIEW, (request, response, next) => {
 
   const filter = options.filter || {};
 
-  const facets = options.facets || [];
+  const { facets } = request.query;
 
-  const facetKeys = [].concat(facets);
+  let facetKeys = [];
+
+  if (!isEmpty(facets)) {
+    facetKeys = compact([].concat(facets.split(',')));
+  }
 
   getOverviewReport(filter, facetKeys, (error, results) => {
     if (error) {
@@ -471,7 +475,15 @@ router.get(PATH_PERFORMANCE, (request, response, next) => {
 
   const filter = options.filter || {};
 
-  getPerformanceReport(filter, (error, results) => {
+  const { facets } = request.query;
+
+  let facetKeys = [];
+
+  if (!isEmpty(facets)) {
+    facetKeys = compact([].concat(facets.split(',')));
+  }
+
+  getPerformanceReport(filter, facetKeys, (error, results) => {
     if (error) {
       next(error);
     } else {
@@ -505,7 +517,15 @@ router.get(PATH_OPERATOR_PERFORMANCE, (request, response, next) => {
 
   const filter = options.filter || {};
 
-  getOperatorPerformanceReport(filter, (error, results) => {
+  const { facets } = request.query;
+
+  let facetKeys = [];
+
+  if (!isEmpty(facets)) {
+    facetKeys = compact([].concat(facets.split(',')));
+  }
+
+  getOperatorPerformanceReport(filter, facetKeys, (error, results) => {
     if (error) {
       next(error);
     } else {
@@ -537,7 +557,15 @@ router.get(PATH_OPERATIONAL, (request, response, next) => {
 
   const filter = options.filter || {};
 
-  getOperationalReport(filter, (error, results) => {
+  const { facets } = request.query;
+
+  let facetKeys = [];
+
+  if (!isEmpty(facets)) {
+    facetKeys = compact([].concat(facets.split(',')));
+  }
+
+  getOperationalReport(filter, facetKeys, (error, results) => {
     if (error) {
       next(error);
     } else {

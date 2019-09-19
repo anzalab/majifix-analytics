@@ -58,7 +58,7 @@ const OVERVIEW_FACET = {
  * @param {object} onResults Callback when aggregation operation finishes
  * @returns {object} executed aggregation
  *
- * @version 0.1.0
+ * @version 0.2.0
  * @since 0.1.0
  *
  * @example
