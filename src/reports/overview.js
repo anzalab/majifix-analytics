@@ -21,6 +21,7 @@
 
 /* dependencies */
 import getBaseAggregation from '../base/servicerequest.base';
+import { getFacet } from '../util';
 import {
   OVERALL_FACET,
   JURISDICTION_FACET,
@@ -53,10 +54,11 @@ const OVERVIEW_FACET = {
  * @description Generate overview report based on provided criteria
  *
  * @param {object} criteria Criteria condition to be applied in $match
+ * @param {string[]} facetKeys Contain list of facets key to be used to generate report
  * @param {object} onResults Callback when aggregation operation finishes
  * @returns {object} executed aggregation
  *
- * @version 0.1.0
+ * @version 0.2.0
  * @since 0.1.0
  *
  * @example
@@ -64,10 +66,12 @@ const OVERVIEW_FACET = {
  *    ...
  *  });
  */
-const getOverviewReport = (criteria, onResults) => {
+const getOverviewReport = (criteria, facetKeys, onResults) => {
   const baseAggregation = getBaseAggregation(criteria);
 
-  return baseAggregation.facet(OVERVIEW_FACET).exec(onResults);
+  const FACET = getFacet(OVERVIEW_FACET, facetKeys);
+
+  return baseAggregation.facet(FACET).exec(onResults);
 };
 
 export default getOverviewReport;
