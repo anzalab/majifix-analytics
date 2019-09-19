@@ -435,7 +435,11 @@ router.get(PATH_OVERVIEW, (request, response, next) => {
 
   const filter = options.filter || {};
 
-  getOverviewReport(filter, (error, results) => {
+  const facets = options.facets || [];
+
+  const facetKeys = [].concat(facets);
+
+  getOverviewReport(filter, facetKeys, (error, results) => {
     if (error) {
       next(error);
     } else {

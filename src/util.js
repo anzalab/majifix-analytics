@@ -1,4 +1,13 @@
-import { head, map, merge, isNumber, omit, upperFirst } from 'lodash';
+import {
+  head,
+  map,
+  merge,
+  isNumber,
+  omit,
+  pick,
+  isEmpty,
+  upperFirst,
+} from 'lodash';
 import parseMs from 'parse-ms';
 
 /**
@@ -161,4 +170,27 @@ export const prepareReportResponse = results => {
   // }
 
   return { ...defaultResults, data };
+};
+
+/**
+ * @function
+ * @name getFacet
+ * @description Get final facet based on selected facet keys
+ *
+ * @param {object} facet Default facet for a report
+ * @param {string[]} facetKeys keys to be in the final facet
+ *
+ * @returns {object} final facet to be executed
+ *
+ * @version 0.1.0
+ * @since 0.7.0
+ */
+export const getFacet = (facet, facetKeys) => {
+  const newFacet = pick(facet, facetKeys);
+
+  if (isEmpty(newFacet)) {
+    return facet;
+  }
+
+  return newFacet;
 };

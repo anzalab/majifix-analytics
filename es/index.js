@@ -1,5 +1,5 @@
 import { pkg } from '@lykmapipo/common';
-import { head, merge, map, upperFirst, omit, isNumber } from 'lodash';
+import { head, merge, map, pick, isEmpty, upperFirst, omit, isNumber } from 'lodash';
 import { Router } from '@lykmapipo/express-common';
 import { getString } from '@lykmapipo/env';
 import { model } from '@lykmapipo/mongoose-common';
@@ -309,6 +309,170 @@ const getBaseAggregation = criteria => {
        */
       resolveTime: { $subtract: ['$resolvedAt', '$createdAt'] },
     });
+};
+
+/**
+ * @function
+ * @name normalizeTime
+ * @description Normalize average times which are in milliseconds to a human
+ * readable object
+ *
+ * @param {number} time Time in milliseconds
+ * @returns {object} time object that have days,hours,minutes, seconds and e.t.c
+ *
+ * @version 0.1.0
+ * @since 0.2.0
+ */
+const normalizeTime = time => {
+  if (!isNumber(time)) {
+    return parseMs(0);
+  }
+
+  const averageTime = time >= 0 ? time : -time;
+
+  return parseMs(averageTime);
+};
+
+/**
+ * @function
+ * @name normalizeMetricTimes
+ * @description Normalize aggregation object with metric times to a standard
+ * format. Also parse those times to human readable format
+ *
+ * @param {object} data Aggregation result object for a single facet or a single
+ * object in a facet which returns an array
+ * @returns {object} Object which is has merged data from the aggregration results
+ * and parsed metrics times to human readable format
+ *
+ * @version 0.1.0
+ * @since 0.5.0
+ */
+const normalizeMetricTimes = data => {
+  const keys = [
+    'confirmTime',
+    'assignTime',
+    'attendTime',
+    'completeTime',
+    'verifyTime',
+    'approveTime',
+    'resolveTime',
+    'lateTime',
+    'callTime',
+  ];
+
+  const times = map(keys, key => ({
+    [key]: {
+      minimum: normalizeTime(data[`minimum${upperFirst(key)}`]),
+      maximum: normalizeTime(data[`maximum${upperFirst(key)}`]),
+      average: normalizeTime(data[`average${upperFirst(key)}`]),
+    },
+  }));
+
+  const strippedObject = omit(data, [
+    'maximumAssignTime',
+    'minimumAssignTime',
+    'averageAssignTime',
+    'maximumAttendTime',
+    'minimumAttendTime',
+    'averageAttendTime',
+    'maximumCompleteTime',
+    'minimumCompleteTime',
+    'averageCompleteTime',
+    'maximumVerifyTime',
+    'minimumVerifyTime',
+    'averageVerifyTime',
+    'maximumApproveTime',
+    'minimumApproveTime',
+    'averageApproveTime',
+    'maximumResolveTime',
+    'minimumResolveTime',
+    'averageResolveTime',
+    'maximumLateTime',
+    'minimumLateTime',
+    'averageLateTime',
+    'maximumConfirmTime',
+    'minimumConfirmTime',
+    'averageConfirmTime',
+    'maximumCallTime',
+    'minimumCallTime',
+    'averageCallTime',
+  ]);
+
+  return merge({}, strippedObject, ...times);
+};
+
+/**
+ * @function
+ * @name prepareReportResponse
+ * @description Prepare response for Reports by normalizing response shape and average times
+ *
+ * @param {object} results Aggregation results
+ * @returns {object} Normalized response object
+ *
+ * @version 0.2.0
+ * @since 0.2.0
+ */
+const prepareReportResponse = results => {
+  const defaultResults = {
+    data: {},
+  };
+
+  const data = head(results);
+
+  data.overall = head(data.overall);
+
+  if (data.overall) {
+    data.overall = normalizeMetricTimes(data.overall);
+  }
+
+  if (data.jurisdictions) {
+    data.jurisdictions = map(data.jurisdictions, normalizeMetricTimes);
+  }
+
+  if (data.priorities) {
+    data.priorities = map(data.priorities, normalizeMetricTimes);
+  }
+
+  if (data.services) {
+    data.services = map(data.services, normalizeMetricTimes);
+  }
+
+  if (data.groups) {
+    data.groups = map(data.groups, normalizeMetricTimes);
+  }
+
+  if (data.types) {
+    data.types = map(data.types, normalizeMetricTimes);
+  }
+
+  // if (data.methods) {
+  //   data.methods = map(data.methods, normalizeObjectTimes);
+  // }
+
+  return { ...defaultResults, data };
+};
+
+/**
+ * @function
+ * @name getFacet
+ * @description Get final facet based on selected facet keys
+ *
+ * @param {object} facet Default facet for a report
+ * @param {string[]} facetKeys keys to be in the final facet
+ *
+ * @returns {object} final facet to be executed
+ *
+ * @version 0.1.0
+ * @since 0.7.0
+ */
+const getFacet = (facet, facetKeys) => {
+  const newFacet = pick(facet, facetKeys);
+
+  if (isEmpty(newFacet)) {
+    return facet;
+  }
+
+  return newFacet;
 };
 
 /* constants */
@@ -680,6 +844,7 @@ const OVERVIEW_FACET = {
  * @description Generate overview report based on provided criteria
  *
  * @param {object} criteria Criteria condition to be applied in $match
+ * @param {string[]} facetKeys Contain list of facets key to be used to generate report
  * @param {object} onResults Callback when aggregation operation finishes
  * @returns {object} executed aggregation
  *
@@ -691,10 +856,12 @@ const OVERVIEW_FACET = {
  *    ...
  *  });
  */
-const getOverviewReport = (criteria, onResults) => {
+const getOverviewReport = (criteria, facetKeys, onResults) => {
   const baseAggregation = getBaseAggregation(criteria);
 
-  return baseAggregation.facet(OVERVIEW_FACET).exec(onResults);
+  const FACET = getFacet(OVERVIEW_FACET, facetKeys);
+
+  return baseAggregation.facet(FACET).exec(onResults);
 };
 
 /**
@@ -839,147 +1006,6 @@ const getOperationalReport = (criteria, onResults) => {
   return baseAggregation.facet(OPERATIONAL_FACET).exec(onResults);
 };
 
-/**
- * @function
- * @name normalizeTime
- * @description Normalize average times which are in milliseconds to a human
- * readable object
- *
- * @param {number} time Time in milliseconds
- * @returns {object} time object that have days,hours,minutes, seconds and e.t.c
- *
- * @version 0.1.0
- * @since 0.2.0
- */
-const normalizeTime = time => {
-  if (!isNumber(time)) {
-    return parseMs(0);
-  }
-
-  const averageTime = time >= 0 ? time : -time;
-
-  return parseMs(averageTime);
-};
-
-/**
- * @function
- * @name normalizeMetricTimes
- * @description Normalize aggregation object with metric times to a standard
- * format. Also parse those times to human readable format
- *
- * @param {object} data Aggregation result object for a single facet or a single
- * object in a facet which returns an array
- * @returns {object} Object which is has merged data from the aggregration results
- * and parsed metrics times to human readable format
- *
- * @version 0.1.0
- * @since 0.5.0
- */
-const normalizeMetricTimes = data => {
-  const keys = [
-    'confirmTime',
-    'assignTime',
-    'attendTime',
-    'completeTime',
-    'verifyTime',
-    'approveTime',
-    'resolveTime',
-    'lateTime',
-    'callTime',
-  ];
-
-  const times = map(keys, key => ({
-    [key]: {
-      minimum: normalizeTime(data[`minimum${upperFirst(key)}`]),
-      maximum: normalizeTime(data[`maximum${upperFirst(key)}`]),
-      average: normalizeTime(data[`average${upperFirst(key)}`]),
-    },
-  }));
-
-  const strippedObject = omit(data, [
-    'maximumAssignTime',
-    'minimumAssignTime',
-    'averageAssignTime',
-    'maximumAttendTime',
-    'minimumAttendTime',
-    'averageAttendTime',
-    'maximumCompleteTime',
-    'minimumCompleteTime',
-    'averageCompleteTime',
-    'maximumVerifyTime',
-    'minimumVerifyTime',
-    'averageVerifyTime',
-    'maximumApproveTime',
-    'minimumApproveTime',
-    'averageApproveTime',
-    'maximumResolveTime',
-    'minimumResolveTime',
-    'averageResolveTime',
-    'maximumLateTime',
-    'minimumLateTime',
-    'averageLateTime',
-    'maximumConfirmTime',
-    'minimumConfirmTime',
-    'averageConfirmTime',
-    'maximumCallTime',
-    'minimumCallTime',
-    'averageCallTime',
-  ]);
-
-  return merge({}, strippedObject, ...times);
-};
-
-/**
- * @function
- * @name prepareReportResponse
- * @description Prepare response for Reports by normalizing response shape and average times
- *
- * @param {object} results Aggregation results
- * @returns {object} Normalized response object
- *
- * @version 0.2.0
- * @since 0.2.0
- */
-const prepareReportResponse = results => {
-  const defaultResults = {
-    data: {},
-  };
-
-  const data = head(results);
-
-  data.overall = head(data.overall);
-
-  if (data.overall) {
-    data.overall = normalizeMetricTimes(data.overall);
-  }
-
-  if (data.jurisdictions) {
-    data.jurisdictions = map(data.jurisdictions, normalizeMetricTimes);
-  }
-
-  if (data.priorities) {
-    data.priorities = map(data.priorities, normalizeMetricTimes);
-  }
-
-  if (data.services) {
-    data.services = map(data.services, normalizeMetricTimes);
-  }
-
-  if (data.groups) {
-    data.groups = map(data.groups, normalizeMetricTimes);
-  }
-
-  if (data.types) {
-    data.types = map(data.types, normalizeMetricTimes);
-  }
-
-  // if (data.methods) {
-  //   data.methods = map(data.methods, normalizeObjectTimes);
-  // }
-
-  return { ...defaultResults, data };
-};
-
 /* eslint-disable jsdoc/check-tag-names */
 
 /* local constants */
@@ -1014,7 +1040,11 @@ router.get(PATH_OVERVIEW, (request, response, next) => {
 
   const filter = options.filter || {};
 
-  getOverviewReport(filter, (error, results) => {
+  const facets = options.facets || [];
+
+  const facetKeys = [].concat(facets);
+
+  getOverviewReport(filter, facetKeys, (error, results) => {
     if (error) {
       next(error);
     } else {
