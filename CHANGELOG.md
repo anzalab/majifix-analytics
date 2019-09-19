@@ -1,3 +1,15 @@
+#### 0.7.0 (2019-09-19)
+
+##### Chores
+
+* **build:**  bundle library for v0.7.0 ([f81c2c22](https://github.com/anzalab/majifix-analytics/commit/f81c2c22bed4d3c4538b4b21c9a021c0f9eeb73b))
+* **package:**  update package version to 0.7.0 ([180fea61](https://github.com/anzalab/majifix-analytics/commit/180fea6192020aa91525b7f754b3a2564f643634))
+
+##### New Features
+
+*  add support for facet key selection for reports ([a43dc0f5](https://github.com/anzalab/majifix-analytics/commit/a43dc0f5dd1cfa1a14be5dc5a55671a81d79da17))
+* **overview:**  allow executing specifed facet keys only ([3e540389](https://github.com/anzalab/majifix-analytics/commit/3e540389f01a67d53316a762cefb8d68a47e942d))
+
 #### 0.6.0 (2019-09-17)
 
 ##### Chores

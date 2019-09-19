@@ -1,5 +1,5 @@
 import { pkg } from '@lykmapipo/common';
-import { head, merge, map, pick, isEmpty, upperFirst, omit, isNumber } from 'lodash';
+import { head, merge, map, pick, isEmpty, upperFirst, omit, isNumber, compact } from 'lodash';
 import { Router } from '@lykmapipo/express-common';
 import { getString } from '@lykmapipo/env';
 import { model } from '@lykmapipo/mongoose-common';
@@ -848,7 +848,7 @@ const OVERVIEW_FACET = {
  * @param {object} onResults Callback when aggregation operation finishes
  * @returns {object} executed aggregation
  *
- * @version 0.1.0
+ * @version 0.2.0
  * @since 0.1.0
  *
  * @example
@@ -899,10 +899,11 @@ const PERFORMANCE_FACET = {
  * @description Generate performance report based on provided criteria
  *
  * @param {object} criteria Criteria condition to be applied in $match
+ * @param {string[]} facetKeys Contain list of facets key to be used to generate report
  * @param {object} onResults Callback when aggregation operation finishes
  * @returns {object} executed aggregation
  *
- * @version 0.1.0
+ * @version 0.2.0
  * @since 0.1.0
  *
  * @example
@@ -910,10 +911,12 @@ const PERFORMANCE_FACET = {
  *    ...
  *  });
  */
-const getPerformanceReport = (criteria, onResults) => {
+const getPerformanceReport = (criteria, facetKeys, onResults) => {
   const baseAggregation = getBaseAggregation(criteria);
 
-  return baseAggregation.facet(PERFORMANCE_FACET).exec(onResults);
+  const FACET = getFacet(PERFORMANCE_FACET, facetKeys);
+
+  return baseAggregation.facet(FACET).exec(onResults);
 };
 
 /**
@@ -942,10 +945,11 @@ const OPERATOR_PERFORMANCE_FACET = {
  * @description Generate operator performance report based on provided criteria
  *
  * @param {object} criteria Criteria condition to be applied in $match
+ * @param {string[]} facetKeys Contain list of facets key to be used to generate report
  * @param {object} onResults Callback when aggregation operation finishes
  * @returns {object} executed aggregation
  *
- * @version 0.1.0
+ * @version 0.2.0
  * @since 0.1.0
  *
  * @example
@@ -953,10 +957,12 @@ const OPERATOR_PERFORMANCE_FACET = {
  *    ...
  *  });
  */
-const getOperatorPerformanceReport = (criteria, onResults) => {
+const getOperatorPerformanceReport = (criteria, facetKeys, onResults) => {
   const baseAggregation = getBaseAggregation(criteria);
 
-  return baseAggregation.facet(OPERATOR_PERFORMANCE_FACET).exec(onResults);
+  const FACET = getFacet(OPERATOR_PERFORMANCE_FACET, facetKeys);
+
+  return baseAggregation.facet(FACET).exec(onResults);
 };
 
 /**
@@ -989,10 +995,11 @@ const OPERATIONAL_FACET = {
  * @description Generate operational report based on provided criteria
  *
  * @param {object} criteria Criteria condition to be applied in $match
+ * @param {string[]} facetKeys Contain list of facets key to be used to generate report
  * @param {object} onResults Callback when aggregation operation finishes
  * @returns {object} executed aggregation
  *
- * @version 0.1.0
+ * @version 0.2.0
  * @since 0.1.0
  *
  * @example
@@ -1000,10 +1007,12 @@ const OPERATIONAL_FACET = {
  *    ...
  *  });
  */
-const getOperationalReport = (criteria, onResults) => {
+const getOperationalReport = (criteria, facetKeys, onResults) => {
   const baseAggregation = getBaseAggregation(criteria);
 
-  return baseAggregation.facet(OPERATIONAL_FACET).exec(onResults);
+  const FACET = getFacet(OPERATIONAL_FACET, facetKeys);
+
+  return baseAggregation.facet(FACET).exec(onResults);
 };
 
 /* eslint-disable jsdoc/check-tag-names */
@@ -1040,9 +1049,13 @@ router.get(PATH_OVERVIEW, (request, response, next) => {
 
   const filter = options.filter || {};
 
-  const facets = options.facets || [];
+  const { facets } = request.query;
 
-  const facetKeys = [].concat(facets);
+  let facetKeys = [];
+
+  if (!isEmpty(facets)) {
+    facetKeys = compact([].concat(facets.split(',')));
+  }
 
   getOverviewReport(filter, facetKeys, (error, results) => {
     if (error) {
@@ -1076,7 +1089,15 @@ router.get(PATH_PERFORMANCE, (request, response, next) => {
 
   const filter = options.filter || {};
 
-  getPerformanceReport(filter, (error, results) => {
+  const { facets } = request.query;
+
+  let facetKeys = [];
+
+  if (!isEmpty(facets)) {
+    facetKeys = compact([].concat(facets.split(',')));
+  }
+
+  getPerformanceReport(filter, facetKeys, (error, results) => {
     if (error) {
       next(error);
     } else {
@@ -1110,7 +1131,15 @@ router.get(PATH_OPERATOR_PERFORMANCE, (request, response, next) => {
 
   const filter = options.filter || {};
 
-  getOperatorPerformanceReport(filter, (error, results) => {
+  const { facets } = request.query;
+
+  let facetKeys = [];
+
+  if (!isEmpty(facets)) {
+    facetKeys = compact([].concat(facets.split(',')));
+  }
+
+  getOperatorPerformanceReport(filter, facetKeys, (error, results) => {
     if (error) {
       next(error);
     } else {
@@ -1142,7 +1171,15 @@ router.get(PATH_OPERATIONAL, (request, response, next) => {
 
   const filter = options.filter || {};
 
-  getOperationalReport(filter, (error, results) => {
+  const { facets } = request.query;
+
+  let facetKeys = [];
+
+  if (!isEmpty(facets)) {
+    facetKeys = compact([].concat(facets.split(',')));
+  }
+
+  getOperationalReport(filter, facetKeys, (error, results) => {
     if (error) {
       next(error);
     } else {
