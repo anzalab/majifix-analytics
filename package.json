@@ -20,7 +20,12 @@
     "chore:deps": "ncu -u && npm install --save",
     "lint:config": "eslint --print-config rollup.config.js"
   },
-  "keywords": ["anzalab", "majifix", "analytics", "isomophic"],
+  "keywords": [
+    "anzalab",
+    "majifix",
+    "analytics",
+    "isomophic"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/anzalab/majifix-analytics.git"
@@ -43,46 +48,46 @@
   },
   "homepage": "https://github.com/anzalab/majifix-analytics#readme",
   "devDependencies": {
-    "@babel/cli": "^7.6.0",
-    "@babel/core": "^7.6.0",
-    "@babel/node": "^7.6.1",
-    "@babel/preset-env": "^7.6.0",
-    "@babel/register": "^7.6.0",
-    "@commitlint/cli": "^8.1.0",
-    "@commitlint/config-conventional": "^8.1.0",
-    "@commitlint/travis-cli": "^8.1.0",
+    "@babel/cli": "^7.6.2",
+    "@babel/core": "^7.6.2",
+    "@babel/node": "^7.6.2",
+    "@babel/preset-env": "^7.6.2",
+    "@babel/register": "^7.6.2",
+    "@commitlint/cli": "^8.2.0",
+    "@commitlint/config-conventional": "^8.2.0",
+    "@commitlint/travis-cli": "^8.2.0",
     "chai": "^4.2.0",
     "commitizen": "^4.0.3",
     "coveralls": "^3.0.6",
     "cz-conventional-changelog": "^3.0.2",
     "doxdox": "^3.0.0",
-    "eslint": "^6.3.0",
+    "eslint": "^6.4.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-config-prettier": "^6.3.0",
     "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-jsdoc": "^15.9.1",
+    "eslint-plugin-jsdoc": "^15.9.2",
     "eslint-plugin-mocha": "^6.1.1",
-    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-prettier": "^3.1.1",
     "generate-changelog": "^1.8.0",
-    "handlebars": "^4.2.0",
+    "handlebars": "^4.3.1",
     "husky": "^3.0.5",
-    "lint-staged": "^9.2.5",
+    "lint-staged": "^9.3.0",
     "lodash.template": "^4.5.0",
     "mocha": "^6.2.0",
-    "mongoose": "^5.7.0",
+    "mongoose": "^5.7.1",
     "npm-check-updates": "^3.1.23",
     "nyc": "^14.1.1",
     "prettier": "^1.18.2",
     "rimraf": "^3.0.0",
-    "rollup": "^1.21.2",
+    "rollup": "^1.21.4",
     "shelljs": "^0.8.3"
   },
   "peerDependencies": {},
   "dependencies": {
-    "@lykmapipo/common": "^0.26.2",
-    "@lykmapipo/env": "^0.13.1",
-    "@lykmapipo/express-common": "^0.17.10",
-    "@lykmapipo/mongoose-common": "^0.25.11",
+    "@lykmapipo/common": "^0.26.4",
+    "@lykmapipo/env": "^0.14.1",
+    "@lykmapipo/express-common": "^0.17.12",
+    "@lykmapipo/mongoose-common": "^0.25.14",
     "async": "^3.1.0",
     "lodash": "^4.17.15",
     "parse-ms": "^2.1.0"
@@ -97,10 +102,15 @@
     }
   },
   "commitlint": {
-    "extends": ["@commitlint/config-conventional"]
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   },
   "lint-staged": {
-    "src/**/*.js": ["npm run lint", "git add -A"]
+    "src/**/*.js": [
+      "npm run lint",
+      "git add -A"
+    ]
   },
   "husky": {
     "hooks": {
