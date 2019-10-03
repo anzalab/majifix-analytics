@@ -18,7 +18,7 @@
  */
 
 /* dependencies */
-import getBaseAggregation from '../base/servicerequest.base';
+import getBaseAggregation, { METRIC_TIMES } from '../base/servicerequest.base';
 import { getFacet } from '../util';
 import { OVERALL_FACET, SERVICE_FACET } from '../base/facets';
 
@@ -37,7 +37,7 @@ const OPERATIONAL_FACET = {
  * @param {object} onResults Callback when aggregation operation finishes
  * @returns {object} executed aggregation
  *
- * @version 0.2.0
+ * @version 0.2.1
  * @since 0.1.0
  *
  * @example
@@ -46,7 +46,7 @@ const OPERATIONAL_FACET = {
  *  });
  */
 const getOperationalReport = (criteria, facetKeys, onResults) => {
-  const baseAggregation = getBaseAggregation(criteria);
+  const baseAggregation = getBaseAggregation(criteria, METRIC_TIMES);
 
   const FACET = getFacet(OPERATIONAL_FACET, facetKeys);
 

@@ -401,6 +401,7 @@ import getOverviewReport from './reports/overview';
 import getPerformanceReport from './reports/performance';
 import getOperatorPerformanceReport from './reports/operator';
 import getOperationalReport from './reports/operational';
+import getStandingReport from './reports/standing';
 import { prepareReportResponse } from './util';
 
 /* local constants */
@@ -409,6 +410,7 @@ const PATH_OVERVIEW = '/reports/overviews';
 const PATH_PERFORMANCE = '/reports/performances';
 const PATH_OPERATIONAL = '/reports/operations';
 const PATH_OPERATOR_PERFORMANCE = '/reports/operators';
+const PATH_STANDING = '/reports/standings';
 
 const router = new Router({
   version: API_VERSION,
@@ -575,5 +577,38 @@ router.get(PATH_OPERATIONAL, (request, response, next) => {
     }
   });
 });
+
+/**
+ * @api {get} /reports/standing Report
+ * @apiGroup Analytics
+ * @apiName GetStanding
+ * @apiVersion 1.0.0
+ * @apiDescription Return overview report
+ * @apiUse RequestHeaders
+ * @apiUse Operator
+ *
+ * @apiUse RequestHeaderExample
+ * @apiUse OverviewSuccessResponse
+ * @apiUse JWTError
+ * @apiUse JWTErrorExample
+ * @apiUse AuthorizationHeaderError
+ * @apiUse AuthorizationHeaderErrorExample
+ */
+router.get(PATH_STANDING, (request, response, next) => {
+  const options = merge({}, request.mquery);
+
+  const filter = options.filter || {};
+
+  getStandingReport(filter, (error, results) => {
+    if (error) {
+      next(error);
+    } else {
+      const data = { data: results };
+      response.status(200);
+      response.json(data);
+    }
+  });
+});
+
 /* eslint-enable jsdoc/check-tag-names */
 export default router;
