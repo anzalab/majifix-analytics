@@ -603,7 +603,7 @@ router.get(PATH_STANDING, (request, response, next) => {
     if (error) {
       next(error);
     } else {
-      const data = prepareReportResponse(results);
+      const data = { data: results };
       response.status(200);
       response.json(data);
     }
