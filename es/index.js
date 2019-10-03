@@ -1015,6 +1015,65 @@ const getOperationalReport = (criteria, facetKeys, onResults) => {
   return baseAggregation.facet(FACET).exec(onResults);
 };
 
+/**
+ * This is standing report based on service request
+ *
+ * This reports provides count of service requests per jurisdictions,
+ * per group, per service, per status and per priority
+ *
+ * @author Benson Maruchu<benmaruchu@gmail.com>
+ * @version 0.1.0
+ * @since 0.8.0
+ */
+
+/**
+ * @function
+ * @name getStandingReport
+ * @description Generate standing report based on provided criteria
+ *
+ * @param {object} criteria Criteria condition to be applied in $match
+ * @param {object} onResults Callback when aggregation operation finishes
+ * @returns {object} executed aggregation
+ *
+ * @version 0.1.0
+ * @since 0.8.0
+ *
+ * @example
+ *  getStandingReport(criteria, function(error, data){
+ *    ...
+ *  });
+ */
+const getStandingReport = (criteria, onResults) => {
+  const baseAggregation = getBaseAggregation(criteria);
+
+  return baseAggregation
+    .group({
+      _id: {
+        jurisdiction: '$jurisdiction.name',
+        group: '$group.name.en',
+        service: '$service.name.en',
+        status: '$status.name.en',
+        priority: '$priority.name.en',
+      },
+      jurisdiction: { $first: '$jurisdiction' },
+      group: { $first: '$group' },
+      service: { $first: '$service' },
+      status: { $first: '$status' },
+      priority: { $first: '$priority' },
+      count: { $sum: 1 },
+    })
+    .project({
+      _id: 0,
+      count: 1,
+      jurisdiction: { name: 1, code: 1, color: 1 },
+      group: { name: 1, code: 1, color: 1 },
+      service: { name: 1, code: 1, color: 1 },
+      status: { name: 1, color: 1, weight: 1 },
+      priority: { name: 1, color: 1, weight: 1 },
+    })
+    .exec(onResults);
+};
+
 /* eslint-disable jsdoc/check-tag-names */
 
 /* local constants */
@@ -1023,6 +1082,7 @@ const PATH_OVERVIEW = '/reports/overviews';
 const PATH_PERFORMANCE = '/reports/performances';
 const PATH_OPERATIONAL = '/reports/operations';
 const PATH_OPERATOR_PERFORMANCE = '/reports/operators';
+const PATH_STANDING = '/reports/standings';
 
 const router = new Router({
   version: API_VERSION,
@@ -1180,6 +1240,38 @@ router.get(PATH_OPERATIONAL, (request, response, next) => {
   }
 
   getOperationalReport(filter, facetKeys, (error, results) => {
+    if (error) {
+      next(error);
+    } else {
+      const data = prepareReportResponse(results);
+      response.status(200);
+      response.json(data);
+    }
+  });
+});
+
+/**
+ * @api {get} /reports/standing Operational Report
+ * @apiGroup Analytics
+ * @apiName GetStanding
+ * @apiVersion 1.0.0
+ * @apiDescription Return overview report
+ * @apiUse RequestHeaders
+ * @apiUse Operator
+ *
+ * @apiUse RequestHeaderExample
+ * @apiUse OverviewSuccessResponse
+ * @apiUse JWTError
+ * @apiUse JWTErrorExample
+ * @apiUse AuthorizationHeaderError
+ * @apiUse AuthorizationHeaderErrorExample
+ */
+router.get(PATH_STANDING, (request, response, next) => {
+  const options = merge({}, request.mquery);
+
+  const filter = options.filter || {};
+
+  getStandingReport(filter, (error, results) => {
     if (error) {
       next(error);
     } else {
