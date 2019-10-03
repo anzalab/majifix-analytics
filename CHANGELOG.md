@@ -1,3 +1,35 @@
+#### 0.8.0 (2019-10-03)
+
+##### Chores
+
+* **build:**
+  *  bundle library for v0.8.0 ([b479bab1](https://github.com/anzalab/majifix-analytics/commit/b479bab1bb67f58c5f5fb23e122ff6bad181f266))
+  *  bundle library for testing ([40a879b2](https://github.com/anzalab/majifix-analytics/commit/40a879b212d2fe40d4f4b17a72ffe7f1d726a1c7))
+  *  bundle library for testing ([761a847a](https://github.com/anzalab/majifix-analytics/commit/761a847a223d81ac62b822d71a906b7c8e0e5f2c))
+* **package:**
+  *  update package version to 0.8.0 ([90d49185](https://github.com/anzalab/majifix-analytics/commit/90d491852ebfb61eb9db1db8d7e0827627f51ce1))
+  *  use >= for dependencies version instead of ^ ([62a47ac4](https://github.com/anzalab/majifix-analytics/commit/62a47ac42c779e1614c3eeb5929a0c87f7c81afd))
+* **deps:**
+  *  update dependencies to latest versions ([85aa0bd7](https://github.com/anzalab/majifix-analytics/commit/85aa0bd724f3e5d279f3344198f38f6c71ab0336))
+  *  update dependencies to latest versions ([4efc47b7](https://github.com/anzalab/majifix-analytics/commit/4efc47b759bef4779f7f3e305f5adb8c5133427b))
+  *  update dependencies to latest versions ([8713ba2b](https://github.com/anzalab/majifix-analytics/commit/8713ba2b4b6cacbef2acc07ac7bd9edaa709012b))
+
+##### Documentation Changes
+
+* **router:**  update standing route jsdoc ([56c22d9e](https://github.com/anzalab/majifix-analytics/commit/56c22d9ec1fc496f7deef419740ad4971adc46e4))
+
+##### New Features
+
+* **reports:**  add standing report ([3550aba2](https://github.com/anzalab/majifix-analytics/commit/3550aba20f2baf51f227ddb8ec3f843d010d6ff6))
+
+##### Bug Fixes
+
+* **standing:**  return all results from aggregation ([ca7dfb33](https://github.com/anzalab/majifix-analytics/commit/ca7dfb33dec9e0799386f63f0d6f9d6fbf0d1992))
+
+##### Refactors
+
+*  allow selection of fields to be added in service request base ([f2b80b6f](https://github.com/anzalab/majifix-analytics/commit/f2b80b6ff70f2af132f887a976cb55649bd6cc1a))
+
 #### 0.7.0 (2019-09-19)
 
 ##### Chores
