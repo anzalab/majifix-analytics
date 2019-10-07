@@ -220,6 +220,7 @@ const METRIC_FLAGS_FIELDS = {
     },
   },
 };
+
 const METRIC_TIMES_FIELDS = {
   /**
    * Time difference between when service request was reported and when it was
@@ -283,6 +284,12 @@ const METRIC_TIMES_FIELDS = {
    * This is the time for an approved service request to be marked as resolved
    */
   resolveTime: { $subtract: ['$resolvedAt', '$createdAt'] },
+
+  /**
+   * This is time elapsed when issue was assigned to a party until when it was
+   * marked as complete
+   */
+  workTime: { $subtract: ['$completedAt', '$assignedAt'] },
 };
 
 /* fields that can be added service request base aggregation */

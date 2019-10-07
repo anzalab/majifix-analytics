@@ -27,6 +27,9 @@ const METRIC_TIMES = {
   maximumCallTime: { $max: '$call.duration.milliseconds' },
   minimumCallTime: { $min: '$call.duration.milliseconds' },
   averageCallTime: { $avg: '$call.duration.milliseconds' },
+  maximumWorkTime: { $max: '$workTime' },
+  minimumWorkTime: { $min: '$workTime' },
+  averageWorkTime: { $avg: '$workTime' },
 };
 
 const METRIC_COUNTS = {
