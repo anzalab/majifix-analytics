@@ -31,7 +31,7 @@ const METRIC_TIMES = {
 
 const METRIC_COUNTS = {
   approved: { $sum: '$approved' },
-  assigned: { $sum: 'assigned' },
+  assigned: { $sum: '$assigned' },
   attended: { $sum: '$attended' },
   completed: { $sum: '$completed' },
   count: { $sum: 1 },
