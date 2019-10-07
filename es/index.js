@@ -1,9 +1,10 @@
 import { pkg } from '@lykmapipo/common';
-import { head, merge, map, pick, isEmpty, upperFirst, omit, isNumber, compact } from 'lodash';
+import { head, merge, map, pick, isEmpty, upperFirst, omit, isNumber, flattenDeep, compact } from 'lodash';
 import { Router } from '@lykmapipo/express-common';
 import { getString } from '@lykmapipo/env';
 import { model } from '@lykmapipo/mongoose-common';
 import parseMs from 'parse-ms';
+import { parallel } from 'async';
 
 /**
  * Base aggregation for service requests
@@ -846,6 +847,32 @@ const OPERATOR_LEADERSBOARD_FACET = {
 };
 
 /**
+ * @namespace ITEM_FACET
+ * @description Facet for service requests per items
+ *
+ * @version 0.1.0
+ * @since 0.10.0
+ */
+const ITEM_FACET = {
+  zones: [
+    {
+      $group: {
+        _id: '$item._id',
+        count: { $sum: '$quantity' },
+        name: { $first: '$item.name' },
+        color: { $first: '$item.color' },
+        description: { $first: '$item.description' },
+      },
+    },
+    {
+      $sort: {
+        count: -1,
+      },
+    },
+  ],
+};
+
+/**
  * This is overview report based on service request
  * It consist of
  *  - Total service requests per a given period
@@ -1007,6 +1034,33 @@ const getOperatorPerformanceReport = (criteria, facetKeys, onResults) => {
 };
 
 /**
+ * Base aggregation for Changelogs
+ *
+ * @author Benson Maruchu<benmaruchu@gmail.com>
+ *
+ * @version 0.1.0
+ * @since 0.1.0
+ */
+
+/**
+ * @function
+ * @name getBaseAggregation
+ * @description Create base aggregation for Chagelog with all fields
+ * looked up and un-winded for aggregation operations
+ *
+ * @param {object} criteria Criteria conditions which will be applied in $match
+ * @returns {object} aggregation instance
+ *
+ * @version 0.1.0
+ * @since 0.1.0
+ */
+const getBaseAggregation$1 = criteria => {
+  const ChangeLog = model('ChangeLog');
+
+  return ChangeLog.lookup(criteria).facet(ITEM_FACET);
+};
+
+/**
  * This is operational report based on service request
  * It consist of
  *  - Total service requests per a given period
@@ -1050,10 +1104,21 @@ const OPERATIONAL_FACET = {
  */
 const getOperationalReport = (criteria, facetKeys, onResults) => {
   const baseAggregation = getBaseAggregation(criteria, METRIC_TIMES);
+  const changelogBaseAggregation = getBaseAggregation$1(criteria);
 
   const FACET = getFacet(OPERATIONAL_FACET, facetKeys);
 
-  return baseAggregation.facet(FACET).exec(onResults);
+  const getChangelogReport = next => changelogBaseAggregation.exec(next);
+
+  const getServiceRequestReport = next =>
+    baseAggregation.facet(FACET).exec(next);
+
+  return parallel(
+    [getChangelogReport, getServiceRequestReport],
+    (error, results) => {
+      return onResults(error, flattenDeep(results));
+    }
+  );
 };
 
 /**
