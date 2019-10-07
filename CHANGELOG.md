@@ -1,3 +1,15 @@
+#### 0.9.0 (2019-10-07)
+
+##### Chores
+
+* **build:**  bundle library for v0.9.0 ([a8d6f655](https://github.com/anzalab/majifix-analytics/commit/a8d6f6558c7b3df6bceacace56f737253d0932af))
+* **package:**  update package version to 0.9.0 ([74e9a891](https://github.com/anzalab/majifix-analytics/commit/74e9a8913d4495dc6a9493fe472fe0d663816e22))
+
+##### New Features
+
+*  add wait time field in service request base ([bc627bb2](https://github.com/anzalab/majifix-analytics/commit/bc627bb2f36b716e54a677c090e7958733de9287))
+*  add workTime field in service request base ([a5595d58](https://github.com/anzalab/majifix-analytics/commit/a5595d581336df883fa3803046254c36596f2f5d))
+
 #### 0.8.3 (2019-10-07)
 
 ##### Chores
