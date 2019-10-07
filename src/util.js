@@ -64,7 +64,7 @@ export const normalizeObjectTimes = item => {
  * @returns {object} Object which is has merged data from the aggregration results
  * and parsed metrics times to human readable format
  *
- * @version 0.1.0
+ * @version 0.2.0
  * @since 0.5.0
  */
 export const normalizeMetricTimes = data => {
@@ -78,6 +78,8 @@ export const normalizeMetricTimes = data => {
     'resolveTime',
     'lateTime',
     'callTime',
+    'waitTime',
+    'workTime',
   ];
 
   const times = map(keys, key => ({
@@ -116,6 +118,12 @@ export const normalizeMetricTimes = data => {
     'maximumCallTime',
     'minimumCallTime',
     'averageCallTime',
+    'maximumWaitTime',
+    'minimumWaitTime',
+    'averageWaitTime',
+    'maximumWorkTime',
+    'minimumWorkTime',
+    'averageWorkTime',
   ]);
 
   return merge({}, strippedObject, ...times);
