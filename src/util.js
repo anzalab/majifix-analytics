@@ -78,7 +78,6 @@ export const normalizeMetricTimes = data => {
     'resolveTime',
     'lateTime',
     'callTime',
-    'waitTime',
     'workTime',
   ];
 
@@ -118,9 +117,6 @@ export const normalizeMetricTimes = data => {
     'maximumCallTime',
     'minimumCallTime',
     'averageCallTime',
-    'maximumWaitTime',
-    'minimumWaitTime',
-    'averageWaitTime',
     'maximumWorkTime',
     'minimumWorkTime',
     'averageWorkTime',
