@@ -1,3 +1,14 @@
+#### 0.8.3 (2019-10-07)
+
+##### Chores
+
+* **build:**  bundle library for v0.8.1 ([4465dccc](https://github.com/anzalab/majifix-analytics/commit/4465dccc60d15dad48bee95836c79d1d323d80bb))
+* **package:**  update package version to 0.8.1 ([7fe49336](https://github.com/anzalab/majifix-analytics/commit/7fe49336ae8d5a5d2b53319475d7552bb4e9f957))
+
+##### Bug Fixes
+
+* **facet:**  add $ before assigned mongo variable ([bcec3a65](https://github.com/anzalab/majifix-analytics/commit/bcec3a654bce380b717fbbd387b5f13cdc894def))
+
 #### 0.8.0 (2019-10-03)
 
 ##### Chores
