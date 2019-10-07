@@ -224,6 +224,7 @@ const METRIC_FLAGS_FIELDS = {
     },
   },
 };
+
 const METRIC_TIMES_FIELDS = {
   /**
    * Time difference between when service request was reported and when it was
@@ -287,6 +288,19 @@ const METRIC_TIMES_FIELDS = {
    * This is the time for an approved service request to be marked as resolved
    */
   resolveTime: { $subtract: ['$resolvedAt', '$createdAt'] },
+
+  /**
+   * This is time elapsed when issue was assigned to a party until when it was
+   * marked as complete
+   */
+  workTime: { $subtract: ['$completedAt', '$assignedAt'] },
+
+  /**
+   * This is the time elapsed between when service request have been confirmed
+   * (reported by an operator) and when is have been assigned to someone to work
+   * on it
+   */
+  waitTime: { $subtract: ['$assignedAt', '$confirmedAt'] },
 };
 
 /* fields that can be added service request base aggregation */
@@ -371,7 +385,7 @@ const normalizeTime = time => {
  * @returns {object} Object which is has merged data from the aggregration results
  * and parsed metrics times to human readable format
  *
- * @version 0.1.0
+ * @version 0.2.0
  * @since 0.5.0
  */
 const normalizeMetricTimes = data => {
@@ -385,6 +399,8 @@ const normalizeMetricTimes = data => {
     'resolveTime',
     'lateTime',
     'callTime',
+    'waitTime',
+    'workTime',
   ];
 
   const times = map(keys, key => ({
@@ -423,6 +439,12 @@ const normalizeMetricTimes = data => {
     'maximumCallTime',
     'minimumCallTime',
     'averageCallTime',
+    'maximumWaitTime',
+    'minimumWaitTime',
+    'averageWaitTime',
+    'maximumWorkTime',
+    'minimumWorkTime',
+    'averageWorkTime',
   ]);
 
   return merge({}, strippedObject, ...times);
@@ -531,6 +553,12 @@ const METRIC_TIMES$1 = {
   maximumCallTime: { $max: '$call.duration.milliseconds' },
   minimumCallTime: { $min: '$call.duration.milliseconds' },
   averageCallTime: { $avg: '$call.duration.milliseconds' },
+  maximumWaitTime: { $max: '$waitTime' },
+  minimumWaitTime: { $min: '$waitTime' },
+  averageWaitTime: { $avg: '$waitTime' },
+  maximumWorkTime: { $max: '$workTime' },
+  minimumWorkTime: { $min: '$workTime' },
+  averageWorkTime: { $avg: '$workTime' },
 };
 
 const METRIC_COUNTS = {
