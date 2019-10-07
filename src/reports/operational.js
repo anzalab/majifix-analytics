@@ -18,7 +18,10 @@
  */
 
 /* dependencies */
+import { parallel } from 'async';
+import { flattenDeep } from 'lodash';
 import getBaseAggregation, { METRIC_TIMES } from '../base/servicerequest.base';
+import getChangelogBaseAggregation from '../base/changelog.base';
 import { getFacet } from '../util';
 import { OVERALL_FACET, SERVICE_FACET } from '../base/facets';
 
@@ -47,10 +50,21 @@ const OPERATIONAL_FACET = {
  */
 const getOperationalReport = (criteria, facetKeys, onResults) => {
   const baseAggregation = getBaseAggregation(criteria, METRIC_TIMES);
+  const changelogBaseAggregation = getChangelogBaseAggregation(criteria);
 
   const FACET = getFacet(OPERATIONAL_FACET, facetKeys);
 
-  return baseAggregation.facet(FACET).exec(onResults);
+  const getChangelogReport = next => changelogBaseAggregation.exec(next);
+
+  const getServiceRequestReport = next =>
+    baseAggregation.facet(FACET).exec(next);
+
+  return parallel(
+    [getChangelogReport, getServiceRequestReport],
+    (error, results) => {
+      return onResults(error, flattenDeep(results));
+    }
+  );
 };
 
 export default getOperationalReport;

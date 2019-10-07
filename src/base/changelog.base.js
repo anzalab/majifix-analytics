@@ -9,6 +9,7 @@
 
 /* dependencies */
 import { model } from '@lykmapipo/mongoose-common';
+import { ITEM_FACET } from './facets';
 
 /**
  * @function
@@ -25,7 +26,7 @@ import { model } from '@lykmapipo/mongoose-common';
 const getBaseAggregation = criteria => {
   const ChangeLog = model('ChangeLog');
 
-  return ChangeLog.lookup(criteria);
+  return ChangeLog.lookup(criteria).facet(ITEM_FACET);
 };
 
 export default getBaseAggregation;

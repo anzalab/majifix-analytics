@@ -420,3 +420,29 @@ export const ZONE_FACET = {
     },
   ],
 };
+
+/**
+ * @namespace ITEM_FACET
+ * @description Facet for service requests per items
+ *
+ * @version 0.1.0
+ * @since 0.10.0
+ */
+export const ITEM_FACET = {
+  zones: [
+    {
+      $group: {
+        _id: '$item._id',
+        count: { $sum: '$quantity' },
+        name: { $first: '$item.name' },
+        color: { $first: '$item.color' },
+        description: { $first: '$item.description' },
+      },
+    },
+    {
+      $sort: {
+        count: -1,
+      },
+    },
+  ],
+};
