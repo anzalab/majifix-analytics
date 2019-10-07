@@ -1,3 +1,14 @@
+#### 0.9.1 (2019-10-07)
+
+##### Chores
+
+* **build:**  bundle library for v0.9.1 ([4da0e56f](https://github.com/anzalab/majifix-analytics/commit/4da0e56f923fdc0ca6b86a08366dbc78253e69ee))
+* **package:**  update package version to 0.9.1 ([c948b073](https://github.com/anzalab/majifix-analytics/commit/c948b07322e72d17116b69b883ccf207749c920d))
+
+##### Refactors
+
+*  remove wait time since it is the same as assigned time ([b7d6b456](https://github.com/anzalab/majifix-analytics/commit/b7d6b456360d1d92bca5e389663cfa838699e86e))
+
 #### 0.9.0 (2019-10-07)
 
 ##### Chores
