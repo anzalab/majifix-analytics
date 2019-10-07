@@ -123,9 +123,6 @@ describe('Utils', () => {
         maximumWorkTime: 0,
         minimumWorkTime: 0,
         averageWorkTime: 0,
-        maximumWaitTime: 0,
-        minimumWaitTime: 0,
-        averageWaitTime: 0,
       };
 
       const expectedOutput = {
@@ -421,35 +418,6 @@ describe('Utils', () => {
             seconds: 0,
           },
         },
-        waitTime: {
-          average: {
-            days: 0,
-            hours: 0,
-            microseconds: 0,
-            milliseconds: 0,
-            minutes: 0,
-            nanoseconds: 0,
-            seconds: 0,
-          },
-          maximum: {
-            days: 0,
-            hours: 0,
-            microseconds: 0,
-            milliseconds: 0,
-            minutes: 0,
-            nanoseconds: 0,
-            seconds: 0,
-          },
-          minimum: {
-            days: 0,
-            hours: 0,
-            microseconds: 0,
-            milliseconds: 0,
-            minutes: 0,
-            nanoseconds: 0,
-            seconds: 0,
-          },
-        },
         resolved: 2,
       };
 
@@ -493,9 +461,6 @@ describe('Utils', () => {
               maximumCallTime: 0,
               minimumCallTime: 0,
               averageCallTime: 0,
-              maximumWaitTime: null,
-              minimumWaitTime: null,
-              averageWaitTime: null,
               maximumWorkTime: null,
               minimumWorkTime: null,
               averageWorkTime: null,
@@ -804,35 +769,6 @@ describe('Utils', () => {
                 seconds: 0,
               },
             },
-            waitTime: {
-              average: {
-                days: 0,
-                hours: 0,
-                microseconds: 0,
-                milliseconds: 0,
-                minutes: 0,
-                nanoseconds: 0,
-                seconds: 0,
-              },
-              maximum: {
-                days: 0,
-                hours: 0,
-                microseconds: 0,
-                milliseconds: 0,
-                minutes: 0,
-                nanoseconds: 0,
-                seconds: 0,
-              },
-              minimum: {
-                days: 0,
-                hours: 0,
-                microseconds: 0,
-                milliseconds: 0,
-                minutes: 0,
-                nanoseconds: 0,
-                seconds: 0,
-              },
-            },
             workTime: {
               average: {
                 days: 0,
@@ -1102,35 +1038,6 @@ describe('Utils', () => {
                 },
               },
               callTime: {
-                average: {
-                  days: 0,
-                  hours: 0,
-                  microseconds: 0,
-                  milliseconds: 0,
-                  minutes: 0,
-                  nanoseconds: 0,
-                  seconds: 0,
-                },
-                maximum: {
-                  days: 0,
-                  hours: 0,
-                  microseconds: 0,
-                  milliseconds: 0,
-                  minutes: 0,
-                  nanoseconds: 0,
-                  seconds: 0,
-                },
-                minimum: {
-                  days: 0,
-                  hours: 0,
-                  microseconds: 0,
-                  milliseconds: 0,
-                  minutes: 0,
-                  nanoseconds: 0,
-                  seconds: 0,
-                },
-              },
-              waitTime: {
                 average: {
                   days: 0,
                   hours: 0,
