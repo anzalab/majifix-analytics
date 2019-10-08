@@ -274,7 +274,7 @@ export const WORKSPACE_FACET = {
 /**
  * @namespace REPORTING_CHANNEL_FACET
  * @description Facet for service requests breakdown based on their reporting
- * channels i.e call, ussd , web, mobile app, visit e.t.c
+ * channels i.e call, USSD , web, mobile app, visit e.t.c
  *
  * @version 0.2.1
  * @since 0.1.0
@@ -303,7 +303,7 @@ export const REPORTING_CHANNEL_FACET = {
 
 /**
  * @namespace SERVICE_STATUS_BREAKDOWN_FACET
- * @description Facet for breakingdown service requests per their services and
+ * @description Facet for breaking down service requests per their services and
  * statuses
  *
  * @version 0.1.0
