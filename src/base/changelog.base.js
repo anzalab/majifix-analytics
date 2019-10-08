@@ -9,12 +9,11 @@
 
 /* dependencies */
 import { model } from '@lykmapipo/mongoose-common';
-import { ITEM_FACET } from './facets';
 
 /**
  * @function
- * @name getBaseAggregation
- * @description Create base aggregation for Chagelog with all fields
+ * @name getChangelogBaseAggregation
+ * @description Create base aggregation for Changelog with all fields
  * looked up and un-winded for aggregation operations
  *
  * @param {object} criteria Criteria conditions which will be applied in $match
@@ -23,10 +22,10 @@ import { ITEM_FACET } from './facets';
  * @version 0.1.0
  * @since 0.1.0
  */
-const getBaseAggregation = criteria => {
+const getChangelogBaseAggregation = criteria => {
   const ChangeLog = model('ChangeLog');
 
-  return ChangeLog.lookup(criteria).facet(ITEM_FACET);
+  return ChangeLog.lookup(criteria);
 };
 
-export default getBaseAggregation;
+export default getChangelogBaseAggregation;

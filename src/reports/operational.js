@@ -20,7 +20,9 @@
 /* dependencies */
 import { parallel } from 'async';
 import { flattenDeep } from 'lodash';
-import getBaseAggregation, { METRIC_TIMES } from '../base/servicerequest.base';
+import getServiceRequestBaseAggregation, {
+  METRIC_TIMES,
+} from '../base/servicerequest.base';
 import getChangelogBaseAggregation from '../base/changelog.base';
 import { getFacet } from '../util';
 import { OVERALL_FACET, SERVICE_FACET } from '../base/facets';
@@ -49,7 +51,10 @@ const OPERATIONAL_FACET = {
  *  });
  */
 const getOperationalReport = (criteria, facetKeys, onResults) => {
-  const baseAggregation = getBaseAggregation(criteria, METRIC_TIMES);
+  const baseAggregation = getServiceRequestBaseAggregation(
+    criteria,
+    METRIC_TIMES
+  );
   const changelogBaseAggregation = getChangelogBaseAggregation(criteria);
 
   const FACET = getFacet(OPERATIONAL_FACET, facetKeys);
