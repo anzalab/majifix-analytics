@@ -423,13 +423,13 @@ export const ZONE_FACET = {
 
 /**
  * @namespace ITEM_FACET
- * @description Facet for service requests per items
+ * @description Facet for items used in servirce requests
  *
  * @version 0.1.0
  * @since 0.10.0
  */
 export const ITEM_FACET = {
-  zones: [
+  items: [
     {
       $group: {
         _id: '$item._id',
