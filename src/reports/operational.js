@@ -73,10 +73,4 @@ const getOperationalReport = (criteria, facetKeys, onResults) => {
   );
 };
 
-export const getMaterialReport = (criteria, onResults) => {
-  const changelogBaseAggregation = getChangelogBaseAggregation(criteria);
-
-  return changelogBaseAggregation.facet(ITEM_FACET).exec(onResults);
-};
-
 export default getOperationalReport;
