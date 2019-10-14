@@ -2,6 +2,43 @@
 
 ##### Chores
 
+* **build:**
+  *  bundle library for v0.10.0 ([2f233d70](https://github.com/anzalab/majifix-analytics/commit/2f233d70177b2edc08cd394a8150bf355213f4ce))
+  *  bundle library for testing ([7e6566c3](https://github.com/anzalab/majifix-analytics/commit/7e6566c3995b3bc014d72c8b381aa9f76268c272))
+  *  bundle library for testing ([fb54e01c](https://github.com/anzalab/majifix-analytics/commit/fb54e01c6ddc49019b20f58e8b2696f5a3fd5ac1))
+* **deps:**
+  *  update dependencies to latest versions ([ca7574e0](https://github.com/anzalab/majifix-analytics/commit/ca7574e028a35c30054542d272999e93e70dfded))
+  *  update dependencies to latest versions ([7161b238](https://github.com/anzalab/majifix-analytics/commit/7161b238d0f7a13e8efdec9b7eeacc3b78fc59ad))
+  *  update dependencies to latest versions ([3b7d658f](https://github.com/anzalab/majifix-analytics/commit/3b7d658f5c09d791458700792d139a7dbd9fb873))
+* **package:**  update package version to 0.10.0 ([56a9cf0b](https://github.com/anzalab/majifix-analytics/commit/56a9cf0b65272adb5b509fb1539e622911cca66b))
+
+##### Documentation Changes
+
+* **changelog:**  add release notes for v0.10.0 ([2595154e](https://github.com/anzalab/majifix-analytics/commit/2595154e481d2ae0037cd955bd24f2a4e29b4723))
+
+##### New Features
+
+* **items:**
+  *  debug material report(wip) ([6fe93c23](https://github.com/anzalab/majifix-analytics/commit/6fe93c233031bb8180fe5671df90af8070f30066))
+  *  add items in operational report ([8f302a3f](https://github.com/anzalab/majifix-analytics/commit/8f302a3fc3e73f752056d84996338dee6f6dc45f))
+
+##### Bug Fixes
+
+*  remove null values in zone faceat ([6b3e79f1](https://github.com/anzalab/majifix-analytics/commit/6b3e79f18df078ae82884061270b4853e9031951))
+*  handle array of values in prepareReportResponse ([39a0eb5d](https://github.com/anzalab/majifix-analytics/commit/39a0eb5dcfa1ef6f5c613265a40f56449aae1e04))
+*  remove null values in item facet ([3b78e145](https://github.com/anzalab/majifix-analytics/commit/3b78e1455beb24ba434b3c63ead2b222fb729588))
+
+##### Refactors
+
+*  handle more cases in prepareReportResponse ([2d9499f6](https://github.com/anzalab/majifix-analytics/commit/2d9499f6e299f8fce91da5c808cc20dae4cf8e55))
+*  fix typo and remove unused files ([fa5fb270](https://github.com/anzalab/majifix-analytics/commit/fa5fb2703f1745f900533de89251865826b4cbdf))
+*  change getBaseAggregation to getServiceRequestBaseAggregation ([86f9c646](https://github.com/anzalab/majifix-analytics/commit/86f9c646c16f00e05db169f35444df4f2c982150))
+* **util:**  update logic for normalizing metric times ([d0c3ce60](https://github.com/anzalab/majifix-analytics/commit/d0c3ce6018d47ded1e07625fd2d2d525c65edbff))
+
+#### 0.10.0 (2019-10-14)
+
+##### Chores
+
 * **deps:**
   *  update dependencies to latest versions ([ca7574e0](https://github.com/anzalab/majifix-analytics/commit/ca7574e028a35c30054542d272999e93e70dfded))
   *  update dependencies to latest versions ([7161b238](https://github.com/anzalab/majifix-analytics/commit/7161b238d0f7a13e8efdec9b7eeacc3b78fc59ad))
