@@ -121,7 +121,7 @@ export const prepareReportResponse = results => {
     data: {},
   };
 
-  const data = head(results);
+  const data = merge(...results);
 
   data.overall = head(data.overall);
 
