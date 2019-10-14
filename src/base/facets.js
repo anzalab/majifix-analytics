@@ -402,6 +402,7 @@ export const ASSIGNEE_LEADERSBOARD_FACET = {
  */
 export const ZONE_FACET = {
   zones: [
+    { $match: { zone: { $exists: true } } },
     {
       $group: {
         _id: '$zone._id',
