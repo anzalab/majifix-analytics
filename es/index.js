@@ -1,9 +1,10 @@
 import { pkg } from '@lykmapipo/common';
-import { head, merge, map, pick, isEmpty, upperFirst, omit, isNumber, compact } from 'lodash';
+import { merge, head, map, pick, isEmpty, upperFirst, flatten, omit, isNumber, flattenDeep, compact } from 'lodash';
 import { Router } from '@lykmapipo/express-common';
 import { getString } from '@lykmapipo/env';
 import { model } from '@lykmapipo/mongoose-common';
 import parseMs from 'parse-ms';
+import { parallel } from 'async';
 
 /**
  * Base aggregation for service requests
@@ -302,7 +303,7 @@ const METRIC_TIMES = 'METRIC_TIMES';
 
 /**
  * @function
- * @name getBaseAggregation
+ * @name getServiceRequestBaseAggregation
  * @description Create base aggregation for Service Requests with all fields
  * looked up and un-winded for aggregation operations
  *
@@ -312,23 +313,23 @@ const METRIC_TIMES = 'METRIC_TIMES';
  * @param {string} fields Fields to be added to base aggregation for service requests
  * @returns {object} aggregation instance
  *
- * @version 0.3.0
+ * @version 0.3.1
  * @since 0.1.0
  *
  * @example
- * import getBaseAggregation from './servicerequest.base';
+ * import getServiceRequestBaseAggregation from './servicerequest.base';
  *
  * // this will give base aggregation with no fields added to it
- * const baseAggregation = getBaseAggregation(criteria);
+ * const baseAggregation = getServiceRequestBaseAggregation(criteria);
  *
  * // Base aggregation with metric fields for count
- * const baseAggregation = getBaseAggregation(criteria,'METRIC_FIELDS');
+ * const baseAggregation = getServiceRequestBaseAggregation(criteria,'METRIC_FIELDS');
  *
  * // Base aggregation with metric counts fields and metric times
  * // (since metric times depends on metric counts)
- * const baseAggregation = getBaseAggregation(criteria, 'METRIC_TIMES');
+ * const baseAggregation = getServiceRequestBaseAggregation(criteria, 'METRIC_TIMES');
  */
-const getBaseAggregation = (criteria, fields) => {
+const getServiceRequestBaseAggregation = (criteria, fields) => {
   const ServiceRequest = model('ServiceRequest');
 
   const base = ServiceRequest.lookup(criteria);
@@ -403,38 +404,17 @@ const normalizeMetricTimes = data => {
     },
   }));
 
-  const strippedObject = omit(data, [
-    'maximumAssignTime',
-    'minimumAssignTime',
-    'averageAssignTime',
-    'maximumAttendTime',
-    'minimumAttendTime',
-    'averageAttendTime',
-    'maximumCompleteTime',
-    'minimumCompleteTime',
-    'averageCompleteTime',
-    'maximumVerifyTime',
-    'minimumVerifyTime',
-    'averageVerifyTime',
-    'maximumApproveTime',
-    'minimumApproveTime',
-    'averageApproveTime',
-    'maximumResolveTime',
-    'minimumResolveTime',
-    'averageResolveTime',
-    'maximumLateTime',
-    'minimumLateTime',
-    'averageLateTime',
-    'maximumConfirmTime',
-    'minimumConfirmTime',
-    'averageConfirmTime',
-    'maximumCallTime',
-    'minimumCallTime',
-    'averageCallTime',
-    'maximumWorkTime',
-    'minimumWorkTime',
-    'averageWorkTime',
-  ]);
+  const fieldsToOmit = flatten(
+    map(keys, key => {
+      return [
+        `minimum${upperFirst(key)}`,
+        `maximum${upperFirst(key)}`,
+        `average${upperFirst(key)}`,
+      ];
+    })
+  );
+
+  const strippedObject = omit(data, fieldsToOmit); // remove unused time fields after normalization
 
   return merge({}, strippedObject, ...times);
 };
@@ -455,9 +435,9 @@ const prepareReportResponse = results => {
     data: {},
   };
 
-  const data = head(results);
+  const data = merge(...results);
 
-  data.overall = head(data.overall);
+  data.overall = head(data.overall) || {};
 
   if (data.overall) {
     data.overall = normalizeMetricTimes(data.overall);
@@ -789,7 +769,7 @@ const WORKSPACE_FACET = {
 /**
  * @namespace REPORTING_CHANNEL_FACET
  * @description Facet for service requests breakdown based on their reporting
- * channels i.e call, ussd , web, mobile app, visit e.t.c
+ * channels i.e call, USSD , web, mobile app, visit e.t.c
  *
  * @version 0.2.1
  * @since 0.1.0
@@ -835,6 +815,33 @@ const OPERATOR_LEADERSBOARD_FACET = {
         email: { $first: '$operator.email' },
         phone: { $first: '$operator.phone' },
         relation: { $first: '$operator.relation' },
+      },
+    },
+    {
+      $sort: {
+        count: -1,
+      },
+    },
+  ],
+};
+
+/**
+ * @namespace ITEM_FACET
+ * @description Facet for items used in servirce requests
+ *
+ * @version 0.1.0
+ * @since 0.10.0
+ */
+const ITEM_FACET = {
+  items: [
+    { $match: { item: { $exists: true } } },
+    {
+      $group: {
+        _id: '$item._id',
+        count: { $sum: '$quantity' },
+        name: { $first: '$item.name' },
+        color: { $first: '$item.color' },
+        description: { $first: '$item.description' },
       },
     },
     {
@@ -898,7 +905,10 @@ const OVERVIEW_FACET = {
  *  });
  */
 const getOverviewReport = (criteria, facetKeys, onResults) => {
-  const baseAggregation = getBaseAggregation(criteria, METRIC_TIMES);
+  const baseAggregation = getServiceRequestBaseAggregation(
+    criteria,
+    METRIC_TIMES
+  );
 
   const FACET = getFacet(OVERVIEW_FACET, facetKeys);
 
@@ -953,7 +963,10 @@ const PERFORMANCE_FACET = {
  *  });
  */
 const getPerformanceReport = (criteria, facetKeys, onResults) => {
-  const baseAggregation = getBaseAggregation(criteria, METRIC_TIMES);
+  const baseAggregation = getServiceRequestBaseAggregation(
+    criteria,
+    METRIC_TIMES
+  );
 
   const FACET = getFacet(PERFORMANCE_FACET, facetKeys);
 
@@ -999,11 +1012,41 @@ const OPERATOR_PERFORMANCE_FACET = {
  *  });
  */
 const getOperatorPerformanceReport = (criteria, facetKeys, onResults) => {
-  const baseAggregation = getBaseAggregation(criteria, METRIC_TIMES);
+  const baseAggregation = getServiceRequestBaseAggregation(
+    criteria,
+    METRIC_TIMES
+  );
 
   const FACET = getFacet(OPERATOR_PERFORMANCE_FACET, facetKeys);
 
   return baseAggregation.facet(FACET).exec(onResults);
+};
+
+/**
+ * Base aggregation for Changelogs
+ *
+ * @author Benson Maruchu<benmaruchu@gmail.com>
+ *
+ * @version 0.1.0
+ * @since 0.1.0
+ */
+
+/**
+ * @function
+ * @name getChangelogBaseAggregation
+ * @description Create base aggregation for Changelog with all fields
+ * looked up and un-winded for aggregation operations
+ *
+ * @param {object} criteria Criteria conditions which will be applied in $match
+ * @returns {object} aggregation instance
+ *
+ * @version 0.1.0
+ * @since 0.1.0
+ */
+const getChangelogBaseAggregation = criteria => {
+  const ChangeLog = model('ChangeLog');
+
+  return ChangeLog.lookup(criteria);
 };
 
 /**
@@ -1049,11 +1092,32 @@ const OPERATIONAL_FACET = {
  *  });
  */
 const getOperationalReport = (criteria, facetKeys, onResults) => {
-  const baseAggregation = getBaseAggregation(criteria, METRIC_TIMES);
+  const baseAggregation = getServiceRequestBaseAggregation(
+    criteria,
+    METRIC_TIMES
+  );
+  const changelogBaseAggregation = getChangelogBaseAggregation(criteria);
 
   const FACET = getFacet(OPERATIONAL_FACET, facetKeys);
 
-  return baseAggregation.facet(FACET).exec(onResults);
+  const getChangelogReport = next =>
+    changelogBaseAggregation.facet(ITEM_FACET).exec(next);
+
+  const getServiceRequestReport = next =>
+    baseAggregation.facet(FACET).exec(next);
+
+  return parallel(
+    [getChangelogReport, getServiceRequestReport],
+    (error, results) => {
+      return onResults(error, flattenDeep(results));
+    }
+  );
+};
+
+const getMaterialReport = (criteria, onResults) => {
+  const changelogBaseAggregation = getChangelogBaseAggregation(criteria);
+
+  return changelogBaseAggregation.facet(ITEM_FACET).exec(onResults);
 };
 
 /**
@@ -1085,7 +1149,7 @@ const getOperationalReport = (criteria, facetKeys, onResults) => {
  *  });
  */
 const getStandingReport = (criteria, onResults) => {
-  const baseAggregation = getBaseAggregation(criteria);
+  const baseAggregation = getServiceRequestBaseAggregation(criteria);
 
   return baseAggregation
     .group({
@@ -1313,6 +1377,22 @@ router.get(PATH_STANDING, (request, response, next) => {
   const filter = options.filter || {};
 
   getStandingReport(filter, (error, results) => {
+    if (error) {
+      next(error);
+    } else {
+      const data = { data: results };
+      response.status(200);
+      response.json(data);
+    }
+  });
+});
+
+router.get('/reports/test', (request, response, next) => {
+  const options = merge({}, request.mquery);
+
+  const filter = options.filter || {};
+
+  getMaterialReport(filter, (error, results) => {
     if (error) {
       next(error);
     } else {

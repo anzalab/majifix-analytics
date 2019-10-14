@@ -274,7 +274,7 @@ export const WORKSPACE_FACET = {
 /**
  * @namespace REPORTING_CHANNEL_FACET
  * @description Facet for service requests breakdown based on their reporting
- * channels i.e call, ussd , web, mobile app, visit e.t.c
+ * channels i.e call, USSD , web, mobile app, visit e.t.c
  *
  * @version 0.2.1
  * @since 0.1.0
@@ -303,7 +303,7 @@ export const REPORTING_CHANNEL_FACET = {
 
 /**
  * @namespace SERVICE_STATUS_BREAKDOWN_FACET
- * @description Facet for breakingdown service requests per their services and
+ * @description Facet for breaking down service requests per their services and
  * statuses
  *
  * @version 0.1.0
@@ -402,6 +402,7 @@ export const ASSIGNEE_LEADERSBOARD_FACET = {
  */
 export const ZONE_FACET = {
   zones: [
+    { $match: { zone: { $exists: true } } },
     {
       $group: {
         _id: '$zone._id',
@@ -411,6 +412,33 @@ export const ZONE_FACET = {
         name: { $first: '$zone.name' },
         color: { $first: '$zone.color' },
         description: { $first: '$zone.description' },
+      },
+    },
+    {
+      $sort: {
+        count: -1,
+      },
+    },
+  ],
+};
+
+/**
+ * @namespace ITEM_FACET
+ * @description Facet for items used in servirce requests
+ *
+ * @version 0.1.0
+ * @since 0.10.0
+ */
+export const ITEM_FACET = {
+  items: [
+    { $match: { item: { $exists: true } } },
+    {
+      $group: {
+        _id: '$item._id',
+        count: { $sum: '$quantity' },
+        name: { $first: '$item.name' },
+        color: { $first: '$item.color' },
+        description: { $first: '$item.description' },
       },
     },
     {

@@ -10,7 +10,7 @@
  */
 
 /* dependencies */
-import getBaseAggregation from '../base/servicerequest.base';
+import getServiceRequestBaseAggregation from '../base/servicerequest.base';
 
 /**
  * @function
@@ -30,7 +30,7 @@ import getBaseAggregation from '../base/servicerequest.base';
  *  });
  */
 const getStandingReport = (criteria, onResults) => {
-  const baseAggregation = getBaseAggregation(criteria);
+  const baseAggregation = getServiceRequestBaseAggregation(criteria);
 
   return baseAggregation
     .group({

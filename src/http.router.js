@@ -400,7 +400,7 @@ import { getString } from '@lykmapipo/env';
 import getOverviewReport from './reports/overview';
 import getPerformanceReport from './reports/performance';
 import getOperatorPerformanceReport from './reports/operator';
-import getOperationalReport from './reports/operational';
+import getOperationalReport, { getMaterialReport } from './reports/operational';
 import getStandingReport from './reports/standing';
 import { prepareReportResponse } from './util';
 
@@ -600,6 +600,22 @@ router.get(PATH_STANDING, (request, response, next) => {
   const filter = options.filter || {};
 
   getStandingReport(filter, (error, results) => {
+    if (error) {
+      next(error);
+    } else {
+      const data = { data: results };
+      response.status(200);
+      response.json(data);
+    }
+  });
+});
+
+router.get('/reports/test', (request, response, next) => {
+  const options = merge({}, request.mquery);
+
+  const filter = options.filter || {};
+
+  getMaterialReport(filter, (error, results) => {
     if (error) {
       next(error);
     } else {

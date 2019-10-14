@@ -14,7 +14,9 @@
  */
 
 /* dependencies */
-import getBaseAggregation, { METRIC_TIMES } from '../base/servicerequest.base';
+import getServiceRequestBaseAggregation, {
+  METRIC_TIMES,
+} from '../base/servicerequest.base';
 import { getFacet } from '../util';
 import { OVERALL_FACET, SERVICE_FACET } from '../base/facets';
 
@@ -42,7 +44,10 @@ const OPERATOR_PERFORMANCE_FACET = {
  *  });
  */
 const getOperatorPerformanceReport = (criteria, facetKeys, onResults) => {
-  const baseAggregation = getBaseAggregation(criteria, METRIC_TIMES);
+  const baseAggregation = getServiceRequestBaseAggregation(
+    criteria,
+    METRIC_TIMES
+  );
 
   const FACET = getFacet(OPERATOR_PERFORMANCE_FACET, facetKeys);
 

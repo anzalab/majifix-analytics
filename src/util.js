@@ -1,4 +1,5 @@
 import {
+  flatten,
   head,
   map,
   merge,
@@ -89,38 +90,17 @@ export const normalizeMetricTimes = data => {
     },
   }));
 
-  const strippedObject = omit(data, [
-    'maximumAssignTime',
-    'minimumAssignTime',
-    'averageAssignTime',
-    'maximumAttendTime',
-    'minimumAttendTime',
-    'averageAttendTime',
-    'maximumCompleteTime',
-    'minimumCompleteTime',
-    'averageCompleteTime',
-    'maximumVerifyTime',
-    'minimumVerifyTime',
-    'averageVerifyTime',
-    'maximumApproveTime',
-    'minimumApproveTime',
-    'averageApproveTime',
-    'maximumResolveTime',
-    'minimumResolveTime',
-    'averageResolveTime',
-    'maximumLateTime',
-    'minimumLateTime',
-    'averageLateTime',
-    'maximumConfirmTime',
-    'minimumConfirmTime',
-    'averageConfirmTime',
-    'maximumCallTime',
-    'minimumCallTime',
-    'averageCallTime',
-    'maximumWorkTime',
-    'minimumWorkTime',
-    'averageWorkTime',
-  ]);
+  const fieldsToOmit = flatten(
+    map(keys, key => {
+      return [
+        `minimum${upperFirst(key)}`,
+        `maximum${upperFirst(key)}`,
+        `average${upperFirst(key)}`,
+      ];
+    })
+  );
+
+  const strippedObject = omit(data, fieldsToOmit); // remove unused time fields after normalization
 
   return merge({}, strippedObject, ...times);
 };
@@ -141,9 +121,9 @@ export const prepareReportResponse = results => {
     data: {},
   };
 
-  const data = head(results);
+  const data = merge(...results);
 
-  data.overall = head(data.overall);
+  data.overall = head(data.overall) || {};
 
   if (data.overall) {
     data.overall = normalizeMetricTimes(data.overall);

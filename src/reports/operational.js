@@ -18,9 +18,14 @@
  */
 
 /* dependencies */
-import getBaseAggregation, { METRIC_TIMES } from '../base/servicerequest.base';
+import { parallel } from 'async';
+import { flattenDeep } from 'lodash';
+import getServiceRequestBaseAggregation, {
+  METRIC_TIMES,
+} from '../base/servicerequest.base';
+import getChangelogBaseAggregation from '../base/changelog.base';
 import { getFacet } from '../util';
-import { OVERALL_FACET, SERVICE_FACET } from '../base/facets';
+import { OVERALL_FACET, SERVICE_FACET, ITEM_FACET } from '../base/facets';
 
 const OPERATIONAL_FACET = {
   ...OVERALL_FACET,
@@ -46,11 +51,32 @@ const OPERATIONAL_FACET = {
  *  });
  */
 const getOperationalReport = (criteria, facetKeys, onResults) => {
-  const baseAggregation = getBaseAggregation(criteria, METRIC_TIMES);
+  const baseAggregation = getServiceRequestBaseAggregation(
+    criteria,
+    METRIC_TIMES
+  );
+  const changelogBaseAggregation = getChangelogBaseAggregation(criteria);
 
   const FACET = getFacet(OPERATIONAL_FACET, facetKeys);
 
-  return baseAggregation.facet(FACET).exec(onResults);
+  const getChangelogReport = next =>
+    changelogBaseAggregation.facet(ITEM_FACET).exec(next);
+
+  const getServiceRequestReport = next =>
+    baseAggregation.facet(FACET).exec(next);
+
+  return parallel(
+    [getChangelogReport, getServiceRequestReport],
+    (error, results) => {
+      return onResults(error, flattenDeep(results));
+    }
+  );
+};
+
+export const getMaterialReport = (criteria, onResults) => {
+  const changelogBaseAggregation = getChangelogBaseAggregation(criteria);
+
+  return changelogBaseAggregation.facet(ITEM_FACET).exec(onResults);
 };
 
 export default getOperationalReport;

@@ -298,7 +298,7 @@ export const METRIC_TIMES = 'METRIC_TIMES';
 
 /**
  * @function
- * @name getBaseAggregation
+ * @name getServiceRequestBaseAggregation
  * @description Create base aggregation for Service Requests with all fields
  * looked up and un-winded for aggregation operations
  *
@@ -308,23 +308,23 @@ export const METRIC_TIMES = 'METRIC_TIMES';
  * @param {string} fields Fields to be added to base aggregation for service requests
  * @returns {object} aggregation instance
  *
- * @version 0.3.0
+ * @version 0.3.1
  * @since 0.1.0
  *
  * @example
- * import getBaseAggregation from './servicerequest.base';
+ * import getServiceRequestBaseAggregation from './servicerequest.base';
  *
  * // this will give base aggregation with no fields added to it
- * const baseAggregation = getBaseAggregation(criteria);
+ * const baseAggregation = getServiceRequestBaseAggregation(criteria);
  *
  * // Base aggregation with metric fields for count
- * const baseAggregation = getBaseAggregation(criteria,'METRIC_FIELDS');
+ * const baseAggregation = getServiceRequestBaseAggregation(criteria,'METRIC_FIELDS');
  *
  * // Base aggregation with metric counts fields and metric times
  * // (since metric times depends on metric counts)
- * const baseAggregation = getBaseAggregation(criteria, 'METRIC_TIMES');
+ * const baseAggregation = getServiceRequestBaseAggregation(criteria, 'METRIC_TIMES');
  */
-const getBaseAggregation = (criteria, fields) => {
+const getServiceRequestBaseAggregation = (criteria, fields) => {
   const ServiceRequest = model('ServiceRequest');
 
   const base = ServiceRequest.lookup(criteria);
@@ -341,4 +341,4 @@ const getBaseAggregation = (criteria, fields) => {
   return base;
 };
 
-export default getBaseAggregation;
+export default getServiceRequestBaseAggregation;

@@ -88,7 +88,7 @@ describe('Utils', () => {
   });
 
   describe('normalizeMetricTimes', () => {
-    it('should normalize metrics times and restucture object results', () => {
+    it('should normalize metrics times and restructure object results', () => {
       const aggregationResult = {
         count: 1,
         pending: 20,
@@ -426,6 +426,312 @@ describe('Utils', () => {
   });
 
   describe('prepareReportResponse', () => {
+    it('should handle aggregation results with empty facet keys', () => {
+      const aggregationResults = [{ items: [] }, { overall: [], services: [] }];
+      const expectedOutput = {
+        data: {
+          items: [],
+          overall: {
+            approveTime: {
+              average: {
+                days: 0,
+                hours: 0,
+                microseconds: 0,
+                milliseconds: 0,
+                minutes: 0,
+                nanoseconds: 0,
+                seconds: 0,
+              },
+              maximum: {
+                days: 0,
+                hours: 0,
+                microseconds: 0,
+                milliseconds: 0,
+                minutes: 0,
+                nanoseconds: 0,
+                seconds: 0,
+              },
+              minimum: {
+                days: 0,
+                hours: 0,
+                microseconds: 0,
+                milliseconds: 0,
+                minutes: 0,
+                nanoseconds: 0,
+                seconds: 0,
+              },
+            },
+            assignTime: {
+              average: {
+                days: 0,
+                hours: 0,
+                microseconds: 0,
+                milliseconds: 0,
+                minutes: 0,
+                nanoseconds: 0,
+                seconds: 0,
+              },
+              maximum: {
+                days: 0,
+                hours: 0,
+                microseconds: 0,
+                milliseconds: 0,
+                minutes: 0,
+                nanoseconds: 0,
+                seconds: 0,
+              },
+              minimum: {
+                days: 0,
+                hours: 0,
+                microseconds: 0,
+                milliseconds: 0,
+                minutes: 0,
+                nanoseconds: 0,
+                seconds: 0,
+              },
+            },
+            attendTime: {
+              average: {
+                days: 0,
+                hours: 0,
+                microseconds: 0,
+                milliseconds: 0,
+                minutes: 0,
+                nanoseconds: 0,
+                seconds: 0,
+              },
+              maximum: {
+                days: 0,
+                hours: 0,
+                microseconds: 0,
+                milliseconds: 0,
+                minutes: 0,
+                nanoseconds: 0,
+                seconds: 0,
+              },
+              minimum: {
+                days: 0,
+                hours: 0,
+                microseconds: 0,
+                milliseconds: 0,
+                minutes: 0,
+                nanoseconds: 0,
+                seconds: 0,
+              },
+            },
+            callTime: {
+              average: {
+                days: 0,
+                hours: 0,
+                microseconds: 0,
+                milliseconds: 0,
+                minutes: 0,
+                nanoseconds: 0,
+                seconds: 0,
+              },
+              maximum: {
+                days: 0,
+                hours: 0,
+                microseconds: 0,
+                milliseconds: 0,
+                minutes: 0,
+                nanoseconds: 0,
+                seconds: 0,
+              },
+              minimum: {
+                days: 0,
+                hours: 0,
+                microseconds: 0,
+                milliseconds: 0,
+                minutes: 0,
+                nanoseconds: 0,
+                seconds: 0,
+              },
+            },
+            completeTime: {
+              average: {
+                days: 0,
+                hours: 0,
+                microseconds: 0,
+                milliseconds: 0,
+                minutes: 0,
+                nanoseconds: 0,
+                seconds: 0,
+              },
+              maximum: {
+                days: 0,
+                hours: 0,
+                microseconds: 0,
+                milliseconds: 0,
+                minutes: 0,
+                nanoseconds: 0,
+                seconds: 0,
+              },
+              minimum: {
+                days: 0,
+                hours: 0,
+                microseconds: 0,
+                milliseconds: 0,
+                minutes: 0,
+                nanoseconds: 0,
+                seconds: 0,
+              },
+            },
+            confirmTime: {
+              average: {
+                days: 0,
+                hours: 0,
+                microseconds: 0,
+                milliseconds: 0,
+                minutes: 0,
+                nanoseconds: 0,
+                seconds: 0,
+              },
+              maximum: {
+                days: 0,
+                hours: 0,
+                microseconds: 0,
+                milliseconds: 0,
+                minutes: 0,
+                nanoseconds: 0,
+                seconds: 0,
+              },
+              minimum: {
+                days: 0,
+                hours: 0,
+                microseconds: 0,
+                milliseconds: 0,
+                minutes: 0,
+                nanoseconds: 0,
+                seconds: 0,
+              },
+            },
+            lateTime: {
+              average: {
+                days: 0,
+                hours: 0,
+                microseconds: 0,
+                milliseconds: 0,
+                minutes: 0,
+                nanoseconds: 0,
+                seconds: 0,
+              },
+              maximum: {
+                days: 0,
+                hours: 0,
+                microseconds: 0,
+                milliseconds: 0,
+                minutes: 0,
+                nanoseconds: 0,
+                seconds: 0,
+              },
+              minimum: {
+                days: 0,
+                hours: 0,
+                microseconds: 0,
+                milliseconds: 0,
+                minutes: 0,
+                nanoseconds: 0,
+                seconds: 0,
+              },
+            },
+            resolveTime: {
+              average: {
+                days: 0,
+                hours: 0,
+                microseconds: 0,
+                milliseconds: 0,
+                minutes: 0,
+                nanoseconds: 0,
+                seconds: 0,
+              },
+              maximum: {
+                days: 0,
+                hours: 0,
+                microseconds: 0,
+                milliseconds: 0,
+                minutes: 0,
+                nanoseconds: 0,
+                seconds: 0,
+              },
+              minimum: {
+                days: 0,
+                hours: 0,
+                microseconds: 0,
+                milliseconds: 0,
+                minutes: 0,
+                nanoseconds: 0,
+                seconds: 0,
+              },
+            },
+            verifyTime: {
+              average: {
+                days: 0,
+                hours: 0,
+                microseconds: 0,
+                milliseconds: 0,
+                minutes: 0,
+                nanoseconds: 0,
+                seconds: 0,
+              },
+              maximum: {
+                days: 0,
+                hours: 0,
+                microseconds: 0,
+                milliseconds: 0,
+                minutes: 0,
+                nanoseconds: 0,
+                seconds: 0,
+              },
+              minimum: {
+                days: 0,
+                hours: 0,
+                microseconds: 0,
+                milliseconds: 0,
+                minutes: 0,
+                nanoseconds: 0,
+                seconds: 0,
+              },
+            },
+            workTime: {
+              average: {
+                days: 0,
+                hours: 0,
+                microseconds: 0,
+                milliseconds: 0,
+                minutes: 0,
+                nanoseconds: 0,
+                seconds: 0,
+              },
+              maximum: {
+                days: 0,
+                hours: 0,
+                microseconds: 0,
+                milliseconds: 0,
+                minutes: 0,
+                nanoseconds: 0,
+                seconds: 0,
+              },
+              minimum: {
+                days: 0,
+                hours: 0,
+                microseconds: 0,
+                milliseconds: 0,
+                minutes: 0,
+                nanoseconds: 0,
+                seconds: 0,
+              },
+            },
+          },
+          services: [],
+        },
+      };
+
+      expect(prepareReportResponse(aggregationResults)).to.be.eql(
+        expectedOutput
+      );
+    });
+
     it('should normalize aggregration results to response format', () => {
       const aggregrationResults = [
         {
