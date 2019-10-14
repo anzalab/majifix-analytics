@@ -1,5 +1,5 @@
 import { pkg } from '@lykmapipo/common';
-import { head, merge, map, pick, isEmpty, upperFirst, omit, isNumber, flattenDeep, compact } from 'lodash';
+import { head, merge, map, pick, isEmpty, upperFirst, flatten, omit, isNumber, flattenDeep, compact } from 'lodash';
 import { Router } from '@lykmapipo/express-common';
 import { getString } from '@lykmapipo/env';
 import { model } from '@lykmapipo/mongoose-common';
@@ -404,38 +404,17 @@ const normalizeMetricTimes = data => {
     },
   }));
 
-  const strippedObject = omit(data, [
-    'maximumAssignTime',
-    'minimumAssignTime',
-    'averageAssignTime',
-    'maximumAttendTime',
-    'minimumAttendTime',
-    'averageAttendTime',
-    'maximumCompleteTime',
-    'minimumCompleteTime',
-    'averageCompleteTime',
-    'maximumVerifyTime',
-    'minimumVerifyTime',
-    'averageVerifyTime',
-    'maximumApproveTime',
-    'minimumApproveTime',
-    'averageApproveTime',
-    'maximumResolveTime',
-    'minimumResolveTime',
-    'averageResolveTime',
-    'maximumLateTime',
-    'minimumLateTime',
-    'averageLateTime',
-    'maximumConfirmTime',
-    'minimumConfirmTime',
-    'averageConfirmTime',
-    'maximumCallTime',
-    'minimumCallTime',
-    'averageCallTime',
-    'maximumWorkTime',
-    'minimumWorkTime',
-    'averageWorkTime',
-  ]);
+  const fieldsToOmit = flatten(
+    map(keys, key => {
+      return [
+        `minimum${upperFirst(key)}`,
+        `maximum${upperFirst(key)}`,
+        `average${upperFirst(key)}`,
+      ];
+    })
+  );
+
+  const strippedObject = omit(data, fieldsToOmit); // remove unused time fields after normalization
 
   return merge({}, strippedObject, ...times);
 };
@@ -855,6 +834,7 @@ const OPERATOR_LEADERSBOARD_FACET = {
  */
 const ITEM_FACET = {
   items: [
+    { $match: { item: { $exists: true } } },
     {
       $group: {
         _id: '$item._id',
@@ -1120,7 +1100,8 @@ const getOperationalReport = (criteria, facetKeys, onResults) => {
 
   const FACET = getFacet(OPERATIONAL_FACET, facetKeys);
 
-  const getChangelogReport = next => changelogBaseAggregation.exec(next);
+  const getChangelogReport = next =>
+    changelogBaseAggregation.facet(ITEM_FACET).exec(next);
 
   const getServiceRequestReport = next =>
     baseAggregation.facet(FACET).exec(next);
