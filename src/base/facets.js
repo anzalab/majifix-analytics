@@ -430,6 +430,7 @@ export const ZONE_FACET = {
  */
 export const ITEM_FACET = {
   items: [
+    { $match: { item: { $exists: true } } },
     {
       $group: {
         _id: '$item._id',

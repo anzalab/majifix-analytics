@@ -59,7 +59,8 @@ const getOperationalReport = (criteria, facetKeys, onResults) => {
 
   const FACET = getFacet(OPERATIONAL_FACET, facetKeys);
 
-  const getChangelogReport = next => changelogBaseAggregation.exec(next);
+  const getChangelogReport = next =>
+    changelogBaseAggregation.facet(ITEM_FACET).exec(next);
 
   const getServiceRequestReport = next =>
     baseAggregation.facet(FACET).exec(next);
