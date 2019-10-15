@@ -890,6 +890,7 @@ const TRENDING_MONTH_PER_YEAR_FACET = {
         months: 1,
       },
     },
+    { $sort: { year: 1 } },
   ],
 };
 
@@ -931,6 +932,7 @@ const TRENDING_HOUR_PER_DAY = {
         hours: 1,
       },
     },
+    { $sort: { day: 1 } },
   ],
 };
 
@@ -958,6 +960,7 @@ const TRENDING_PER_YEAR = {
         count: 1,
       },
     },
+    { $sort: { year: 1 } },
   ],
 };
 
