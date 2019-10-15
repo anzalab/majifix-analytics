@@ -41,7 +41,7 @@ export const normalizeTime = time => {
  *
  * @param {object} data Aggregation result object for a single facet or a single
  * object in a facet which returns an array
- * @returns {object} Object which is has merged data from the aggregration results
+ * @returns {object} Object which is has merged data from the aggregation results
  * and parsed metrics times to human readable format
  *
  * @version 0.2.0

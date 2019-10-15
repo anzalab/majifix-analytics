@@ -425,7 +425,7 @@
 *  format response to have appropriate structure ([a5bec693](https://github.com/lykmapipo/iso-lib-starter/commit/a5bec693abd2cf22266742d2740d06c482661c7e))
 *  move leadersboard facet from operator to overview report ([b4382753](https://github.com/lykmapipo/iso-lib-starter/commit/b438275356f13e1d2e483f615a90b1bcdf42a01b))
 *  extract all facets to a single file ([89c46298](https://github.com/lykmapipo/iso-lib-starter/commit/89c4629818485cec0505281a7a666fae1190a3f3))
-*  move addFields operator to service request base aggregration ([512f20c5](https://github.com/lykmapipo/iso-lib-starter/commit/512f20c52593a3e7cba0df4352c926d5a6ec3388))
+*  move addFields operator to service request base aggregation ([512f20c5](https://github.com/lykmapipo/iso-lib-starter/commit/512f20c52593a3e7cba0df4352c926d5a6ec3388))
 
 ##### Code Style Changes
 
