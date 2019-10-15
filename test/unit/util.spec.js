@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import { omit } from 'lodash';
 import {
   normalizeTime,
   normalizeMetricTimes,
@@ -698,11 +697,10 @@ describe('Utils', () => {
 
   describe('prepareReportResponse', () => {
     it('should handle aggregation results with empty facet keys', () => {
-      const aggregationResults = [{ items: [] }, { overall: [], services: [] }];
+      const aggregationResults = [{ items: [] }, { services: [] }];
       const expectedOutput = {
         data: {
           items: [],
-          overall: omit(fakeResults.overall, ['count', 'resolved', 'pending']),
           services: [],
         },
       };

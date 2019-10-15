@@ -102,9 +102,9 @@ export const prepareReportResponse = results => {
 
   const data = merge(...results);
 
-  data.overall = head(data.overall) || {};
+  if (!isEmpty(data.overall)) {
+    data.overall = head(data.overall);
 
-  if (data.overall) {
     data.overall = normalizeMetricTimes(data.overall);
   }
 
