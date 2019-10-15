@@ -906,7 +906,7 @@ const TRENDING_HOUR_PER_DAY = {
     {
       $group: {
         _id: {
-          day: '$day',
+          day: '$weekDay',
           hour: '$hour',
         },
         countPerHour: {
