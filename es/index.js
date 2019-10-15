@@ -1,5 +1,5 @@
 import { pkg } from '@lykmapipo/common';
-import { merge, head, map, pick, isEmpty, upperFirst, flatten, omit, isNumber, flattenDeep, compact } from 'lodash';
+import { merge, isEmpty, head, map, pick, upperFirst, flatten, omit, isNumber, flattenDeep, compact } from 'lodash';
 import { Router } from '@lykmapipo/express-common';
 import { getString } from '@lykmapipo/env';
 import { model } from '@lykmapipo/mongoose-common';
@@ -437,9 +437,9 @@ const prepareReportResponse = results => {
 
   const data = merge(...results);
 
-  data.overall = head(data.overall) || {};
+  if (!isEmpty(data.overall)) {
+    data.overall = head(data.overall);
 
-  if (data.overall) {
     data.overall = normalizeMetricTimes(data.overall);
   }
 
