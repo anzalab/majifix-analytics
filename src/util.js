@@ -35,27 +35,6 @@ export const normalizeTime = time => {
 
 /**
  * @function
- * @name normalizeObjectTimes
- * @description Normalize times in a provided object (item)
- *
- * @param {object} item Object with times to be normalized
- * @returns {object} Object with averageResolve time and averageAttend Time parse
- *
- * @version 0.1.0
- * @since 0.2.0
- */
-export const normalizeObjectTimes = item => {
-  const normalizeObject = {};
-
-  normalizeObject.averageResolveTime = normalizeTime(item.averageResolveTime);
-
-  normalizeObject.averageAttendTime = normalizeTime(item.averageAttendTime);
-
-  return { ...item, ...normalizeObject };
-};
-
-/**
- * @function
  * @name normalizeMetricTimes
  * @description Normalize aggregation object with metric times to a standard
  * format. Also parse those times to human readable format
