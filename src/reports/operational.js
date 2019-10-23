@@ -25,11 +25,19 @@ import getServiceRequestBaseAggregation, {
 } from '../base/servicerequest.base';
 import getChangelogBaseAggregation from '../base/changelog.base';
 import { getFacet } from '../util';
-import { OVERALL_FACET, SERVICE_FACET, ITEM_FACET } from '../base/facets';
+import {
+  OVERALL_FACET,
+  SERVICE_FACET,
+  ITEM_FACET,
+  WORKSPACE_FACET,
+  ASSIGNEE_LEADERSBOARD_FACET,
+} from '../base/facets';
 
 const OPERATIONAL_FACET = {
   ...OVERALL_FACET,
   ...SERVICE_FACET,
+  ...WORKSPACE_FACET,
+  ...ASSIGNEE_LEADERSBOARD_FACET,
 };
 
 /**
