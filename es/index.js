@@ -826,6 +826,35 @@ const OPERATOR_LEADERSBOARD_FACET = {
 };
 
 /**
+ * @namespace ASSIGNEE_LEADERSBOARD_FACET
+ * @description Facet for assignees leader's board
+ *
+ * @version 0.1.0
+ * @since 0.1.0
+ */
+const ASSIGNEE_LEADERSBOARD_FACET = {
+  assignees: [
+    {
+      $group: {
+        _id: '$assignee._id',
+        pending: { $sum: '$pending' },
+        resolved: { $sum: '$resolved' },
+        count: { $sum: 1 },
+        name: { $first: '$assignee.name' },
+        email: { $first: '$assignee.email' },
+        phone: { $first: '$assignee.phone' },
+        relation: { $first: '$assignee.relation' },
+      },
+    },
+    {
+      $sort: {
+        count: -1,
+      },
+    },
+  ],
+};
+
+/**
  * @namespace ITEM_FACET
  * @description Facet for items used in servirce requests
  *
@@ -1071,6 +1100,8 @@ const getChangelogBaseAggregation = criteria => {
 const OPERATIONAL_FACET = {
   ...OVERALL_FACET,
   ...SERVICE_FACET,
+  ...WORKSPACE_FACET,
+  ...ASSIGNEE_LEADERSBOARD_FACET,
 };
 
 /**
@@ -1112,12 +1143,6 @@ const getOperationalReport = (criteria, facetKeys, onResults) => {
       return onResults(error, flattenDeep(results));
     }
   );
-};
-
-const getMaterialReport = (criteria, onResults) => {
-  const changelogBaseAggregation = getChangelogBaseAggregation(criteria);
-
-  return changelogBaseAggregation.facet(ITEM_FACET).exec(onResults);
 };
 
 /**
@@ -1377,22 +1402,6 @@ router.get(PATH_STANDING, (request, response, next) => {
   const filter = options.filter || {};
 
   getStandingReport(filter, (error, results) => {
-    if (error) {
-      next(error);
-    } else {
-      const data = { data: results };
-      response.status(200);
-      response.json(data);
-    }
-  });
-});
-
-router.get('/reports/test', (request, response, next) => {
-  const options = merge({}, request.mquery);
-
-  const filter = options.filter || {};
-
-  getMaterialReport(filter, (error, results) => {
     if (error) {
       next(error);
     } else {
