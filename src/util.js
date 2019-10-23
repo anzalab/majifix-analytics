@@ -128,6 +128,10 @@ export const prepareReportResponse = results => {
     data.types = map(data.types, normalizeMetricTimes);
   }
 
+  if (data.assignees) {
+    data.assignees = map(data.assignees, normalizeMetricTimes);
+  }
+
   // if (data.methods) {
   //   data.methods = map(data.methods, normalizeObjectTimes);
   // }
