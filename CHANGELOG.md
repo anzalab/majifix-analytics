@@ -1,3 +1,14 @@
+#### 0.10.3 (2019-10-23)
+
+##### Chores
+
+* **build:**  bundle library for v0.10.3 ([cb0093a9](https://github.com/anzalab/majifix-analytics/commit/cb0093a969c3c71e8d74d99fbd5721dedf9d1879))
+* **package:**  update package version to 0.10.3 ([d42223ac](https://github.com/anzalab/majifix-analytics/commit/d42223ac89f2d385f653a8f6a6dce34f89168fdc))
+
+##### Bug Fixes
+
+* **operational:**  remove unused times when normalizing response ([f246c901](https://github.com/anzalab/majifix-analytics/commit/f246c901e868605b278becf95f1dd2f526bc795f))
+
 #### 0.10.2 (2019-10-23)
 
 ##### Chores

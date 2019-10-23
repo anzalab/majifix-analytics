@@ -1,5 +1,5 @@
 import { pkg } from '@lykmapipo/common';
-import { merge, head, map, pick, isEmpty, upperFirst, flatten, omit, isNumber, flattenDeep, compact } from 'lodash';
+import { merge, head, map, pick, isEmpty, isNumber, upperFirst, flatten, omit, flattenDeep, compact } from 'lodash';
 import { Router } from '@lykmapipo/express-common';
 import { getString } from '@lykmapipo/env';
 import { model } from '@lykmapipo/mongoose-common';
@@ -464,7 +464,9 @@ const prepareReportResponse = results => {
   }
 
   if (data.assignees) {
-    data.assignees = map(data.assignees, normalizeMetricTimes);
+    data.assignees = map(data.assignees, assignee => {
+      return { ...assignee, workTime: normalizeTime(assignee.workTime) };
+    });
   }
 
   // if (data.methods) {
