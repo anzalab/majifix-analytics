@@ -1,3 +1,27 @@
+#### 0.10.1 (2019-10-23)
+
+##### Chores
+
+* **build:**  bundle library for v0.10.1 ([88b58671](https://github.com/anzalab/majifix-analytics/commit/88b58671bda6c2a03569bafe748891e7646b0ed2))
+* **package:**  update package version to 0.10.1 ([53b92ad5](https://github.com/anzalab/majifix-analytics/commit/53b92ad5b1695fbb0242912536fbe02290ee582b))
+
+##### New Features
+
+* **operational:**  add workspace and assignee leaderboard facets ([5f8cdde8](https://github.com/anzalab/majifix-analytics/commit/5f8cdde8b9b245c7d30383f617de4dfb0ddf9405))
+
+##### Refactors
+
+* **utils:**  remove unused function ([6ab8a9e8](https://github.com/anzalab/majifix-analytics/commit/6ab8a9e8a544bdc077657a557aaff879823137e4))
+* **operational:**  remove code used for testing purposes ([958259ae](https://github.com/anzalab/majifix-analytics/commit/958259aea3217e74b0ae39dafb832f289519b77a))
+
+##### Code Style Changes
+
+*  fix typos ([5a6ad97f](https://github.com/anzalab/majifix-analytics/commit/5a6ad97f1028a5a48fb164b14b4b17c96b9a8178))
+
+##### Tests
+
+* **util:**  refactor to remove duplicated codes ([661b73e7](https://github.com/anzalab/majifix-analytics/commit/661b73e770503636947df9d786249984cab2de65))
+
 #### 0.10.0 (2019-10-14)
 
 ##### Chores
