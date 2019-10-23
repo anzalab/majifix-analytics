@@ -1,3 +1,14 @@
+#### 0.10.2 (2019-10-23)
+
+##### Chores
+
+* **build:**  bundle library for v0.10.2 ([75ea9328](https://github.com/anzalab/majifix-analytics/commit/75ea9328949264b2dad1241bbab10d5b7fa430e2))
+* **package:**  update package version to 0.10.2 ([dd96806f](https://github.com/anzalab/majifix-analytics/commit/dd96806fa8e0d329fbafa8ce52db19c7cee83973))
+
+##### New Features
+
+* **operational:**  add worktime in assignee facet ([bbba5c9e](https://github.com/anzalab/majifix-analytics/commit/bbba5c9e685ff2c9f9bb3b11eea5e09771b4ef1c))
+
 #### 0.10.1 (2019-10-23)
 
 ##### Chores
