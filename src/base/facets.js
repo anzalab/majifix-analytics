@@ -383,6 +383,7 @@ export const ASSIGNEE_LEADERSBOARD_FACET = {
         email: { $first: '$assignee.email' },
         phone: { $first: '$assignee.phone' },
         relation: { $first: '$assignee.relation' },
+        workTime: { $sum: '$workTime' },
       },
     },
     {
