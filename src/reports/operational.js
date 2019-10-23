@@ -25,11 +25,19 @@ import getServiceRequestBaseAggregation, {
 } from '../base/servicerequest.base';
 import getChangelogBaseAggregation from '../base/changelog.base';
 import { getFacet } from '../util';
-import { OVERALL_FACET, SERVICE_FACET, ITEM_FACET } from '../base/facets';
+import {
+  OVERALL_FACET,
+  SERVICE_FACET,
+  ITEM_FACET,
+  WORKSPACE_FACET,
+  ASSIGNEE_LEADERSBOARD_FACET,
+} from '../base/facets';
 
 const OPERATIONAL_FACET = {
   ...OVERALL_FACET,
   ...SERVICE_FACET,
+  ...WORKSPACE_FACET,
+  ...ASSIGNEE_LEADERSBOARD_FACET,
 };
 
 /**
@@ -71,12 +79,6 @@ const getOperationalReport = (criteria, facetKeys, onResults) => {
       return onResults(error, flattenDeep(results));
     }
   );
-};
-
-export const getMaterialReport = (criteria, onResults) => {
-  const changelogBaseAggregation = getChangelogBaseAggregation(criteria);
-
-  return changelogBaseAggregation.facet(ITEM_FACET).exec(onResults);
 };
 
 export default getOperationalReport;
