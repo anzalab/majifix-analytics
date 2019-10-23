@@ -129,7 +129,9 @@ export const prepareReportResponse = results => {
   }
 
   if (data.assignees) {
-    data.assignees = map(data.assignees, normalizeMetricTimes);
+    data.assignees = map(data.assignees, assignee => {
+      return { ...assignee, workTime: normalizeTime(assignee.workTime) };
+    });
   }
 
   // if (data.methods) {
