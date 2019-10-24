@@ -1,3 +1,16 @@
+#### 0.10.5 (2019-10-24)
+
+##### Chores
+
+* **build:**  bundle library for v0.10.5 ([1fc71131](https://github.com/anzalab/majifix-analytics/commit/1fc7113196908899d1313e779e831b696fdbe714))
+* **package:**  update package version to 0.10.5 ([ad31bc47](https://github.com/anzalab/majifix-analytics/commit/ad31bc47197b2cfa347de5c43795bdfb90ca0840))
+
+##### New Features
+
+* **facets:**
+  *  add properties field in item facet ([a796bfae](https://github.com/anzalab/majifix-analytics/commit/a796bfaea4207ae16fcf1cf0b8778e1cbe6abf73))
+  *  use metric counts in zone facet ([c0570aba](https://github.com/anzalab/majifix-analytics/commit/c0570aba0ecf7d90966f104b1e2961e0dd14b7b8))
+
 #### 0.10.4 (2019-10-24)
 
 ##### Chores
