@@ -1,3 +1,16 @@
+#### 0.10.4 (2019-10-24)
+
+##### Chores
+
+* **build:**  bundle library for v0.10.4 ([52d3f150](https://github.com/anzalab/majifix-analytics/commit/52d3f1505a73a1eb6c6748f9b77d42f2352e6138))
+* **package:**  update package version to 0.10.4 ([4d517fa5](https://github.com/anzalab/majifix-analytics/commit/4d517fa58fb1d4e4ee14628b5aac2542987a46aa))
+
+##### Bug Fixes
+
+* **facets:**
+  *  ensure assignee exists in assignee facet ([2ec865fd](https://github.com/anzalab/majifix-analytics/commit/2ec865fd5c8148c7d9fa9bc403817986ad81cf61))
+  *  remove color field in item facet ([60994dc5](https://github.com/anzalab/majifix-analytics/commit/60994dc517bfd508abb95db7d98775331834abd1))
+
 #### 0.10.3 (2019-10-23)
 
 ##### Chores
