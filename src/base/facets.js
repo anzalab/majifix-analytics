@@ -438,7 +438,6 @@ export const ITEM_FACET = {
         _id: '$item._id',
         count: { $sum: '$quantity' },
         name: { $first: '$item.name' },
-        color: { $first: '$item.color' },
         description: { $first: '$item.description' },
       },
     },
