@@ -373,6 +373,7 @@ export const OPERATOR_LEADERSBOARD_FACET = {
  */
 export const ASSIGNEE_LEADERSBOARD_FACET = {
   assignees: [
+    { $match: { assignee: { $exists: true } } },
     {
       $group: {
         _id: '$assignee._id',
