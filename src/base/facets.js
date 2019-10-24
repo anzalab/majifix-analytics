@@ -438,6 +438,7 @@ export const ITEM_FACET = {
         count: { $sum: '$quantity' },
         name: { $first: '$item.name' },
         description: { $first: '$item.description' },
+        properties: { $first: '$item.properties' },
       },
     },
     {
