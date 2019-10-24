@@ -840,6 +840,7 @@ const OPERATOR_LEADERSBOARD_FACET = {
  */
 const ASSIGNEE_LEADERSBOARD_FACET = {
   assignees: [
+    { $match: { assignee: { $exists: true } } },
     {
       $group: {
         _id: '$assignee._id',
@@ -876,7 +877,6 @@ const ITEM_FACET = {
         _id: '$item._id',
         count: { $sum: '$quantity' },
         name: { $first: '$item.name' },
-        color: { $first: '$item.color' },
         description: { $first: '$item.description' },
       },
     },
