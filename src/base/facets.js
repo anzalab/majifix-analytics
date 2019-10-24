@@ -408,12 +408,10 @@ export const ZONE_FACET = {
     {
       $group: {
         _id: '$zone._id',
-        pending: { $sum: '$pending' },
-        resolved: { $sum: '$resolved' },
-        count: { $sum: 1 },
         name: { $first: '$zone.name' },
         color: { $first: '$zone.color' },
         description: { $first: '$zone.description' },
+        ...METRIC_COUNTS,
       },
     },
     {
@@ -440,6 +438,7 @@ export const ITEM_FACET = {
         count: { $sum: '$quantity' },
         name: { $first: '$item.name' },
         description: { $first: '$item.description' },
+        properties: { $first: '$item.properties' },
       },
     },
     {
