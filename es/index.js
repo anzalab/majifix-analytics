@@ -863,6 +863,33 @@ const ASSIGNEE_LEADERSBOARD_FACET = {
 };
 
 /**
+ * @namespace ZONE_FACET
+ * @description Facet for service requests per zones
+ *
+ * @version 0.1.0
+ * @since 0.4.3
+ */
+const ZONE_FACET = {
+  zones: [
+    { $match: { zone: { $exists: true } } },
+    {
+      $group: {
+        _id: '$zone._id',
+        name: { $first: '$zone.name' },
+        color: { $first: '$zone.color' },
+        description: { $first: '$zone.description' },
+        ...METRIC_COUNTS,
+      },
+    },
+    {
+      $sort: {
+        count: -1,
+      },
+    },
+  ],
+};
+
+/**
  * @namespace ITEM_FACET
  * @description Facet for items used in servirce requests
  *
@@ -1109,6 +1136,7 @@ const OPERATIONAL_FACET = {
   ...OVERALL_FACET,
   ...SERVICE_FACET,
   ...WORKSPACE_FACET,
+  ...ZONE_FACET,
   ...ASSIGNEE_LEADERSBOARD_FACET,
 };
 

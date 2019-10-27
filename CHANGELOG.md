@@ -1,3 +1,14 @@
+#### 0.10.6 (2019-10-27)
+
+##### Chores
+
+* **build:**  bundle library for v0.10.6 ([2ca638ad](https://github.com/anzalab/majifix-analytics/commit/2ca638ad68dd0ce7bec382f61f2926012c1a4485))
+* **package:**  update package version to 0.10.6 ([8129f491](https://github.com/anzalab/majifix-analytics/commit/8129f4917dbb3e93b96490d92ecac15a722ce0f6))
+
+##### New Features
+
+* **operational:**  add zone facet in operational reports ([fa909155](https://github.com/anzalab/majifix-analytics/commit/fa909155ba24d46eb146cda4dd778b8e8fd3d118))
+
 #### 0.10.5 (2019-10-24)
 
 ##### Chores
