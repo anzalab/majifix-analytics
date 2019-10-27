@@ -1,3 +1,14 @@
+#### 0.10.7 (2019-10-27)
+
+##### Chores
+
+* **build:**  bundle library for v0.10.7 ([7101cc41](https://github.com/anzalab/majifix-analytics/commit/7101cc41f9c046054791fc8752940154920bcaed))
+* **package:**  update package version to 0.10.7 ([9bd96463](https://github.com/anzalab/majifix-analytics/commit/9bd964631e6a4cbe7b0295d7daa29e0ec9a5298d))
+
+##### New Features
+
+* **facets:**  add metric times on zone facet ([4f5f343d](https://github.com/anzalab/majifix-analytics/commit/4f5f343d5ae0a88c4234f06c05bb34bf14ddb4af))
+
 #### 0.10.6 (2019-10-27)
 
 ##### Chores
