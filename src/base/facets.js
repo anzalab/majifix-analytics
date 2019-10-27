@@ -412,6 +412,7 @@ export const ZONE_FACET = {
         color: { $first: '$zone.color' },
         description: { $first: '$zone.description' },
         ...METRIC_COUNTS,
+        ...METRIC_TIMES,
       },
     },
     {

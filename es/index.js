@@ -463,6 +463,10 @@ const prepareReportResponse = results => {
     data.types = map(data.types, normalizeMetricTimes);
   }
 
+  if (data.zones) {
+    data.zones = map(data.zones, normalizeMetricTimes);
+  }
+
   if (data.assignees) {
     data.assignees = map(data.assignees, assignee => {
       return { ...assignee, workTime: normalizeTime(assignee.workTime) };
@@ -879,6 +883,7 @@ const ZONE_FACET = {
         color: { $first: '$zone.color' },
         description: { $first: '$zone.description' },
         ...METRIC_COUNTS,
+        ...METRIC_TIMES$1,
       },
     },
     {
