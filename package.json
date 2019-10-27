@@ -1,6 +1,6 @@
 {
   "name": "@codetanzania/majifix-analytics",
-  "version": "0.10.5",
+  "version": "0.10.6",
   "description": "Majifix module for analytics and reports",
   "main": "lib/index.js",
   "module": "es/index.js",
