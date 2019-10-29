@@ -1,4 +1,5 @@
 import {
+  camelCase,
   flatten,
   head,
   map,
@@ -102,9 +103,9 @@ export const prepareReportResponse = results => {
 
   const data = merge(...results);
 
-  data.overall = head(data.overall) || {};
+  if (!isEmpty(data.overall)) {
+    data.overall = head(data.overall);
 
-  if (data.overall) {
     data.overall = normalizeMetricTimes(data.overall);
   }
 
@@ -143,6 +144,29 @@ export const prepareReportResponse = results => {
   // }
 
   return { ...defaultResults, data };
+};
+
+/**
+ * @function
+ * @name getTimeFacet
+ * @description Generate list of expression to be executed for given time i.e
+ * minimum, maximum and average time.
+ *
+ * @param {string} metricTime Time metric to be used in facet
+ * @returns {object} Return a map of expression to be executed for provided time
+ *
+ * @version 0.1.0
+ * @since 0.10.7
+ * @example
+ * const ASSIGN_TIME_FACET = getTimeFacet('assignTime');
+ */
+export const getTimeFacet = metricTime => {
+  const time = camelCase(metricTime);
+  return {
+    [`minimum${upperFirst(time)}`]: { $min: `$${time}` },
+    [`maximum${upperFirst(time)}`]: { $max: `$${time}` },
+    [`average${upperFirst(time)}`]: { $avg: `$${time}` },
+  };
 };
 
 /**

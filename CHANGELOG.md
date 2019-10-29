@@ -1,3 +1,46 @@
+#### 0.11.0 (2019-10-29)
+
+##### Chores
+
+* **build:**
+  *  bundle library for v0.11.0 ([b9d93e4c](https://github.com/anzalab/majifix-analytics/commit/b9d93e4c6e1c290073aa0d9c0a1f7164fc503658))
+  *  bundle library for testing ([d404a2b2](https://github.com/anzalab/majifix-analytics/commit/d404a2b29edeebd8e05d836380c3afccb6d4e78c))
+  *  bundle library for testing ([d2fd8957](https://github.com/anzalab/majifix-analytics/commit/d2fd8957a6c55743a579e494e20bcbfc585b1927))
+  *  bundle library for testing ([121680a7](https://github.com/anzalab/majifix-analytics/commit/121680a7b1a967dac066309bfeadc9d2f2f30ef7))
+  *  bundle library for testing ([1db0de69](https://github.com/anzalab/majifix-analytics/commit/1db0de696f05af746d2e3f34e29e8e6193f47181))
+* **package:**  update package version to 0.11.0 ([d0a90d74](https://github.com/anzalab/majifix-analytics/commit/d0a90d7419ac964878cad0566bc222626e0c8da6))
+* **deps-dev:**  bump mongoose from 5.7.4 to 5.7.5 ([a9ed7247](https://github.com/anzalab/majifix-analytics/commit/a9ed7247fcbb1f1c4e082e42f1c2f19b96bba1a1))
+* **deps:**
+  *  update dependencies to latest versions ([fb5e913b](https://github.com/anzalab/majifix-analytics/commit/fb5e913b1592d6abe2c16c223ed76e7d304767e7))
+  *  update dependencies to latest versions ([bd9db667](https://github.com/anzalab/majifix-analytics/commit/bd9db6674586c827b5be1f075cf4e8e467b0e2d2))
+
+##### Documentation Changes
+
+* **readme:**  add reports structures ([b773060b](https://github.com/anzalab/majifix-analytics/commit/b773060b73f76faaad8c1eaa50da9b0e82566197))
+
+##### New Features
+
+* **trending:**
+  *  sort return data ([1d54ac26](https://github.com/anzalab/majifix-analytics/commit/1d54ac2689d7c17f9979a160c54341217fc13e03))
+  *  add initial implementation of trending reports ([c2cce003](https://github.com/anzalab/majifix-analytics/commit/c2cce003a34596435a562bba3e53a1537c8e06fd))
+
+##### Bug Fixes
+
+* **trending:**  use weekDay instead of day ([1212294d](https://github.com/anzalab/majifix-analytics/commit/1212294d5066e1980a585a9ec595631a34cdfa22))
+* **util:**  ensure overall is there before normalizing ([81691c0e](https://github.com/anzalab/majifix-analytics/commit/81691c0ee2f1fc3bccd755ff53592fbdbc664f9e))
+
+##### Other Changes
+
+* anzalab/majifix-analytics into develop ([60e2b963](https://github.com/anzalab/majifix-analytics/commit/60e2b96325efc70644a27b98cd0f4d7062c86bc2))
+
+##### Refactors
+
+* **facets:**  improve code readability ([bfe0653f](https://github.com/anzalab/majifix-analytics/commit/bfe0653fee6912fa4482c154d62f48e91f7bcc1c))
+
+##### Code Style Changes
+
+* **package:**  format package.json file ([4358fe0b](https://github.com/anzalab/majifix-analytics/commit/4358fe0b6a630b3a54c235c07b1d6c7237249af8))
+
 #### 0.10.7 (2019-10-27)
 
 ##### Chores

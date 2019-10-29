@@ -1,10 +1,10 @@
 import { expect } from 'chai';
-import { omit } from 'lodash';
 import {
   normalizeTime,
   normalizeMetricTimes,
   prepareReportResponse,
   getFacet,
+  getTimeFacet,
 } from '../../src/util';
 
 describe('Utils', () => {
@@ -698,11 +698,10 @@ describe('Utils', () => {
 
   describe('prepareReportResponse', () => {
     it('should handle aggregation results with empty facet keys', () => {
-      const aggregationResults = [{ items: [] }, { overall: [], services: [] }];
+      const aggregationResults = [{ items: [] }, { services: [] }];
       const expectedOutput = {
         data: {
           items: [],
-          overall: omit(fakeResults.overall, ['count', 'resolved', 'pending']),
           services: [],
         },
       };
@@ -819,6 +818,19 @@ describe('Utils', () => {
 
     it('should return default facet when no key is provided', () => {
       expect(getFacet(defaultFacet, [])).to.eql(defaultFacet);
+    });
+  });
+
+  describe('getTimeFacet', () => {
+    it('should return an object with minimum, maximum and average time expressions', () => {
+      const expectedOutput = {
+        minimumAssignTime: { $min: '$assignTime' },
+        maximumAssignTime: { $max: '$assignTime' },
+        averageAssignTime: { $avg: '$assignTime' },
+      };
+
+      expect(getTimeFacet('assignTime')).to.eql(expectedOutput);
+      expect(getTimeFacet('AssignTime')).to.eql(expectedOutput);
     });
   });
 });

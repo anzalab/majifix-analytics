@@ -1,5 +1,5 @@
 import { pkg } from '@lykmapipo/common';
-import { merge, head, map, pick, isEmpty, isNumber, upperFirst, flatten, omit, flattenDeep, compact } from 'lodash';
+import { upperFirst, camelCase, merge, isEmpty, head, map, pick, isNumber, flatten, omit, flattenDeep, compact } from 'lodash';
 import { Router } from '@lykmapipo/express-common';
 import { getString } from '@lykmapipo/env';
 import { model } from '@lykmapipo/mongoose-common';
@@ -437,9 +437,9 @@ const prepareReportResponse = results => {
 
   const data = merge(...results);
 
-  data.overall = head(data.overall) || {};
+  if (!isEmpty(data.overall)) {
+    data.overall = head(data.overall);
 
-  if (data.overall) {
     data.overall = normalizeMetricTimes(data.overall);
   }
 
@@ -482,6 +482,29 @@ const prepareReportResponse = results => {
 
 /**
  * @function
+ * @name getTimeFacet
+ * @description Generate list of expression to be executed for given time i.e
+ * minimum, maximum and average time.
+ *
+ * @param {string} metricTime Time metric to be used in facet
+ * @returns {object} Return a map of expression to be executed for provided time
+ *
+ * @version 0.1.0
+ * @since 0.10.7
+ * @example
+ * const ASSIGN_TIME_FACET = getTimeFacet('assignTime');
+ */
+const getTimeFacet = metricTime => {
+  const time = camelCase(metricTime);
+  return {
+    [`minimum${upperFirst(time)}`]: { $min: `$${time}` },
+    [`maximum${upperFirst(time)}`]: { $max: `$${time}` },
+    [`average${upperFirst(time)}`]: { $avg: `$${time}` },
+  };
+};
+
+/**
+ * @function
  * @name getFacet
  * @description Get final facet based on selected facet keys
  *
@@ -504,37 +527,32 @@ const getFacet = (facet, facetKeys) => {
 };
 
 /* constants */
-const METRIC_TIMES$1 = {
-  maximumAssignTime: { $max: '$assignTime' },
-  minimumAssignTime: { $min: '$assignTime' },
-  averageAssignTime: { $avg: '$assignTime' },
-  maximumAttendTime: { $max: '$attendTime' },
-  minimumAttendTime: { $min: '$attendTime' },
-  averageAttendTime: { $avg: '$attendTime' },
-  maximumCompleteTime: { $max: '$completeTime' },
-  minimumCompleteTime: { $min: '$completeTime' },
-  averageCompleteTime: { $avg: '$completeTime' },
-  maximumVerifyTime: { $max: '$verifyTime' },
-  minimumVerifyTime: { $min: '$verifyTime' },
-  averageVerifyTime: { $avg: '$verifyTime' },
-  maximumApproveTime: { $max: '$approveTime' },
-  minimumApproveTime: { $min: '$approveTime' },
-  averageApproveTime: { $avg: '$approveTime' },
-  maximumResolveTime: { $max: '$resolveTime' },
-  minimumResolveTime: { $min: '$resolveTime' },
-  averageResolveTime: { $avg: '$resolveTime' },
-  maximumLateTime: { $max: '$lateTime' },
-  minimumLateTime: { $min: '$lateTime' },
-  averageLateTime: { $avg: '$lateTime' },
-  maximumConfirmTime: { $max: '$confirmTime' },
-  minimumConfirmTime: { $min: '$confirmTime' },
-  averageConfirmTime: { $avg: '$confirmTime' },
+const ASSIGN_TIME = getTimeFacet('assignTime');
+const ATTEND_TIME = getTimeFacet('attendTime');
+const COMPLETE_TIME = getTimeFacet('completeTime');
+const VERIFY_TIME = getTimeFacet('verifyTime');
+const APPROVE_TIME = getTimeFacet('approveTime');
+const RESOLVE_TIME = getTimeFacet('resolveTime');
+const LATE_TIME = getTimeFacet('lateTime');
+const CONFIRM_TIME = getTimeFacet('confirmTime');
+const WORK_TIME = getTimeFacet('workTime');
+const CALL_TIME = {
   maximumCallTime: { $max: '$call.duration.milliseconds' },
   minimumCallTime: { $min: '$call.duration.milliseconds' },
   averageCallTime: { $avg: '$call.duration.milliseconds' },
-  maximumWorkTime: { $max: '$workTime' },
-  minimumWorkTime: { $min: '$workTime' },
-  averageWorkTime: { $avg: '$workTime' },
+};
+
+const METRIC_TIMES$1 = {
+  ...ASSIGN_TIME,
+  ...ATTEND_TIME,
+  ...COMPLETE_TIME,
+  ...VERIFY_TIME,
+  ...APPROVE_TIME,
+  ...RESOLVE_TIME,
+  ...LATE_TIME,
+  ...CONFIRM_TIME,
+  ...CALL_TIME,
+  ...WORK_TIME,
 };
 
 const METRIC_COUNTS = {
@@ -922,6 +940,118 @@ const ITEM_FACET = {
 };
 
 /**
+ * @namespace TRENDING_MONTH_PER_YEAR_FACET
+ * @description Facet for service requests reported per month per year
+ *
+ * @version 0.1.0
+ * @since 0.11.0
+ */
+const TRENDING_MONTH_PER_YEAR_FACET = {
+  countPerMonthPerYear: [
+    {
+      $group: {
+        _id: {
+          year: '$year',
+          month: '$month',
+        },
+        monthlyCount: {
+          $sum: 1,
+        },
+      },
+    },
+    {
+      $group: {
+        _id: '$_id.year',
+        months: {
+          $push: {
+            month: '$_id.month',
+            count: '$monthlyCount',
+          },
+        },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        year: '$_id',
+        months: 1,
+      },
+    },
+    { $sort: { year: 1 } },
+  ],
+};
+
+/**
+ * @namespace TRENDING_HOUR_PER_DAY
+ * @description count of service request per hour per day of the week
+ *
+ * @version 0.1.0
+ * @since  0.11.0
+ */
+const TRENDING_HOUR_PER_DAY = {
+  countPerHourPerDay: [
+    {
+      $group: {
+        _id: {
+          day: '$weekDay',
+          hour: '$hour',
+        },
+        countPerHour: {
+          $sum: 1,
+        },
+      },
+    },
+    {
+      $group: {
+        _id: '$_id.day',
+        hours: {
+          $push: {
+            hour: '$_id.hour',
+            count: '$countPerHour',
+          },
+        },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        day: '$_id',
+        hours: 1,
+      },
+    },
+    { $sort: { day: 1 } },
+  ],
+};
+
+/**
+ * @namespace TRENDING_PER_YEAR
+ * @description Count of service requests per year
+ *
+ * @version 0.1.0
+ * @since 0.11.0
+ */
+const TRENDING_PER_YEAR = {
+  countPerYear: [
+    {
+      $group: {
+        _id: '$year',
+        count: {
+          $sum: 1,
+        },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        year: '$_id',
+        count: 1,
+      },
+    },
+    { $sort: { year: 1 } },
+  ],
+};
+
+/**
  * This is overview report based on service request
  * It consist of
  *  - Total service requests per a given period
@@ -1245,6 +1375,73 @@ const getStandingReport = (criteria, onResults) => {
     .exec(onResults);
 };
 
+/**
+ * Base aggregation for service request for trending reports
+ *
+ * @author Benson Maruchu<benmaruchu@gmail.com>
+ *
+ * @version 0.1.0
+ * @since 0.11.0
+ */
+
+/**
+ * @function
+ * @name getServiceRequestTrendingAggregation
+ * @description Base Aggregation for service request trending reports
+ *
+ * @param {object} criteria Criteria conditions which will be applied in $match
+ * @returns {object} Service request aggregation instance
+ *
+ * @version 0.1.0
+ * @since 0.11.0
+ */
+const getServiceRequestTrendingAggregation = criteria => {
+  const ServiceRequest = model('ServiceRequest');
+
+  const base = ServiceRequest.aggregate();
+
+  if (isEmpty(criteria)) {
+    base.match(criteria);
+  }
+
+  base.addFields({
+    year: { $year: '$createdAt' },
+    month: { $month: '$createdAt' },
+    weekDay: {
+      $dayOfWeek: '$createdAt',
+    },
+    day: { $dayOfMonth: '$createdAt' },
+    hour: {
+      $hour: '$createdAt',
+    },
+  });
+
+  return base;
+};
+
+/**
+ * This is trending report based on service request
+ *
+ * This reports provides count of service requests
+ * base on reportedAt(createdAt) per year, hour, day
+ *
+ * @author Benson Maruchu<benmaruchu@gmail.com>
+ * @version 0.1.0
+ * @since 0.11.0
+ */
+
+const FACET = {
+  ...TRENDING_PER_YEAR,
+  ...TRENDING_MONTH_PER_YEAR_FACET,
+  ...TRENDING_HOUR_PER_DAY,
+};
+
+const getTrendingReport = (criteria, onResults) => {
+  const baseAggregation = getServiceRequestTrendingAggregation(criteria);
+
+  baseAggregation.facet(FACET).exec(onResults);
+};
+
 /* eslint-disable jsdoc/check-tag-names */
 
 /* local constants */
@@ -1254,6 +1451,7 @@ const PATH_PERFORMANCE = '/reports/performances';
 const PATH_OPERATIONAL = '/reports/operations';
 const PATH_OPERATOR_PERFORMANCE = '/reports/operators';
 const PATH_STANDING = '/reports/standings';
+const PATH_TRENDING = '/reports/trendings';
 
 const router = new Router({
   version: API_VERSION,
@@ -1422,7 +1620,7 @@ router.get(PATH_OPERATIONAL, (request, response, next) => {
 });
 
 /**
- * @api {get} /reports/standing Report
+ * @api {get} /reports/standings Report
  * @apiGroup Analytics
  * @apiName GetStanding
  * @apiVersion 1.0.0
@@ -1447,6 +1645,38 @@ router.get(PATH_STANDING, (request, response, next) => {
       next(error);
     } else {
       const data = { data: results };
+      response.status(200);
+      response.json(data);
+    }
+  });
+});
+
+/**
+ * @api {get} /reports/trendings Report
+ * @apiGroup Analytics
+ * @apiName GetTrending
+ * @apiVersion 1.0.0
+ * @apiDescription Return trending report
+ * @apiUse RequestHeaders
+ * @apiUse Operator
+ *
+ * @apiUse RequestHeaderExample
+ * @apiUse OverviewSuccessResponse
+ * @apiUse JWTError
+ * @apiUse JWTErrorExample
+ * @apiUse AuthorizationHeaderError
+ * @apiUse AuthorizationHeaderErrorExample
+ */
+router.get(PATH_TRENDING, (request, response, next) => {
+  const options = merge({}, request.mquery);
+
+  const filter = options.filter || {};
+
+  getTrendingReport(filter, (error, results) => {
+    if (error) {
+      next(error);
+    } else {
+      const data = prepareReportResponse(results);
       response.status(200);
       response.json(data);
     }
