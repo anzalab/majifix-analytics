@@ -5,6 +5,7 @@ import {
   normalizeMetricTimes,
   prepareReportResponse,
   getFacet,
+  getTimeFacet,
 } from '../../src/util';
 
 describe('Utils', () => {
@@ -819,6 +820,19 @@ describe('Utils', () => {
 
     it('should return default facet when no key is provided', () => {
       expect(getFacet(defaultFacet, [])).to.eql(defaultFacet);
+    });
+  });
+
+  describe('getTimeFacet', () => {
+    it('should return an object with minimum, maximum and average time expressions', () => {
+      const expectedOutput = {
+        minimumAssignTime: { $min: '$assignTime' },
+        maximumAssignTime: { $max: '$assignTime' },
+        averageAssignTime: { $avg: '$assignTime' },
+      };
+
+      expect(getTimeFacet('assignTime')).to.eql(expectedOutput);
+      expect(getTimeFacet('AssignTime')).to.eql(expectedOutput);
     });
   });
 });

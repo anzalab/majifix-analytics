@@ -1,35 +1,32 @@
+import { getTimeFacet } from '../util';
+
 /* constants */
-const METRIC_TIMES = {
-  maximumAssignTime: { $max: '$assignTime' },
-  minimumAssignTime: { $min: '$assignTime' },
-  averageAssignTime: { $avg: '$assignTime' },
-  maximumAttendTime: { $max: '$attendTime' },
-  minimumAttendTime: { $min: '$attendTime' },
-  averageAttendTime: { $avg: '$attendTime' },
-  maximumCompleteTime: { $max: '$completeTime' },
-  minimumCompleteTime: { $min: '$completeTime' },
-  averageCompleteTime: { $avg: '$completeTime' },
-  maximumVerifyTime: { $max: '$verifyTime' },
-  minimumVerifyTime: { $min: '$verifyTime' },
-  averageVerifyTime: { $avg: '$verifyTime' },
-  maximumApproveTime: { $max: '$approveTime' },
-  minimumApproveTime: { $min: '$approveTime' },
-  averageApproveTime: { $avg: '$approveTime' },
-  maximumResolveTime: { $max: '$resolveTime' },
-  minimumResolveTime: { $min: '$resolveTime' },
-  averageResolveTime: { $avg: '$resolveTime' },
-  maximumLateTime: { $max: '$lateTime' },
-  minimumLateTime: { $min: '$lateTime' },
-  averageLateTime: { $avg: '$lateTime' },
-  maximumConfirmTime: { $max: '$confirmTime' },
-  minimumConfirmTime: { $min: '$confirmTime' },
-  averageConfirmTime: { $avg: '$confirmTime' },
+const ASSIGN_TIME = getTimeFacet('assignTime');
+const ATTEND_TIME = getTimeFacet('attendTime');
+const COMPLETE_TIME = getTimeFacet('completeTime');
+const VERIFY_TIME = getTimeFacet('verifyTime');
+const APPROVE_TIME = getTimeFacet('approveTime');
+const RESOLVE_TIME = getTimeFacet('resolveTime');
+const LATE_TIME = getTimeFacet('lateTime');
+const CONFIRM_TIME = getTimeFacet('confirmTime');
+const WORK_TIME = getTimeFacet('workTime');
+const CALL_TIME = {
   maximumCallTime: { $max: '$call.duration.milliseconds' },
   minimumCallTime: { $min: '$call.duration.milliseconds' },
   averageCallTime: { $avg: '$call.duration.milliseconds' },
-  maximumWorkTime: { $max: '$workTime' },
-  minimumWorkTime: { $min: '$workTime' },
-  averageWorkTime: { $avg: '$workTime' },
+};
+
+const METRIC_TIMES = {
+  ...ASSIGN_TIME,
+  ...ATTEND_TIME,
+  ...COMPLETE_TIME,
+  ...VERIFY_TIME,
+  ...APPROVE_TIME,
+  ...RESOLVE_TIME,
+  ...LATE_TIME,
+  ...CONFIRM_TIME,
+  ...CALL_TIME,
+  ...WORK_TIME,
 };
 
 const METRIC_COUNTS = {
