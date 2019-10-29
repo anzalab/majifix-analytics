@@ -446,3 +446,115 @@ export const ITEM_FACET = {
     },
   ],
 };
+
+/**
+ * @namespace TRENDING_MONTH_PER_YEAR_FACET
+ * @description Facet for service requests reported per month per year
+ *
+ * @version 0.1.0
+ * @since 0.11.0
+ */
+export const TRENDING_MONTH_PER_YEAR_FACET = {
+  countPerMonthPerYear: [
+    {
+      $group: {
+        _id: {
+          year: '$year',
+          month: '$month',
+        },
+        monthlyCount: {
+          $sum: 1,
+        },
+      },
+    },
+    {
+      $group: {
+        _id: '$_id.year',
+        months: {
+          $push: {
+            month: '$_id.month',
+            count: '$monthlyCount',
+          },
+        },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        year: '$_id',
+        months: 1,
+      },
+    },
+    { $sort: { year: 1 } },
+  ],
+};
+
+/**
+ * @namespace TRENDING_HOUR_PER_DAY
+ * @description count of service request per hour per day of the week
+ *
+ * @version 0.1.0
+ * @since  0.11.0
+ */
+export const TRENDING_HOUR_PER_DAY = {
+  countPerHourPerDay: [
+    {
+      $group: {
+        _id: {
+          day: '$weekDay',
+          hour: '$hour',
+        },
+        countPerHour: {
+          $sum: 1,
+        },
+      },
+    },
+    {
+      $group: {
+        _id: '$_id.day',
+        hours: {
+          $push: {
+            hour: '$_id.hour',
+            count: '$countPerHour',
+          },
+        },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        day: '$_id',
+        hours: 1,
+      },
+    },
+    { $sort: { day: 1 } },
+  ],
+};
+
+/**
+ * @namespace TRENDING_PER_YEAR
+ * @description Count of service requests per year
+ *
+ * @version 0.1.0
+ * @since 0.11.0
+ */
+export const TRENDING_PER_YEAR = {
+  countPerYear: [
+    {
+      $group: {
+        _id: '$year',
+        count: {
+          $sum: 1,
+        },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        year: '$_id',
+        count: 1,
+      },
+    },
+    { $sort: { year: 1 } },
+  ],
+};

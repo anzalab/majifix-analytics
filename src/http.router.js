@@ -402,6 +402,7 @@ import getPerformanceReport from './reports/performance';
 import getOperatorPerformanceReport from './reports/operator';
 import getOperationalReport from './reports/operational';
 import getStandingReport from './reports/standing';
+import getTrendingReport from './reports/trending';
 import { prepareReportResponse } from './util';
 
 /* local constants */
@@ -411,6 +412,7 @@ const PATH_PERFORMANCE = '/reports/performances';
 const PATH_OPERATIONAL = '/reports/operations';
 const PATH_OPERATOR_PERFORMANCE = '/reports/operators';
 const PATH_STANDING = '/reports/standings';
+const PATH_TRENDING = '/reports/trendings';
 
 const router = new Router({
   version: API_VERSION,
@@ -579,7 +581,7 @@ router.get(PATH_OPERATIONAL, (request, response, next) => {
 });
 
 /**
- * @api {get} /reports/standing Report
+ * @api {get} /reports/standings Report
  * @apiGroup Analytics
  * @apiName GetStanding
  * @apiVersion 1.0.0
@@ -604,6 +606,38 @@ router.get(PATH_STANDING, (request, response, next) => {
       next(error);
     } else {
       const data = { data: results };
+      response.status(200);
+      response.json(data);
+    }
+  });
+});
+
+/**
+ * @api {get} /reports/trendings Report
+ * @apiGroup Analytics
+ * @apiName GetTrending
+ * @apiVersion 1.0.0
+ * @apiDescription Return trending report
+ * @apiUse RequestHeaders
+ * @apiUse Operator
+ *
+ * @apiUse RequestHeaderExample
+ * @apiUse OverviewSuccessResponse
+ * @apiUse JWTError
+ * @apiUse JWTErrorExample
+ * @apiUse AuthorizationHeaderError
+ * @apiUse AuthorizationHeaderErrorExample
+ */
+router.get(PATH_TRENDING, (request, response, next) => {
+  const options = merge({}, request.mquery);
+
+  const filter = options.filter || {};
+
+  getTrendingReport(filter, (error, results) => {
+    if (error) {
+      next(error);
+    } else {
+      const data = prepareReportResponse(results);
       response.status(200);
       response.json(data);
     }
