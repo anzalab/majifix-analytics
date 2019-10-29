@@ -20,7 +20,12 @@
     "chore:deps": "ncu -u && npm install --save",
     "lint:config": "eslint --print-config rollup.config.js"
   },
-  "keywords": ["anzalab", "majifix", "analytics", "isomophic"],
+  "keywords": [
+    "anzalab",
+    "majifix",
+    "analytics",
+    "isomophic"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/anzalab/majifix-analytics.git"
@@ -97,10 +102,15 @@
     }
   },
   "commitlint": {
-    "extends": ["@commitlint/config-conventional"]
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   },
   "lint-staged": {
-    "src/**/*.js": ["npm run lint", "git add -A"]
+    "src/**/*.js": [
+      "npm run lint",
+      "git add -A"
+    ]
   },
   "husky": {
     "hooks": {
