@@ -166,7 +166,7 @@ const METRIC_FLAGS_FIELDS = {
    */
   pending: {
     $cond: {
-      if: { $and: [{ $not: '$resolvedAt' }, '$confirmedAt'] },
+      if: { $not: '$resolvedAt' },
       then: 1,
       else: 0,
     },
