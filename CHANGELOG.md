@@ -1,3 +1,14 @@
+#### 0.11.1 (2019-11-20)
+
+##### Chores
+
+* **build:**  bundle library for v0.11.1 ([31988157](https://github.com/anzalab/majifix-analytics/commit/319881577fac2b87ca79078d00ba5a0b7491d20d))
+* **package:**  update package version 0.11.1 ([17c8860f](https://github.com/anzalab/majifix-analytics/commit/17c8860f1a52baed8a73b8372d50aada779fccc5))
+
+##### Refactors
+
+* **servicerequest:**  count unconfirmed issue as pending ([729ac1f3](https://github.com/anzalab/majifix-analytics/commit/729ac1f3b81c6cca7ad598e041f0e978a111928d))
+
 #### 0.11.0 (2019-10-29)
 
 ##### Chores
